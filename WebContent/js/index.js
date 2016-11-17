@@ -59,3 +59,16 @@ for (var i = 0; i < stocks.length; i++) {
 $('tbody > tr').css('cursor', 'pointer').on('click', function() {
 	window.location = $(this).attr('data-href');
 });
+
+
+//Yichang
+$('.ui.dropdown')
+	.dropdown()
+;
+$('.ui.sticky')
+	.sticky()
+;
+
+$('.modal-add.modal')
+	.modal('attach events', '.btn-add', 'show')
+;
