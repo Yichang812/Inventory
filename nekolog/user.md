@@ -1,6 +1,6 @@
 ## User A (Warehouse staff , Alice)
 
-#### Operation 1
+#### Operation A
 >add new product record
 
 ###### Purpose
@@ -16,7 +16,7 @@ A product code is generated automatically by the system, so the product can be e
 Develop a GUI function for adding new product and its information to the system.
 Automatically generating a product code for identifying product and a QR code for easily retrieving product information.
 
-#### Operation 2
+#### Operation B
 >re-stocking
 
 ###### Purpose
@@ -34,7 +34,7 @@ Automatically generating a product code for identifying product and a QR code fo
 
 ## User B (Store manager in retail store A, Bob)
 
-#### Operation 2
+#### Operation B
 > Confirm received products
 
 ###### Purpose
@@ -49,7 +49,7 @@ There is a function for Bob to confirm that retail store has received the produc
 ###### Proposal
 The retail store can check the status of the restocking products and change the status to received after the products are delivered. The system will update the stock of products for the retail store after the status changes.
 
-#### Operation 3
+#### Operation C
 > Update Sold products
 
 ###### Purpose
@@ -64,14 +64,14 @@ The stock of sold product is updated automatically when the purchase is made. Th
 ###### Proposal
 The cashier can use the system to scan and read the QR code of all the sold products. The system will generate a receipt for these product and update their stocks automatically. The receipt number and the staff who makes this updates will be recorded.
 
-#### Operation 4
+#### Operation D
 > find expiring products
 
 ###### Purpose
 To reduce lost the retail wants to sell the products that are going to be expired within 6 months with a discount price. If a product will be expired within 1 month, and has not been sold, the retail store will send it back to central warehouse.
 
 ###### Situation
-The current system does not keep the expiration dates of the products. So Bob has to keep record of the expiration date of each product. He also need to check if any products match the condition for discounting or returning.
+The current system does not keep the expiration dates of the products. So Bob has to keep record of the expiration date of each product. He also need to check if any products will be expired with 6 months or any products that will be expired within 1 month.
 
 ###### Expectation
 The system can keep record of the expiration dates of products for retail store A. When there is product whose expiration date is within 6 months, or the expiration date is within 1 month, the system will alert the user.
@@ -79,18 +79,9 @@ The system can keep record of the expiration dates of products for retail store 
 ###### Proposal
 After each restocking, the expiration date for each kind of products is the same. Therefore, the system will keep the batch number and the expiration dates of each kind of restocking products. When the expiration date of a kind of product is within 6 months, the system will alert the user so that the user can find out the expiring products by the batch number.  
 
-#### Operation 6
->check stock
-
-###### Purpose
-The are possibility that the product is broken or stolen. For such cases, it requires Bob to update the stock of product manually.
-###### Situation
-###### Expectation
-###### Proposal
-
 ## User C (Sales manager, Charlie)
 
-#### Operation 7
+#### Operation E
 >sales report
 
 ###### Purpose
@@ -105,16 +96,16 @@ Charlie wants the required information be generated directly from the system. Ch
 ###### Proposal
 The system will generate a sales report containing the required information automatically. The user can decide the time period, the product types, and the store for the data to generate the report. A information in the report will be presented in both literal and visual ways.
 
-#### Operation 8
+<!-- #### Operation 8
 > purchasing habit
 
 ###### Purpose
-Charlie wants to know customers' purchasing habits, like what they usually buy together, what products are more popular before holidays. Charlie wants to know these information, so that he can plan for different promotions, like value set, holiday set. The information also provides guide when the retail store place the products, e.g. the information shows that people buy protein powder trends to buy diet food too, so the store can place the two types of product beside each other.
+Charlie wants to know customers' purchasing habits, like what they usually buy together, what products are more popular before holidays. Charlie wants to know these information, so that he can plan for different promotions, like value set, holiday set. The information also provides guide when the retail stores place the products, e.g. the information shows that people buy protein powder trends to buy diet food too, so the retail stores can place the two types of product beside each other.
 
 ###### Situation
 The operation involves data mining technics which does not support in current system. It also not feasible for Charlie to analysis the huge number of data manually.
 
 ###### Expectation
-Charlie wants to know the information
+Charlie wants to
 
-###### Proposal
+###### Proposal -->
