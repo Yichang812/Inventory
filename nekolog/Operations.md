@@ -25,11 +25,12 @@ The central warehouse will restock the retail stores every month. The user needs
 The work items are: “the selling report of each retail store”, “the delivery status of the products” and “the restocking amount of the products”.  
 
 **Problem**
+
 It contains multiple routine works to restock the products for each retail store. For each retail store, the user needs to check its selling amount and send the restocking products. As the stock of central warehouse and retail store are updated at different time, it is very troublesome for the user to keep tracking of the status of all the deliveries and update the stock of each retail stores.
 
 **Ideal**
 - The system presents users the recommended restocking amount for each retail store based on its selling amount.
-- The user can easily manage the restocking for all the stores by a single operation.
+- The user can easily manage the restocking for all the stores by a single operation. The system will generate a batch number for each restocking for future tracking.
 - The system updates the stock of the central warehouse automatically when the restocking products are sent out.
 - It will also keep tracking the delivery status of all the sending out products. If delivery does not reach the target retail store by the expected date, the system will alert the warehouse staff.
 - The system will update the stock of the retail store once the restocking products are accepted by the retail store.   
@@ -43,18 +44,27 @@ The work items are: “the latest stock of the product”, “the change of the 
 
 **Problem**
 
+It is hard for user to keep the stock accurate as the user has to update the stock immediately after selling a product. If the user forget to update the stock, the mistake is hardly discovered.
+
 **Ideal**
+- While selling products, the user can use the system to scan the read the QR code of all the products one by one.
+- The system will generate a receipt for the products and update the stock automatically.
+- The system will also keep the receipt number and the staff name for future reference.
 
 ##### Operation D
 **_Find the products that are going to be expired_**
 
-The retailer wants to sell the products that are going to be expired within 6 months with discount prices. And for the products that are going to be expired with 1 month, the retail must return the product to the supplier. The supplier will also monitoring the expiration dates of the products. And remind the retailer if there is any products that will be expired within 1 month and have not been returned yet.
+The retailer wants to sell the products that are going to be expired within 6 months with discount prices. And for the products that are going to be expired with 1 month, the retail must return the product to the central warehouse. The central warehouse will also monitoring the expiration dates of the products. And remind the retailer if there is any products that will be expired within 1 month and have not been returned yet.
 
 The work item is: “expiration dates of products”
 
 **Problem**
+It is troublesome for the user to keep checking the expiration date of products. If the user does not find the expiring product in time, the user has to suffer from the lost due to expired products. It is even worse, if the user sells expired products to the customers.
 
 **Ideal**
+- The system stores the expiration date and batch number during every restocking (during each restocking, the same kind of products have the same expiration data).
+- The system will remind the user if there is any product whose expiration date is within the user specified period.
+- The system will alert the central warehouse, if any product will be expired within 1 month and have not been returned yet.
 
 ##### Operation E
 **_Plan for marketing campaigns (generate automated order)_**
@@ -65,4 +75,9 @@ The work items are: “the records of the inventory, sales and orders”.
 
 **Problem**
 
+A lot of useful information can be explored from the data in the inventory system. However, it is troublesome for the user to manipulate the date and get the information.
+
 **Ideal**
+- The user can define the desired time period, product types and the stores for the data.
+- The system will automatically generates a sales report containing information (e.g. "best selling products", "top-grossing products") based on user selection.
+- The information in the report will be presented in both literal and visual ways.

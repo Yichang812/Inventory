@@ -62,7 +62,7 @@ In the current system, the user need to firstly find the correct product record 
 The stock of sold product is updated automatically when the purchase is made. The system stores the proof for each purchase (i.e. the receipt number).  _selling price?????_
 
 ###### Proposal
-The cashier can use the system to scan and read the QR code of all the sold products. The system will generate a receipt for these product and update their stocks automatically. The receipt number and the staff who makes this updates will be recorded.
+The cashier can use the system to scan and read the QR code of all the sold products. The system will generate a receipt for these products and update their stocks automatically. The receipt number and the staff who makes this update will be recorded.
 
 #### Operation D
 > find expiring products
