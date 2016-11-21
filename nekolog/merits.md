@@ -21,3 +21,24 @@ Eventory is a system designed for retailers to manage the inventory of its centr
 
 
 ## Features
+##### Merit 1
+###### 1) A form for gathering product information
+The user can create a new product record by simply filling and submitting a form.
+
+###### 2) Insert the information into database
+This step is completely handled by the system. The system will insert the information gathering from the form to the database. The Inventory List will be updated automatically.
+
+##### Merit 2
+###### 3) Generate a product code for the new product
+The system generates a unique product code for each product in the system by which the user can easily identify a product and ... 
+##### Merit 3
+
+##### Merit 4
+
+##### Merit 5
+
+##### Merit 6
+
+##### Merit 7
+
+##### Merit 8
