@@ -1,0 +1,203 @@
+.ui-datepicker {
+    width: 220px;
+    height: auto;
+    margin: 5px auto 0;
+    border-radius: 4px;
+    border: 2px solid #0d1318
+}
+.ui-datepicker a {
+    text-decoration: none;
+}
+.ui-datepicker table {
+    width: 100%;
+}
+.ui-datepicker-header{
+    font-weight:bold;
+    line-height: 30px;
+    border-top-width: 1px;
+    background: #0d1318;
+    padding:10px;
+}
+.ui-datepicker-title {
+    text-align: center;
+    color:#ecf0f1;
+}
+
+.ui-datepicker-prev, .ui-datepicker-next {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    cursor: pointer;
+    line-height:200%;
+    overflow: hidden;
+}
+.ui-datepicker-prev{
+    float:left;
+}
+.ui-datepicker-next{
+    float: right;
+}
+
+.ui-datepicker tbody td {
+    padding: 0;
+    border-right: 1px solid #bbb;
+}
+.ui-datepicker tbody td:last-child {
+    border-right: 0px;
+}
+.ui-datepicker tbody tr {
+    border-bottom: 1px solid #bbb;
+}
+.ui-datepicker tbody tr:last-child {
+    border-bottom: 0px;
+}
+
+.ui-datepicker td span, .ui-datepicker td a {
+    display: inline-block;
+    font-weight: bold;
+    text-align: center;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    color: #0d1318;
+    text-decoration: none;
+}
+
+.ui-datepicker-unselectable .ui-state-default {
+    background: #f4f4f4;
+    color: #b4b3b3;
+}
+
+.ui-datepicker-calendar .ui-state-hover {
+    background: #ecf0f1;
+}
+.ui-datepicker-calendar .ui-state-active {
+    background: #bbb;
+    color: #0d1318;
+    border: 1px solid #bbb;
+    position: relative;
+}
+/*dropdown submenu*/
+
+.dropdown-submenu{position:relative;}
+.dropdown-submenu>.dropdown-menu{top:0;left:100%;margin-top:-6px;margin-left:-1px;-webkit-border-radius:0 6px 6px 6px;-moz-border-radius:0 6px 6px 6px;border-radius:0 6px 6px 6px;}
+/*.dropdown-submenu:hover>.dropdown-menu{display:block;}*/
+.dropdown-submenu>a:after{display:block;content:" ";float:right;width:0;height:0;border-color:transparent;border-style:solid;border-width:5px 0 5px 5px;border-left-color:#cccccc;margin-top:5px;margin-right:-10px;}
+.dropdown-submenu:hover>a:after{border-left-color:#ffffff;}
+.dropdown-submenu.pull-left{float:none;}.dropdown-submenu.pull-left>.dropdown-menu{left:-100%;margin-left:10px;-webkit-border-radius:6px 0 6px 6px;-moz-border-radius:6px 0 6px 6px;border-radius:6px 0 6px 6px;}
+
+/*nav-tab on the left*/
+.tabs-left > .nav-tabs {
+    border-bottom: 0;
+}
+
+.tab-content > .tab-pane,
+.pill-content > .pill-pane {
+    display: none;
+}
+
+.tab-content > .active,
+.pill-content > .active {
+    display: block;
+}
+
+
+.tabs-left > .nav-tabs > li,
+.tabs-right > .nav-tabs > li {
+    float: none;
+}
+
+.tabs-left > .nav-tabs > li > a,
+.tabs-right > .nav-tabs > li > a {
+    min-width: 74px;
+    margin-right: 0;
+    margin-bottom: 3px;
+}
+
+.tabs-left > .nav-tabs {
+    float: left;
+    margin-right: 19px;
+    border-right: 1px solid #ddd;
+}
+
+.tabs-left > .nav-tabs > li > a {
+    margin-right: -1px;
+    -webkit-border-radius: 4px 0 0 4px;
+    -moz-border-radius: 4px 0 0 4px;
+    border-radius: 4px 0 0 4px;
+}
+
+.tabs-left > .nav-tabs > li > a:hover,
+.tabs-left > .nav-tabs > li > a:focus {
+    border-color: #eeeeee #dddddd #eeeeee #eeeeee;
+}
+
+.tabs-left > .nav-tabs .active > a,
+.tabs-left > .nav-tabs .active > a:hover,
+.tabs-left > .nav-tabs .active > a:focus {
+    border-color: #ddd transparent #ddd #ddd;
+    *border-right-color: #ffffff;
+}
+
+
+/*#alert-num{*/
+    /*position:relative;*/
+    /*top: -10px;*/
+    /*left: -5px;*/
+/*}*/
+
+/*#count-inactive,#count-reorder,#alert-num{*/
+    /*background-color:#e74c3c;*/
+    /*color:white;*/
+    /*font-size:10px;*/
+/*}*/
+.subtitle{
+    font-size: 13px;
+    color: #ecf0f1;
+    position: relative;
+    top: 40px;
+    right: 75px;
+}
+
+/*#alert-inactive{*/
+    /*display: none;*/
+    /*position:fixed;*/
+    /*top:0;*/
+    /*right:0;*/
+/*}*/
+
+tbody>tr{
+    cursor: pointer;
+}
+
+@media print
+{
+    body * { visibility: hidden; }
+    .print * {
+        visibility: visible;
+    }
+}
+
+#addsize{
+    padding-left: 15px;
+    color:#18bc9c;
+    cursor: pointer;
+}
+#tbl-addsize{
+    border:1px solid #dce4ec;
+    border-radius: 4px;
+}
+#tbl-addsize thead{
+    background-color: #ecf0f1;
+}
+
+#tbl-addsize td, #tbl-addsize th{
+    padding:10px 15px;
+    border:1px solid #dce4ec;
+    border-radius: 4px;
+}
+
+.btn-deletesize:hover{
+    color:black;
+}

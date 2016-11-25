@@ -1,5 +1,5 @@
 // create search box
-var rows = alasql('SELECT * FROM whouse;');
+var rows = alasql('SELECT * FROM retail;');
 for (var i = 0; i < rows.length; i++) {
 	var row = rows[i];
 	var option = $('<option>');
@@ -26,14 +26,14 @@ var q3 = $.url().param('q3') || '';
 $('input[name="q3"]').val(q3);
 
 // build sql
-var sql = 'SELECT stock.id, whouse.name, kind.text, item.code, item.maker, item.detail, item.price, stock.balance, item.unit \
+var sql = 'SELECT item.id, item.name as item, retail.name as retail, kind.name as kind, item.code, stock.balance \
 	FROM stock \
-	JOIN whouse ON whouse.id = stock.whouse \
+	JOIN retail ON retail.id = stock.retail \
 	JOIN item ON item.id = stock.item \
 	JOIN kind ON kind.id = item.kind \
 	WHERE item.code LIKE ? ';
 
-sql += q1 ? 'AND whouse.id = ' + q1 + ' ' : '';
+sql += q1 ? 'AND retail.id = ' + q1 + ' ' : '';
 sql += q2 ? 'AND kind.id = ' + q2 + ' ' : '';
 
 // send query
@@ -43,32 +43,32 @@ var stocks = alasql(sql, [ '%' + q3 + '%' ]);
 var tbody = $('#tbody-stocks');
 for (var i = 0; i < stocks.length; i++) {
 	var stock = stocks[i];
-	var tr = $('<tr data-href="stock.html?id=' + stock.id + '"></tr>');
-	tr.append('<td>' + stock.name + '</td>');
-	tr.append('<td>' + stock.text + '</td>');
+	var tr = $('<tr data-href="stock.html?id=' + stock.id + '" id='+stock.id+'></tr>');
+	tr.append('<td>' + stock.item + '</td>');
+	tr.append('<td>' + stock.retail + '</td>');
+	tr.append('<td>' + stock.kind + '</td>');
 	tr.append('<td>' + stock.code + '</td>');
-	tr.append('<td>' + stock.maker + '</td>');
-	tr.append('<td>' + stock.detail + '</td>');
-	tr.append('<td style="text-align: right;">' + numberWithCommas(stock.price) + '</td>');
 	tr.append('<td style="text-align: right;">' + stock.balance + '</td>');
-	tr.append('<td>' + stock.unit + '</td>');
+	tr.append('<td></td>');
+	tr.append('<td></td>');
 	tr.appendTo(tbody);
 }
+$('ul.dropdown-menu [data-toggle=dropdown]').on('click', function(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    $(this).parent().addClass('open');
+    var menu = $(this).parent().find("ul");
+    var menupos = menu.offset();
+    if ((menupos.left + menu.width()) + 30 > $(window).width()) {
+        var newpos = - menu.width();
+    } else {
+        var newpos = $(this).parent().width();
+    }
+    menu.css({ left:newpos });
 
-// click event
-$('tbody > tr').css('cursor', 'pointer').on('click', function() {
-	window.location = $(this).attr('data-href');
 });
 
 
-//Yichang
-$('.ui.dropdown')
-	.dropdown()
-;
-$('.ui.sticky')
-	.sticky()
-;
-
-$('.modal-add.modal')
-	.modal('attach events', '.btn-add', 'show')
-;
+$('tbody > tr').on('click', function() {
+    window.location = $(this).attr('data-href');
+});

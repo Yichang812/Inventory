@@ -1,0 +1,4 @@
+ID,NAME,PASSWORD,TYPE,LOGIN
+1,Alice,AliceAlice,1,false
+2,Bob,BobBob,2,false
+3,Charlie,CharlieCharlie,3,false

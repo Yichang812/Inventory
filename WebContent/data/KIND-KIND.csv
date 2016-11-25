@@ -1,9 +1,35 @@
-ID,TEXT
-1,CPU
-2,Motherboard
-3,Memory
-4,Video Card
-5,HDD
-6,Case
-7,Globe
-8,Tools
+ID,PKIND,NAME
+1,1,Multivitamins
+2,1,Vitamins A-Z
+3,1,Fish Oil & Omegas
+4,1,Minerals
+5,1,Joint Support
+6,1,Antioxidants
+7,1,Specialty SupplementsS
+8,1,Sexual Health
+9,2,Protein
+10,2,Energy & Endurance
+11,2,Muscle Builders
+12,2,Equipment & Accessories
+13,2,Performance Formulas
+14,3,Herbs A-E
+15,3,Herbs T-Z
+16,3,Herbs F-N
+17,3,Antioxidants
+18,3,Herbs O-S
+19,3,Natural Remedies
+20,4,Digestive Support
+21,4,Cleansing & Detox
+22,4,Greens & Superfoods
+23,4,Superfruit & Botanicals
+24,5,Fat & Calorie Burners
+25,5, Meal Replacements
+26,5,Appetite Control & Diet
+27,6,Skin & Body Care
+28,6,Aromatherapy
+29,6,Hair Case, Styling & Treatment
+30,6,Natural Home
+31,6,Bath & Soaps
+32,7,Protein Bars
+33,7,Healthy Food & Snacks
+34,7,Drinks

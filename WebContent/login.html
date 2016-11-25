@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8" />
+    <title>Color Admin | Login Page</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <!--<link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">-->
+    <link href="plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+    <link href="plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="css/animate.min.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
+    <link href="css/style-responsive.min.css" rel="stylesheet" />
+    <link href="css/default.css" rel="stylesheet" id="theme" />
+    <!-- ================== END BASE CSS STYLE ================== -->
+</head>
+<body>
+<!-- begin #page-loader -->
+<!--<div id="page-loader" class="fade in"><span class="spinner"></span></div>-->
+<!-- end #page-loader -->
+
+<!-- begin #page-container -->
+<div id="page-container" class="fade">
+    <!-- begin login -->
+    <div class="login bg-black animated fadeInDown">
+        <!-- begin brand -->
+        <div class="login-header">
+            <div class="brand">
+                <span class="logo"></span> COMPANY | Enventory
+                <small>Inventory Management Tool</small>
+            </div>
+            <div class="icon">
+                <i class="fa fa-sign-in"></i>
+            </div>
+        </div>
+        <!-- end brand -->
+        <div class="login-content">
+            <p class="text-danger hide" id="error">Invalid username or password!</p>
+            <form class="margin-bottom-0">
+                <div class="form-group m-b-20">
+                    <input type="text" class="form-control input-lg" placeholder="Username" name="user" />
+                </div>
+                <div class="form-group m-b-20">
+                    <input type="password" class="form-control input-lg" placeholder="Password" name="password" />
+                </div>
+
+                <!--<div class="login-buttons">-->
+                    <button class="btn btn-success btn-block btn-lg" id="btn-login">Sign me in</button>
+                <!--</div>-->
+            </form>
+        </div>
+    </div>
+    <!-- end login -->
+
+</div>
+<!-- end page container -->
+
+<!-- ================== BEGIN BASE JS ================== -->
+<script src="plugins/jquery/jquery-1.9.1.min.js"></script>
+<script src="plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+<script src="plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+<script src="plugins/bootstrap/js/bootstrap.min.js"></script>
+
+<script src="plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="plugins/jquery-cookie/jquery.cookie.js"></script>
+
+<script src="lib/alasql.js"></script>
+<script src="lib/purl.js"></script>
+<script src="js/db.js"></script>
+<!-- ================== END BASE JS ================== -->
+
+<!-- ================== BEGIN PAGE LEVEL JS ================== -->
+<script src="js/apps.min.js"></script>
+<!-- ================== END PAGE LEVEL JS ================== -->
+
+<script>
+    $(document).ready(function() {
+        App.init();
+    });
+
+    $('#btn-login').on('click',function (e) {
+        e.preventDefault();
+        var username = $('input[name="user"]').val();
+        var password = $('input[name="password"]').val();
+        console.log(username,password);
+        var usertype = DB.loginUser(username,password);
+        console.log(usertype);
+        switch (usertype){
+            case 0:$('#error').toggleClass('hide');
+                break;
+            case 1:window.location = "view/central/central.html";
+                break;
+            case 2:window.location = "view/retail/retail.html";
+                break;
+            case 3:window.location = "view/marketing/marketing.html";
+                break;
+        }
+    });
+
+    $('form input').focus(function () {
+        var error = $('#error');
+        if(!error.hasClass('hide')){
+            error.toggleClass('hide');
+        }
+    });
+
+</script>
+</body>
+</html>
