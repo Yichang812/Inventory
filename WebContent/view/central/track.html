@@ -45,14 +45,7 @@
 
             <!-- begin header navigation right -->
             <ul class="nav navbar-nav navbar-right">
-                <!--<li>-->
-                <!--<form class="navbar-form full-width">-->
-                <!--<div class="form-group">-->
-                <!--<input type="text" class="form-control" placeholder="Enter keyword" />-->
-                <!--<button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>-->
-                <!--</div>-->
-                <!--</form>-->
-                <!--</li>-->
+
                 <li class="dropdown navbar-user">
                     <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
                         <img src="../../img/user.jpg" alt="" />
@@ -106,17 +99,18 @@
                     </ul>
                 </li>
                 <li><a href="store-list.html"><i class="fa fa-home"></i> <span>Stores</span></a></li>
-                <li class="has-sub">
+                <li class="has-sub active">
                     <a href="javascript:;">
                         <b class="caret pull-right"></b>
                         <i class="fa fa-truck"></i>
                         <span>Restocking</span>
                     </a>
-                    <ul class="sub-menu active">
+                    <ul class="sub-menu">
                         <li><a href="restock.html">Restock products</a></li>
                         <li class="active"><a href="track.html">Track delivery</a></li>
                     </ul>
                 </li>
+                <li><a href="stockin.html"><i class="fa fa-archive"></i> <span>Stock In</span></a></li>
                 <li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="fa fa-angle-double-left"></i></a></li>
                 <!-- end sidebar minify button -->
             </ul>
@@ -129,9 +123,6 @@
 
     <!-- begin #content -->
     <div id="content" class="content">
-        <!-- begin page-header -->
-        <h1 class="page-header">Inventory Overview</h1>
-        <!-- end page-header -->
 
         <div class="panel panel-inverse">
             <div class="panel-heading">
@@ -141,7 +132,7 @@
                     <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
                     <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
                 </div>
-                <h4 class="panel-title"></h4>
+                <h4 class="panel-title">Delivery Status</h4>
             </div>
             <div class="panel-body">
                 Panel Content Here

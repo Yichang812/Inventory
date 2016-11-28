@@ -17,9 +17,16 @@
     <link href="../../css/default.css" rel="stylesheet" id="theme" />
     <!-- ================== END BASE CSS STYLE ================== -->
 
+    <!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
+    <link href="../../plugins/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet" />
+    <link href="../../plugins/DataTables/css/data-table.css" rel="stylesheet" />
+    <link href="../../plugins/bootstrap-wizard/css/bwizard.min.css" rel="stylesheet" />
+    <!-- ================== END PAGE LEVEL STYLE ================== -->
+
     <!-- ================== BEGIN BASE JS ================== -->
     <script src="../../plugins/pace/pace.min.js"></script>
     <!-- ================== END BASE JS ================== -->
+</head>
 </head>
 <body>
 <!-- begin #page-loader -->
@@ -45,14 +52,6 @@
 
             <!-- begin header navigation right -->
             <ul class="nav navbar-nav navbar-right">
-                <!--<li>-->
-                <!--<form class="navbar-form full-width">-->
-                <!--<div class="form-group">-->
-                <!--<input type="text" class="form-control" placeholder="Enter keyword" />-->
-                <!--<button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>-->
-                <!--</div>-->
-                <!--</form>-->
-                <!--</li>-->
                 <li class="dropdown navbar-user">
                     <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
                         <img src="../../img/user.jpg" alt="" />
@@ -106,17 +105,18 @@
                     </ul>
                 </li>
                 <li><a href="store-list.html"><i class="fa fa-home"></i> <span>Stores</span></a></li>
-                <li class="has-sub">
+                <li class="has-sub active">
                     <a href="javascript:;">
                         <b class="caret pull-right"></b>
                         <i class="fa fa-truck"></i>
                         <span>Restocking</span>
                     </a>
-                    <ul class="sub-menu active">
+                    <ul class="sub-menu">
                         <li class="active"><a href="restock.html">Restock products</a></li>
                         <li><a href="track.html">Track delivery</a></li>
                     </ul>
                 </li>
+                <li><a href="stockin.html"><i class="fa fa-archive"></i> <span>Stock In</span></a></li>
                 <li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="fa fa-angle-double-left"></i></a></li>
                 <!-- end sidebar minify button -->
             </ul>
@@ -129,9 +129,6 @@
 
     <!-- begin #content -->
     <div id="content" class="content">
-        <!-- begin page-header -->
-        <h1 class="page-header">Inventory Overview</h1>
-        <!-- end page-header -->
 
         <div class="panel panel-inverse">
             <div class="panel-heading">
@@ -141,11 +138,67 @@
                     <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
                     <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-danger" data-click="panel-remove"><i class="fa fa-times"></i></a>
                 </div>
-                <h4 class="panel-title"></h4>
+                <h4 class="panel-title">Stock List</h4>
             </div>
             <div class="panel-body">
-                Panel Content Here
+
+                <div id="wizard">
+                    <ol>
+                        <li>
+                            Set Amount
+                            <small>Set the restocking amount for each retail store and product.</small>
+                        </li>
+                        <li>
+                            Summary
+                            <small>A summary of the restocking amount for each retail store and product.</small>
+                        </li>
+                        <li>
+                            Finished
+                            <small>Complete the restocking process</small>
+                        </li>
+                    </ol>
+                    <!-- begin wizard step-1 -->
+                    <div class="wizard-step-1">
+                        <div class="table-responsive">
+                            <table id="data-table" class="table table-hover" width="100%">
+                                <thead>
+                                <tr>
+                                    <th>Retail Store</th> <!-- product image -->
+                                    <th>Product</th>
+                                    <th>Safe Stock</th>
+                                    <th>Current Stock</th>
+                                    <th>Restocking Amount</th>
+                                </tr>
+                                </thead>
+                                <tbody id="tbl-restock">
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!--end wizard step-1-->
+                    <!-- begin wizard step-2 -->
+                    <div class="wizard-step-2">
+                        <div class="table-responsive">
+                            <table class="table table-hover" width="100%">
+                                <thead><th>Retail Store</th><th>Product</th><th>Restocking Amount</th></thead>
+                                <tbody id="tbl-summary"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!--end wizard step-2-->
+                    <!-- begin wizard step-3 -->
+                    <div class="wizard-step-3">
+                        <h4>The system has informed the transportation team to collect the restocking products.</h4>
+                        <p>Please track the delivery status of the restocking products by reference number: <strong class="text-info" id="ref-no"></strong></p>
+                    </div>
+                    <!--end wizard step-3-->
+
+                </div>
+
             </div>
+
+            <!--<a class="btn btn-default" onclick="getSummary()">Test</a>-->
         </div>
     </div>
     <!-- end #content -->
@@ -163,16 +216,103 @@
 <script src="../../plugins/bootstrap/js/bootstrap.min.js"></script>
 <script src="../../plugins/slimscroll/jquery.slimscroll.min.js"></script>
 <script src="../../plugins/jquery-cookie/jquery.cookie.js"></script>
+
+<script src="../../lib/alasql.js"></script>
+<script src="../../lib/purl.js"></script>
+<script src="../../js/db.js"></script>
 <!-- ================== END BASE JS ================== -->
 
 <!-- ================== BEGIN PAGE LEVEL JS ================== -->
+<script src="../../plugins/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+
+<script src="../../plugins/DataTables/js/jquery.dataTables.js"></script>
+<script src="../../plugins/DataTables/js/dataTables.tableTools.js"></script>
+
+<!--<script src="../../plugins/parsley/dist/parsley.js"></script>-->
+<script src="../../plugins/bootstrap-wizard/js/bwizard.js" type="text/javascript"></script>
+
 <script src="../../js/apps.min.js"></script>
 <!-- ================== END PAGE LEVEL JS ================== -->
 
 <script>
     $(document).ready(function() {
         App.init();
+
+        $("#data-table").DataTable({responsive:true});
+
+        $.fn.editable.defaults.mode = 'popup';
+        $(".amount").editable();
+
+        $("#wizard").bwizard(
+            {
+                activeIndexChanged: function (e,ui) {
+                    var curIndex = (ui.index+1);
+                    if(curIndex===2){
+                        showSummary();
+                    }else if(curIndex===3){
+                        $('.next, .previous').remove();
+                        showRefNumber();
+
+                    }
+                },
+                clickableSteps: false,
+                nextBtnText:"Summary →"
+            }
+        );
+
     });
+
+    var restocks = DB.getRestockInfo();
+    for(var i = 0; i<restocks.length; i++){
+        var restock = restocks[i];
+        var row = $('<tr></tr>');
+        row.append('<td class="retail">'+restock.retail+'</td>');
+        row.append('<td class="item">'+restock.item+'</td>');
+        row.append('<td>'+restock.safe+'</td>');
+        row.append('<td>'+restock.balance+'</td>');
+        row.append('<td><a href="restock.html#" class="amount" data-type="text" data-pk="'+restock.id+'" data-title="Enter Restocking Amount">'+(restock.safe-restock.balance)+'</a></td>');
+        $('#tbl-restock').append(row);
+    }
+
+    function getRestockAmounts() {
+        var restocks = $('#tbl-restock').find('tr');
+        var rRecords = [];
+        restocks.each(function () {
+            var row = $(this);
+            var input = row.find('.amount');
+            if(input.text()!=='0'){
+                var record = {
+                    id : input.attr('data-pk'),
+                    amount :input.text(),
+                    retail:row.find('.retail').text(),
+                    item:row.find('.item').text()
+                };
+                rRecords.push(record);
+            }
+        });
+        return rRecords;
+    }
+
+    function showSummary(){
+        var rSummary = getRestockAmounts();
+        for(var i=0; i<rSummary.length; i++){
+            var record = rSummary[i];
+            var row = $('<tr></tr>');
+            row.append('<td class="retail">'+record.retail+'</td>');
+            row.append('<td class="item">'+record.item+'</td>');
+            row.append('<td class="amount">'+record.amount+'</td>');
+            $('#tbl-summary').html(row);
+        }
+    }
+
+    function showRefNumber(){
+        var today = new Date();
+        var ref = today.getFullYear().toString() + (today.getMonth()+1).toString() + today.getDate().toString() + DB.getNextID('batch');
+        $('#ref-no').text(ref);
+    }
+
 </script>
 </body>
 </html>
+
+

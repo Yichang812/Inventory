@@ -21,6 +21,10 @@
     <link href="../../plugins/morris/morris.css" rel="stylesheet" />
     <!-- ================== END PAGE CSS STYLE ================== -->
 
+    <!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
+    <link href="../../plugins/DataTables/css/data-table.css" rel="stylesheet" />
+    <!-- ================== END PAGE LEVEL STYLE ================== -->
+
     <!-- ================== BEGIN BASE JS ================== -->
     <script src="../../plugins/pace/pace.min.js"></script>
     <!-- ================== END BASE JS ================== -->
@@ -76,60 +80,6 @@
         <!-- end container-fluid -->
     </div>
     <!-- end #header -->
-
-    <!-- begin #sidebar -->
-    <!--<div id="sidebar" class="sidebar">-->
-        <!--&lt;!&ndash; begin sidebar scrollbar &ndash;&gt;-->
-        <!--<div data-scrollbar="true" data-height="100%">-->
-            <!--&lt;!&ndash; begin sidebar user &ndash;&gt;-->
-            <!--<ul class="nav">-->
-                <!--<li class="nav-profile">-->
-                    <!--<div class="image">-->
-                        <!--<a href="javascript:;"><img src="../../img/user.jpg" alt="" /></a>-->
-                    <!--</div>-->
-                    <!--<div class="info">-->
-                        <!--Alice-->
-                        <!--<small>Central Warehouse</small>-->
-                    <!--</div>-->
-                <!--</li>-->
-            <!--</ul>-->
-            <!--&lt;!&ndash; end sidebar user &ndash;&gt;-->
-            <!--&lt;!&ndash; begin sidebar nav &ndash;&gt;-->
-            <!--<ul class="nav">-->
-
-                <!--<li><a href="central.html"><i class="fa fa-laptop"></i> <span>Dashboard</span></a></li>-->
-                <!--<li class="has-sub active">-->
-                    <!--<a href="javascript:;">-->
-                        <!--<b class="caret pull-right"></b>-->
-                        <!--<i class="fa fa-tags"></i>-->
-                        <!--<span>Products</span>-->
-                    <!--</a>-->
-                    <!--<ul class="sub-menu">-->
-                        <!--<li class="active"><a href="product-list.html">Product List</a></li>-->
-                        <!--<li><a href="product-form.html">New Product</a></li>-->
-                    <!--</ul>-->
-                <!--</li>-->
-                <!--<li><a href="store-list.html"><i class="fa fa-home"></i> <span>Stores</span></a></li>-->
-                <!--<li class="has-sub">-->
-                    <!--<a href="javascript:;">-->
-                        <!--<b class="caret pull-right"></b>-->
-                        <!--<i class="fa fa-truck"></i>-->
-                        <!--<span>Restocking</span>-->
-                    <!--</a>-->
-                    <!--<ul class="sub-menu">-->
-                        <!--<li><a href="restock.html">Restock products</a></li>-->
-                        <!--<li><a href="track.html">Track delivery</a></li>-->
-                    <!--</ul>-->
-                <!--</li>-->
-                <!--<li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="fa fa-angle-double-left"></i></a></li>-->
-                <!--&lt;!&ndash; end sidebar minify button &ndash;&gt;-->
-            <!--</ul>-->
-            <!--&lt;!&ndash; end sidebar nav &ndash;&gt;-->
-        <!--</div>-->
-        <!--&lt;!&ndash; end sidebar scrollbar &ndash;&gt;-->
-    <!--</div>-->
-    <!--<div class="sidebar-bg"></div>-->
-    <!-- end #sidebar -->
 
     <!-- begin #content -->
     <!--<div id="content" class="content">-->
@@ -199,7 +149,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-7">
                 <div class="panel panel-inverse">
                     <div class="panel-heading">
                         <div class="panel-heading-btn">
@@ -217,7 +167,7 @@
 
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-5">
                 <div class="panel panel-inverse">
                     <div class="panel-heading">
                         <div class="panel-heading-btn">
@@ -234,7 +184,7 @@
                                 <thead>
                                 <tr style="background-color: #ecf0f1"><th>Retail Store</th><th>Stock</th></tr>
                                 </thead>
-                                <tbody id="stock-records">
+                                <tbody id="store-stock-records">
                                 </tbody>
                             </table>
                         </div>
@@ -271,7 +221,6 @@
 
 <!-- ================== BEGIN PAGE LEVEL JS ================== -->
 <script src="../../plugins/DataTables/js/jquery.dataTables.js"></script>
-<script src="../../js/table-manage-default.min.js"></script>
 
 <script src="../../plugins/morris/raphael.min.js"></script>
 <script src="../../plugins/morris/morris.js"></script>
@@ -281,6 +230,7 @@
 <script>
     $(document).ready(function() {
         App.init();
+        $("#data-table").DataTable();
         DB.getProductHistory(id,1);
         var handleChart =function(){
            var history = DB.getProductHistory(id,1);
@@ -315,7 +265,7 @@
     for(var i = 1; i<stocks.length; i++){
         var stock = stocks[i];
         var row = $('<tr><td>'+stock.retail+'</td><td>'+stock.balance+'</td></tr>');
-        $('#stock-records').append(row);
+        $('#store-stock-records').append(row);
     }
 </script>
 </body>

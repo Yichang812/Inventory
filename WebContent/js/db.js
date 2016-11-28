@@ -73,12 +73,12 @@ DB.load = function() {
 
 	// Inventories
 	alasql('DROP TABLE IF EXISTS stock;');
-	alasql('CREATE TABLE stock(id INT IDENTITY, item INT, retail INT, balance INT);');
+	alasql('CREATE TABLE stock(id INT IDENTITY, item INT, retail INT, safe INT, balance INT);');
 	var pstock = alasql.promise('SELECT MATRIX * FROM CSV("data/STOCK-STOCK.csv", {headers: true})').then(
 			function(stocks) {
 				for (var i = 0; i < stocks.length; i++) {
 					var stock = stocks[i];
-					alasql('INSERT INTO stock VALUES(?,?,?,?);', stock);
+					alasql('INSERT INTO stock VALUES(?,?,?,?,?);', stock);
 				}
 			});
 
@@ -251,19 +251,30 @@ DB.getProductHistory = function(id,retail){
 };
 
 
-DB.getRestockNumber = function(item){
-    var initStock = alasql('SELECT stock.id, qty FROM trans JOIN stock on trans.stock = stock.id WHERE trans.type = 1 AND trans.stock > 5 AND stock.item=?',[item]);
-    var curStock = alasql('SELECT id, balance, retail FROM stock WHERE id > 5 AND item=?',[item]);
-    var restock = [];
-    for(var i = 0; i<initStock.length; i++){
-        var init = initStock[i];
-        var cur = curStock[i];
-        if(init.id === cur.id){
-            restock.push(init.qty-cur.balance);
-        }else{
-            return [];
-        }
-    }
-    return restock;
+// DB.getRestockNumber = function(item){
+//     var initStock = alasql('SELECT stock.id, qty FROM trans JOIN stock on trans.stock = stock.id WHERE trans.type = 1 AND trans.stock > 5 AND stock.item=?',[item]);
+//     var curStock = alasql('SELECT id, balance, retail FROM stock WHERE id > 5 AND item=?',[item]);
+//     var restock = [];
+//     for(var i = 0; i<initStock.length; i++){
+//         var init = initStock[i];
+//         var cur = curStock[i];
+//         if(init.id === cur.id){
+//             restock.push(init.qty-cur.balance);
+//         }else{
+//             return [];
+//         }
+//     }
+//     return restock;
+// };
 
+DB.getRestockInfo = function(id){
+	var sql = 'SELECT stock.id, item.name as item, retail.name as retail, stock.safe, stock.balance ' +
+        'FROM stock JOIN item ON stock.item = item.id ' +
+        'JOIN retail ON stock.retail = retail.id WHERE stock.retail = ? ';
+    return alasql(sql,[id]);
+};
+
+DB.getAllProductStock = function(retail){
+	var sql = 'SELECT item.id, item.name as item, stock.balance FROM stock JOIN item on stock.item = item.id where retail = ?';
+	return alasql(sql,[retail]);
 };
