@@ -7326,7 +7326,7 @@ yy.Select.prototype.compileFrom = function(query) {
 		   !alasql.databases[source.databaseid].tables[source.tableid].view
 		  ) {
 
-// TODO -- make view for external engine
+// TODO -- make views for external engine
 		    source.datafn = function(query,params,cb,idx, alasql) {
 					return alasql.engines[alasql.databases[source.databaseid].engineid].fromTable(
 						source.databaseid, source.tableid,cb,idx,query);
@@ -11025,7 +11025,7 @@ yy.CreateTable.prototype.execute = function (databaseid, params, cb) {
 		});
 	}
 
-    //Used in 420from queryfn when table.view = true!
+    //Used in 420from queryfn when table.views = true!
     if(this.view && this.select) {
 	table.view = true;
 

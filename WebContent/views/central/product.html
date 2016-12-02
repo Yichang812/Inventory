@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8" />
+    <title>COMPANY | Eventory</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <!--<link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">-->
+    <link href="../../plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+    <link href="../../plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../css/animate.min.css" rel="stylesheet" />
+    <link href="../../css/style.css" rel="stylesheet" />
+    <link href="../../css/style-responsive.min.css" rel="stylesheet" />
+    <link href="../../css/default.css" rel="stylesheet" id="theme" />
+    <!-- ================== END BASE CSS STYLE ================== -->
+
+    <!-- ================== BEGIN PAGE CSS STYLE ================== -->
+    <link href="../../plugins/morris/morris.css" rel="stylesheet" />
+    <!-- ================== END PAGE CSS STYLE ================== -->
+
+    <!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
+    <link href="../../plugins/DataTables/css/data-table.css" rel="stylesheet" />
+    <!-- ================== END PAGE LEVEL STYLE ================== -->
+
+    <!-- ================== BEGIN BASE JS ================== -->
+    <script src="../../plugins/pace/pace.min.js"></script>
+    <!-- ================== END BASE JS ================== -->
+</head>
+<body>
+<!-- begin #page-loader -->
+<div id="page-loader" class="fade in"><span class="spinner"></span></div>
+<!-- end #page-loader -->
+
+<!-- begin #page-container -->
+<div id="page-container" class="fade page-sidebar-fixed page-header-fixed">
+    <!-- begin #header -->
+    <div id="header" class="header navbar navbar-default navbar-fixed-top">
+        <!-- begin container-fluid -->
+        <div class="container-fluid">
+            <!-- begin mobile sidebar expand / collapse button -->
+            <div class="navbar-header">
+                <a href="central.html" class="navbar-brand"><span class="navbar-logo"></span>Eventory</a>
+                <button type="button" class="navbar-toggle" data-click="sidebar-toggled">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <!-- end mobile sidebar expand / collapse button -->
+
+            <!-- begin header navigation right -->
+            <ul class="nav navbar-nav navbar-right">
+                <!--<li>-->
+                <!--<form class="navbar-form full-width">-->
+                <!--<div class="form-group">-->
+                <!--<input type="text" class="form-control" placeholder="Enter keyword" />-->
+                <!--<button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>-->
+                <!--</div>-->
+                <!--</form>-->
+                <!--</li>-->
+                <li class="dropdown navbar-user">
+                    <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+                        <img src="../../img/user.jpg" alt="" />
+                        <span class="hidden-xs">Alice</span> <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu animated fadeInLeft">
+                        <li class="arrow"></li>
+                        <li><a href="javascript:;">Edit Profile</a></li>
+                        <li><a href="javascript:;">Setting</a></li>
+                        <li class="divider"></li>
+                        <li><a href="javascript:;">Log Out</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- end header navigation right -->
+        </div>
+        <!-- end container-fluid -->
+    </div>
+    <!-- end #header -->
+
+    <!-- begin #content -->
+    <!--<div id="content" class="content">-->
+
+        <!--<ol class="breadcrumb pull-right">-->
+            <!--<li><a href="product-list.html">Product List</a></li>-->
+            <!--<li class="active">Product Info</li>-->
+        <!--</ol>-->
+        <!-- begin page-header -->
+    <div class="container">
+        <div class="row">
+            <ol class="breadcrumb pull-right">
+                <li><a href="product-list.html">Product List</a></li>
+                <li class="active">Product Info</li>
+            </ol>
+        </div>
+
+        <!-- end page-header -->
+
+        <div class="row">
+            <div class="panel panel-inverse">
+                <div class="panel-heading">
+                    <div class="panel-heading-btn">
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                    </div>
+                    <h4 class="panel-title" id="product-name"></h4>
+                </div>
+                <div class="panel-body">
+                    <img id="image" style="width:80px;height:80px;margin-bottom: 10px;"/>
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <th>Product Name</th>
+                            <td id="name"></td>
+                        </tr>
+                        <tr>
+                            <th>Product Code</th>
+                            <td id="code"></td>
+                        </tr>
+                        <tr>
+                            <th>Product Category</th>
+                            <td id="cat"></td>
+                        </tr>
+                        <tr>
+                            <th>Description</th>
+                            <td id="detail"></td>
+                        </tr>
+                        <tr>
+                            <th>Size</th>
+                            <td id="size"></td>
+                        </tr>
+                        <tr>
+                            <th>Price ($)</th>
+                            <td id="price"></td>
+                        </tr>
+                        <tr>
+                            <th>Central Warehouse Stock</th>
+                            <td id="central-stock"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-7">
+                <div class="panel panel-inverse">
+                    <div class="panel-heading">
+                        <div class="panel-heading-btn">
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                        </div>
+                        <h4 class="panel-title">Inventory Level History</h4>
+                    </div>
+                    <div class="panel-body">
+                        <h4 class="text-center">Inventory Level in Central Warehouse</h4>
+                        <div id="central-inventory-chart" class="height-sm"></div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="panel panel-inverse">
+                    <div class="panel-heading">
+                        <div class="panel-heading-btn">
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                        </div>
+                        <h4 class="panel-title">Current Stock of Retail Stores</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table id="data-table" class="table table-bordered table-hover">
+                                <thead>
+                                <tr style="background-color: #ecf0f1"><th>Retail Store</th><th>Stock</th></tr>
+                                </thead>
+                                <tbody id="store-stock-records">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!--</div>-->
+    <!-- end #content -->
+
+    <!-- begin scroll to top btn -->
+    <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+    <!-- end scroll to top btn -->
+</div>
+<!-- end page container -->
+
+<!-- ================== BEGIN BASE JS ================== -->
+<script src="../../plugins/jquery/jquery-1.9.1.min.js"></script>
+<script src="../../plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+<script src="../../plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+<script src="../../plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="../../plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="../../plugins/jquery-cookie/jquery.cookie.js"></script>
+
+<script src="../../lib/alasql.js"></script>
+<script src="../../lib/purl.js"></script>
+<script src="../../js/db.js"></script>
+<!-- ================== END BASE JS ================== -->
+
+<!-- ================== BEGIN PAGE LEVEL JS ================== -->
+<script src="../../plugins/DataTables/js/jquery.dataTables.js"></script>
+
+<script src="../../plugins/morris/raphael.min.js"></script>
+<script src="../../plugins/morris/morris.js"></script>
+<script src="../../js/apps.min.js"></script>
+<!-- ================== END PAGE LEVEL JS ================== -->
+
+<script>
+    $(document).ready(function() {
+        App.init();
+        $("#data-table").DataTable();
+        DB.getProductHistory(id,1);
+        var handleChart =function(){
+           var history = DB.getProductHistory(id,1);
+            Morris.Line(
+                    {element:"central-inventory-chart",
+                        data:history,
+                        xkey:"date",
+                        ykeys:["stock"],
+                        labels:["Stock Amount"],
+                        resize:true,
+                        lineColors:["#348fe2"]
+                    })
+        };
+        handleChart();
+    });
+
+    var id = parseInt($.url().param('id'));
+//    $("input[name=id]").val(id);
+    $('#image').attr('src', '../../img/' + id + '.jpg');
+    var product = DB.getProductInfo(id,1);
+    $('#name').text(product.name);
+    $('#product-name').text(product.name);
+    $('#code').text(product.code);
+    $('#cat').text(product.kind);
+    $('#detail').text(product.detail);
+    $('#size').text(product.size+' ('+product.unit+')');
+    $('#price').text(product.price);
+    $('#central-stock').text(product.balance);
+
+
+    var stocks = DB.getStocksOfProduct(id);
+    for(var i = 1; i<stocks.length; i++){
+        var stock = stocks[i];
+        var row = $('<tr><td>'+stock.retail+'</td><td>'+stock.balance+'</td></tr>');
+        $('#store-stock-records').append(row);
+    }
+</script>
+</body>
+</html>

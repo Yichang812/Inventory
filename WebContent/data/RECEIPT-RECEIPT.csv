@@ -1,8 +1,15 @@
-ID,RETAIL_ID
-1,1
-2,1
-3,1
-4,1
-5,1
-6,1
-7,2
+ID,TYPE,OPERATOR,DATE
+1,Init Stock,Alice,2016-01-01
+2,Init Stock,Alice,2016-01-02
+3,Sold,Bob,2016-02-02
+4,Sold,Bob,2016-02-03
+5,Sold,Bob,2016-02-04
+6,Sold,Bob,2016-02-05
+7,Sold,Bob,2016-02-06
+8,Sold,Bob,2016-02-08
+9,Sold,Bob,2016-02-14
+10,Sold,Bob,2016-02-15
+11,Restock,Alice,2016-02-29
+12,Init Stock,Alice,2016-01-01
+13,Restock,Alice,2016-02-27
+14,StockIn,Alice,2016-03-15

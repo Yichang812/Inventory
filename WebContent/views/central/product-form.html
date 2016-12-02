@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8" />
+    <title>COMPANY | Eventory</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <!--<link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">-->
+    <link href="../../plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+    <link href="../../plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../css/animate.min.css" rel="stylesheet" />
+    <link href="../../css/style.css" rel="stylesheet" />
+    <link href="../../css/style-responsive.min.css" rel="stylesheet" />
+    <link href="../../css/default.css" rel="stylesheet" id="theme" />
+    <!-- ================== END BASE CSS STYLE ================== -->
+
+    <!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
+    <link href="../../plugins/bootstrap-wizard/css/bwizard.min.css" rel="stylesheet" />
+    <link href="../../plugins/parsley/src/parsley.css" rel="stylesheet" />
+    <!-- ================== END PAGE LEVEL STYLE ================== -->
+
+    <!-- ================== BEGIN BASE JS ================== -->
+    <script src="../../plugins/pace/pace.min.js"></script>
+    <!-- ================== END BASE JS ================== -->
+</head>
+<body>
+<!-- begin #page-loader -->
+<div id="page-loader" class="fade in"><span class="spinner"></span></div>
+<!-- end #page-loader -->
+
+<!-- begin #page-container -->
+<div id="page-container" class="fade page-sidebar-fixed page-header-fixed">
+    <!-- begin #header -->
+    <div id="header" class="header navbar navbar-default navbar-fixed-top">
+        <!-- begin container-fluid -->
+        <div class="container-fluid">
+            <!-- begin mobile sidebar expand / collapse button -->
+            <div class="navbar-header">
+                <a href="central.html" class="navbar-brand"><span class="navbar-logo"></span>Eventory</a>
+                <button type="button" class="navbar-toggle" data-click="sidebar-toggled">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <!-- end mobile sidebar expand / collapse button -->
+
+            <!-- begin header navigation right -->
+            <ul class="nav navbar-nav navbar-right">
+                <!--<li>-->
+                <!--<form class="navbar-form full-width">-->
+                <!--<div class="form-group">-->
+                <!--<input type="text" class="form-control" placeholder="Enter keyword" />-->
+                <!--<button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>-->
+                <!--</div>-->
+                <!--</form>-->
+                <!--</li>-->
+                <li class="dropdown navbar-user">
+                    <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+                        <img src="../../img/user.jpg" alt="" />
+                        <span class="hidden-xs">Alice</span> <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu animated fadeInLeft">
+                        <li class="arrow"></li>
+                        <li><a href="javascript:;">Edit Profile</a></li>
+                        <li><a href="javascript:;">Setting</a></li>
+                        <li class="divider"></li>
+                        <li><a href="../login.html">Log Out</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- end header navigation right -->
+        </div>
+        <!-- end container-fluid -->
+    </div>
+    <!-- end #header -->
+
+    <!-- begin #sidebar -->
+    <div id="sidebar" class="sidebar">
+        <!-- begin sidebar scrollbar -->
+        <div data-scrollbar="true" data-height="100%">
+            <!-- begin sidebar user -->
+            <ul class="nav">
+                <li class="nav-profile">
+                    <div class="image">
+                        <a href="javascript:;"><img src="../../img/user.jpg" alt="" /></a>
+                    </div>
+                    <div class="info">
+                        Alice
+                        <small>Central Warehouse</small>
+                    </div>
+                </li>
+            </ul>
+            <!-- end sidebar user -->
+            <!-- begin sidebar nav -->
+            <ul class="nav">
+
+                <li><a href="central.html"><i class="fa fa-laptop"></i> <span>Dashboard</span></a></li>
+                <li class="has-sub active">
+                    <a href="javascript:;">
+                        <b class="caret pull-right"></b>
+                        <i class="fa fa-tags"></i>
+                        <span>Products</span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li><a href="product-list.html">Product List</a></li>
+                        <li class="active"><a href="product-form.html">New Product</a></li>
+                    </ul>
+                </li>
+                <li class="has-sub">
+                    <a href="javascript:;">
+                        <b class="caret pull-right"></b>
+                        <i class="fa fa-home"></i>
+                        <span>Stores</span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li><a href="store-list.html">Store List</a></li>
+                        <li><a href="store-form.html">New Store</a></li>
+                    </ul>
+                </li>
+                <li class="has-sub">
+                    <a href="javascript:;">
+                        <b class="caret pull-right"></b>
+                        <i class="fa fa-truck"></i>
+                        <span>Restocking</span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li><a href="restock.html">Restock products</a></li>
+                        <li><a href="track.html">Track delivery</a></li>
+                    </ul>
+                </li>
+                <li><a href="stockin.html"><i class="fa fa-archive"></i> <span>Stock In</span></a></li>
+                <li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="fa fa-angle-double-left"></i></a></li>
+                <!-- end sidebar minify button -->
+            </ul>
+            <!-- end sidebar nav -->
+        </div>
+        <!-- end sidebar scrollbar -->
+    </div>
+    <div class="sidebar-bg"></div>
+    <!-- end #sidebar -->
+
+    <!-- begin #content -->
+    <div id="content" class="content">
+        <!-- begin breadcrumb -->
+        <ol class="breadcrumb pull-right">
+            <li><a href="javascript:;">Products</a></li>
+            <li class="active">New Product</li>
+        </ol>
+        <!-- end breadcrumb -->
+
+        <!-- begin row -->
+        <div class="row">
+            <!-- begin col-12 -->
+            <div class="col-md-12">
+                <!-- begin panel -->
+                <div class="panel panel-inverse">
+                    <div class="panel-heading">
+                        <div class="panel-heading-btn">
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                        </div>
+                        <h4 class="panel-title"> Create a product</h4>
+                    </div>
+                    <div class="panel-body">
+                        <form data-parsley-validate="true" name="form-wizard">
+                            <div id="wizard">
+                                <ol>
+                                    <li>
+                                        Product Information
+                                        <small>Fill basic information for the new creating product.</small>
+                                    </li>
+                                    <li>
+                                        Confirmation
+                                        <small>Check the product information you just inputted.</small>
+                                    </li>
+                                    <li>
+                                        Completed
+                                        <small>Get the QR code and product code for the new created product.</small>
+                                    </li>
+                                </ol>
+                                <!-- begin wizard step-1 -->
+                                <div class="wizard-step-1">
+                                    <fieldset>
+                                        <legend class="pull-left width-full">Product Information</legend>
+                                        <!-- begin row -->
+                                        <div class="row">
+                                            <!-- begin col-4 -->
+                                            <div class="col-md-10">
+                                                <div class="form-group block1">
+                                                    <label>Name</label>
+                                                    <input type="text" name="name" placeholder="The full name of the new product" class="form-control" data-parsley-group="wizard-step-1" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-10">
+                                                <div class="form-group">
+                                                    <label>Category</label>
+                                                    <select name="cat" class="form-control" data-parsley-group="wizard-step-1"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-10">
+                                                <div class="form-group">
+                                                    <label>Description</label>
+                                                    <textarea type="text" name="detail" placeholder="A detailed description about the new product" class="form-control" data-parsley-group="wizard-step-1" required ></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label>Size</label>
+                                                    <input type="number" min="0" name="size" placeholder="E.g. 60" class="form-control" data-parsley-group="wizard-step-1"
+                                                           data-parsley-type="number" data-parsley-trigger="keyup" required />
+                                                </div>
+                                            </div>
+                                            <!-- end col-5 -->
+                                            <div class="col-md-2">
+                                                <label>Unit</label>
+                                                <select name="unit" class="form-control" data-parsley-group="wizard-step-1" required>
+                                                    <option>Caplets</option>
+                                                    <option>Lbs</option>
+                                                </select>
+                                            </div>
+                                            <!-- begin col-5 -->
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label>Price ($)</label>
+                                                    <input type="number" step="0.01" name="price" placeholder="E.g. 29.99" class="form-control" data-parsley-group="wizard-step-1"
+                                                           data-parsley-type-step="0.01" data-parsley-type="number" data-parsley-trigger="keyup" required />
+                                                </div>
+                                            </div>
+                                            <!-- end col-5 -->
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-10">
+                                                <div class="form-group">
+                                                    <label>Safe Stock</label>
+                                                    <input type="number" name="safe" placeholder="The safe stock for this product" class="form-control"
+                                                              data-parsley-group="wizard-step-1" data-parsley-type="number" data-parsley-trigger="keyup" required />
+                                                    <!--You can update this safe stock for different retail store later on "Stores" views.-->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-10">
+                                                <div class="form-group">
+                                                    <label>Product Returning Days
+                                                        <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="What's product returning days?"
+                                                           data-content="The system will alert the retail store to return this product when the product is going to be expired within the returning days.">
+                                                            <i class="fa fa-question-circle"></i>
+                                                        </a>
+                                                    </label>
+                                                    <input type="number" min="0" name="return" placeholder="The product will be returned within this period (E.g. 30)" class="form-control"
+                                                           data-parsley-group="wizard-step-1" data-parsley-type="number" data-parsley-trigger="keyup" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <a class="btn btn-success pull-right" onclick="showSummary()">Summary →</a>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="wizard-step-2">
+                                    <fieldset>
+                                        <legend class="pull-left width-full">Confirmation</legend>
+                                        <!-- begin row -->
+                                        <table class="table">
+                                            <tbody>
+                                            <tr>
+                                                <th>Product Name</th>
+                                                <td id="name"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Product Category</th>
+                                                <td id="cat"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Detail</th>
+                                                <td id="detail"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Size</th>
+                                                <td id="size"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Price ($)</th>
+                                                <td id="price"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Safe Stock</th>
+                                                <td id="safe"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Product Returning Days</th>
+                                                <td id="return"></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="row">
+                                            <a class="btn btn-default" onclick="$('#wizard').bwizard('back');">Back</a>
+                                            <a class="btn btn-success pull-right" onclick="createProduct()">Create</a>
+                                        </div>
+                                        <!-- end row -->
+                                    </fieldset>
+                                </div>
+                                <!-- end wizard step-2 -->
+
+                                <div class="wizard-step-3">
+                                    <div class="jumbotron m-b-0 text-center">
+                                        <h2>The product is create successfully!</h2>
+                                        <p>The product code is: <strong id="code"></strong></p>
+                                        <p> You can always retrieve the information of this product by scanning the following QR code.</p>
+                                        <p><img src="../../img/qr.jpg"/></p>
+                                    </div>
+                                </div>
+                                <!-- end wizard step-3 -->
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- end panel -->
+            </div>
+            <!-- end col-12 -->
+        </div>
+        <!-- end row -->
+    </div>
+    <!-- end #content -->
+
+    <!-- begin scroll to top btn -->
+    <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+    <!-- end scroll to top btn -->
+</div>
+<!-- end page container -->
+
+<!-- ================== BEGIN BASE JS ================== -->
+<script src="../../plugins/jquery/jquery-1.9.1.min.js"></script>
+<script src="../../plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+<script src="../../plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+<script src="../../plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="../../plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="../../plugins/jquery-cookie/jquery.cookie.js"></script>
+
+<script src="../../lib/alasql.js"></script>
+<script src="../../lib/purl.js"></script>
+<script src="../../js/db.js"></script>
+<!-- ================== END BASE JS ================== -->
+
+<!-- ================== BEGIN PAGE LEVEL JS ================== -->
+<script src="../../plugins/parsley/dist/parsley.js"></script>
+<script src="../../plugins/bootstrap-wizard/js/bwizard.js"></script>
+
+<script src="../../js/apps.min.js"></script>
+<!-- ================== END PAGE LEVEL JS ================== -->
+
+<script>
+
+    var nameInput = $('input[name="name"]');
+    var detailInput = $('textarea[name="detail"]');
+    var categoryInput = $('select[name="cat"]');
+    var sizeInput = $('input[name="size"]');
+    var unitInput = $('select[name="unit"]');
+    var priceInput = $('input[name="price"]');
+    var safeInput = $('input[name="safe"]');
+    var returnInput = $('input[name="return"]');
+
+    $(document).ready(function() {
+        App.init();
+        $("#wizard").bwizard({
+            validating:function(e,t){if(t.index===0){return $('form[name="form-wizard"]').parsley().validate("wizard-step-1")}},
+            clickableSteps: false,
+            nextBtnText:"",
+            backBtnText:""
+        });
+
+    });
+
+    var cats = DB.getAllKinds();
+    for (var i = 0; i < cats.length; i++) {
+        var cat = cats[i];
+        var op = $('<option></option>');
+        op.attr('value', cat.id);
+        op.text(cat.name);
+        categoryInput.append(op);
+    }
+
+    var record = {};
+
+
+    function showSummary() {
+        $("#wizard").bwizard("next");
+        record.name = nameInput.val();
+        record.cat = categoryInput.val();
+        record.detail = detailInput.val();
+        record.size = sizeInput.val();
+        record.unit = unitInput.val();
+        record.price = priceInput.val();
+        record.safe = safeInput.val();
+        record.return = returnInput.val();
+
+        $('#name').text(record.name);
+        $('#cat').text(record.cat);
+        $('#detail').text(record.detail);
+        $('#size').text(record.size+' ('+record.unit+')');
+        $('#price').text(record.price);
+        $('#safe').text(record.safe);
+        $('#return').text(record.return);
+    }
+
+    function createProduct(){
+
+        var code = DB.newProduct(record);
+        $('#code').text(code);
+        $('#wizard').bwizard("next");
+    }
+</script>
+</body>
+</html>

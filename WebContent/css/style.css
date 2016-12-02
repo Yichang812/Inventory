@@ -6375,3 +6375,13 @@ body.flat-black {
 .hide{
     visibility: hidden;
 }
+
+@media print{
+  body * { visibility: hidden; }
+  .print * {
+    visibility: visible;
+  }
+}
+a{
+  cursor:pointer;
+}
