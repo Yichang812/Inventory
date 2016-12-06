@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8" />
+    <title>Color Admin | Login Page</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="../plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+    <link href="../plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../css/animate.min.css" rel="stylesheet" />
+    <link href="../css/style.css" rel="stylesheet" />
+    <link href="../css/style-responsive.min.css" rel="stylesheet" />
+    <link href="../css/default.css" rel="stylesheet" id="theme" />
+    <link href="../plugins/select2/css/select2.css" rel="stylesheet" />
+
+    <!-- ================== END BASE CSS STYLE ================== -->
+</head>
+<body>
+<!-- begin #page-loader -->
+<div id="page-loader" class="fade in"><span class="spinner"></span></div>
+<!-- end #page-loader -->
+
+<!-- begin #page-container -->
+<div id="page-container" class="fade">
+    <!-- begin login -->
+    <div class="login login-v2" data-pageload-addclass="animated flipInX">
+        <!-- begin brand -->
+        <div class="login-header">
+            <div class="brand">
+                <span class="logo"></span> Eventory
+                <small>Transportation Records</small>
+            </div>
+            <div class="icon">
+                <i class="fa fa-truck"></i>
+            </div>
+        </div>
+        <!-- end brand -->
+        <div class="login-content">
+            <form class="margin-bottom-0">
+                <div class="form-group m-b-20">
+                    <label for="restock-ref" class="col-md-5 control-label">Restocking Ref:</label>
+                    <select class="form-control input-lg" id="restock-ref"></select>
+                </div>
+                <div class="form-group m-b-20">
+                    <label for="expect" class="col-md-5 control-label">Delivery Duration:</label>
+                    <input type="number" min="0" class="form-control" id="expect" placeholder="Expected days to delivery the products" />
+                </div>
+                <div class="login-buttons">
+                    <button type="submit" class="btn btn-success btn-block" onclick="dispatch()">Dispatched</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <!-- end login -->
+
+</div>
+<!-- end page container -->
+
+<!-- ================== BEGIN BASE JS ================== -->
+<script src="../plugins/jquery/jquery-1.9.1.min.js"></script>
+<script src="../plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+<script src="../plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+<script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
+
+<script src="../plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="../plugins/jquery-cookie/jquery.cookie.js"></script>
+<script src="../lib/alasql.js"></script>
+<script src="../lib/purl.js"></script>
+<script src="../plugins/moment/moment.min.js"></script>
+<script src="../js/db.js"></script>
+<!-- ================== END BASE JS ================== -->
+
+<!-- ================== BEGIN PAGE LEVEL JS ================== -->
+<script src="../plugins/select2/js/select2.js"></script>
+
+<script src="../js/apps.min.js"></script>
+<!-- ================== END PAGE LEVEL JS ================== -->
+
+<script>
+    $(document).ready(function() {
+        App.init();
+        $('#restock-ref').select2();
+
+    });
+
+    var restockings = DB.getAllRestock();
+    var refs = [];
+    for(var i = 0; i<restockings.length; i++){
+        var ref = restockings[i].ref;
+        console.log(refs.indexOf(ref));
+        if(refs.indexOf(ref)===-1){
+            var op = $('<option>'+ref+'</option>');
+            $('#restock-ref').append(op);
+            refs.push(ref);
+        }
+    }
+    function dispatch(){
+        var ref = $('#restock-ref').val();
+        var days = $('#expect').val();
+        DB.dispatchRestock(ref,days);
+    }
+
+
+</script>
+
+</body>
+</html>

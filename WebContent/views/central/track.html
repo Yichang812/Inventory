@@ -151,7 +151,7 @@
                                 <th>Retail Store</th>
                                 <th>Products</th>
                                 <th>Status</th>
-                                <th>Transportation Info</th>
+                                <th>Expected Delivery Date</th>
                             </tr>
 
                             </thead>
@@ -206,17 +206,19 @@
     });
 
     var records = DB.getAllRestock();
-    console.log(records.length === 0);
+    var steps = ['Collecting Products', 'Dispatched', 'Received'];
+
     if(records.length === 0){
         $('.row').toggleClass('hide');
     }else{
         for(var i = 0; i<records.length; i++){
             var record = records[i];
+            console.log(status[1]);
             var row = $('<tr></tr>');
             row.append('<td>'+record.ref+'</td>');
             row.append('<td>'+record.retail+'</td>');
             row.append('<td>'+record.item+'</td>');
-            row.append('<td>'+record.status+'</td>');
+            row.append('<td>'+ steps[parseInt(record.status)] +'</td>');
             row.append('<td> nothing</td>');
             $('#restock-records').append(row);
         }

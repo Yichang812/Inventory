@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8" />
+    <title>Eventory | Invoice</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <!--<link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">-->
+    <link href="../../plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+    <link href="../../plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../css/animate.min.css" rel="stylesheet" />
+    <link href="../../css/style.css" rel="stylesheet" />
+    <link href="../../css/invoice.css" rel="stylesheet" />
+    <link href="../../css/style-responsive.min.css" rel="stylesheet" />
+    <link href="../../css/default.css" rel="stylesheet" id="theme" />
+    <!-- ================== END BASE CSS STYLE ================== -->
+</head>
+<body>
+<div id="page-loader" class="fade in"><span class="spinner"></span></div>
+<!-- end #page-loader -->
+
+<!-- begin #page-container -->
+<div id="page-container" class="fade page-sidebar-fixed page-header-fixed">
+    <!-- begin #header -->
+    <div id="header" class="header navbar navbar-default navbar-fixed-top">
+        <!-- begin container-fluid -->
+        <div class="container-fluid">
+            <!-- begin mobile sidebar expand / collapse button -->
+            <div class="navbar-header">
+                <a href="#" class="navbar-brand"><span class="navbar-logo"></span>Eventory</a>
+            </div>
+            <!-- end mobile sidebar expand / collapse button -->
+        </div>
+        <!-- end container-fluid -->
+    </div>
+    <!-- end #header -->
+
+    <div class="container">
+
+        <div class="row m-t-20">
+            <div class="col-md-12">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="cash-register.html#manual" data-toggle="tab">Manual Update</a></li>
+                    <li class=""><a href="cash-register.html#qr" data-toggle="tab">Scan QR Codes</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade active in" id="manual">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-hover display data-table" cellspacing="0" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Price ($)</th>
+                                        <th>Qty</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="tbl-products">
+
+                                    </tbody>
+                                </table>
+                                <a class="btn btn-success" onclick="updateStock()">Confirm</a>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="tab-pane fade" id="qr">
+                        <div class="row">
+                            <a class="btn btn-icon btn-ex-lg">
+                                <span class="fa-stack">
+                                    <i class="fa fa-square-o fa-stack-2x"></i>
+                                    <i class="fa fa-qrcode fa-stack-1x"></i>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" tabindex="-1" role="dialog" id="receipt-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="invoice">
+                        <div class="invoice-company">
+                            <span class="pull-right hidden-print">
+                            <a href="javascript:;" onclick="window.print()" class="btn btn-sm btn-success m-b-10"><i class="fa fa-print m-r-5"></i> Print</a>
+                            </span>
+                            Receipt (#<span id="ref">20161208123</span>)<br>
+                            <small><span id="operator">August 3,2012</span></small>
+                        </div>
+
+                        <div class="invoice-content">
+                            <div class="table-responsive">
+                                <table class="table table-invoice">
+                                    <thead>
+                                    <tr>
+                                        <th>ITEM</th>
+                                        <th>PRICE</th>
+                                        <th>QTY</th>
+                                        <th>SUBTOTAL</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="tbl-receipt">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="invoice-price">
+                                <div class="invoice-price-left">
+                                    <div class="invoice-price-row pull-right">
+
+
+                                    </div>
+                                </div>
+                                <div class="invoice-price-right">
+                                    <div>
+                                        <small>TOTAL</small> $<span id="total"></span>
+                                        <div style="color:#999;; font-size:0.4em; font-weight:lighter;">
+                                            GST (7%) $<span id="gst"></span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="invoice-note">
+                            * Price payable includes GST.<br />
+                            * GST is not payable for purchase<br />
+                            * or loading of the Membership card.
+                        </div>
+                        <div class="invoice-footer text-muted">
+                            <p class="text-center m-b-5">
+                                *** THANK YOU FOR PURCHASE ***
+                            </p>
+                            <p class="text-center">
+                                <span class="m-r-10"><i class="fa fa-map-marker"></i> GNC @ Vivocity</span>
+                                <span class="m-r-10"><i class="fa fa-phone"></i> T:(216) 213 2311</span>
+                                <span class="m-r-10"><i class="fa fa-user"></i> Served by Bob</span>
+                            </p>
+                        </div>
+                    </div>
+                    <!-- end invoice -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end page container -->
+
+<!-- ================== BEGIN BASE JS ================== -->
+<script src="../../plugins/jquery/jquery-1.9.1.min.js"></script>
+<script src="../../plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+<script src="../../plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+<script src="../../plugins/bootstrap/js/bootstrap.min.js"></script>
+
+<script src="../../plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="../../plugins/jquery-cookie/jquery.cookie.js"></script>
+
+<script src="../../lib/alasql.js"></script>
+<script src="../../lib/purl.js"></script>
+<script src="../../js/db.js"></script>
+<!-- ================== END BASE JS ================== -->
+
+<!-- ================== BEGIN PAGE LEVEL JS ================== -->
+<script src="../../js/apps.min.js"></script>
+<!-- ================== END PAGE LEVEL JS ================== -->
+
+<script>
+    $(document).ready(function() {
+        App.init();
+    });
+
+    var products = DB.getStocksOfRetail(2);
+    var tbody = $('#tbl-products');
+
+    for (var i = 0; i < products.length; i++) {
+        var product = products[i];
+        var tr = $('<tr id='+product.id+'></tr>');
+        tr.append('<td>' + product.name + ' ('+product.size+' '+product.unit+')</td>');
+        tr.append('<td>' + product.price + '</td>');
+        tr.append('<td><input type="number" min=0 class="form-control" value="0"/></td>');
+        tr.appendTo(tbody);
+    }
+
+
+    function updateStock(){
+        var soldQty = [];
+        var soldProducts = [];
+
+        tbody.find('tr').each(function(){
+            var row = $(this);
+            var id = row.attr('id');
+            var qty = row.find('input').val();
+            soldQty.push(qty);
+            if(qty>0){
+                var record = {
+                    stock : id,
+                    amount : -qty
+                };
+                soldProducts.push(record);
+            }
+        });
+//        DB.newSold(soldProducts);
+        $('#receipt-modal').modal('show');
+        showReceipt(soldQty);
+    }
+    function showReceipt(soldQty){
+        var total = 0;
+        for(var i = 0; i<soldQty.length; i++){
+            var qty = soldQty[i];
+
+            if(qty > 0 ){
+                var product = products[i];
+                var row = $('<tr class="item"></tr>');
+                row.append('<td>'+product.name+'</td>');
+                row.append('<td>'+product.price+'</td>');
+                row.append('<td>'+qty+'</td>');
+                var subtotal = product.price*qty;
+                total += subtotal;
+                row.append('<td>'+subtotal+'</td>');
+                $('#tbl-receipt').append(row);
+            }
+        }
+        total = Math.round(total*100)/100;
+        $('#total').text(total);
+        var gst= Math.round(total*0.06542*100)/100;
+        $('#gst').text(gst);
+    }
+
+</script>
+</body>
+</html>

@@ -19,6 +19,10 @@
 
     <!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
     <link href="../../plugins/DataTables/css/data-table.css" rel="stylesheet" />
+    <link href="../../plugins/powerange/powerange.min.css" rel="stylesheet" />
+    <link href="../../plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
+    <link href="../../css/progress.css" rel="stylesheet" />
+
     <!-- ================== END PAGE LEVEL STYLE ================== -->
 
     <!-- ================== BEGIN BASE JS ================== -->
@@ -130,127 +134,154 @@
     <!-- end #header -->
 
     <!-- begin #content -->
-    <div id="content" class="content">
+    <div id="content" class="container">
 
         <!-- begin page-header -->
-        <h1 class="page-header">Store Name</h1>
+        <h1 class="page-header" id="store-name" style="margin-top:20px;">Store Name</h1>
         <!-- end page-header -->
         <!-- begin row -->
-        <!--<div class="row">-->
-            <!--<div class="col-md-3 col-sm-6">-->
-                <!--<div class="widget widget-stats bg-green">-->
-                    <!--<div class="stats-icon stats-icon-lg"><i class="fa fa-reply fa-fw"></i></div>-->
-                    <!--<div class="stats-title">RETURNING PRODUCTS</div>-->
-                    <!--<div class="stats-number"><span id="returnCnt"></span> PIECES</div>-->
-                    <!--<div class="stats-progress progress">-->
-                        <!--<div class="progress-bar" style="width: 70.1%;"></div>-->
-                    <!--</div>-->
-                    <!--<div class="stats-desc"> <span id="returnPct"></span> of total stock.</div>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--&lt;!&ndash; end col-3 &ndash;&gt;-->
-            <!--&lt;!&ndash; begin col-3 &ndash;&gt;-->
-            <!--<div class="col-md-3 col-sm-6">-->
-                <!--<div class="widget widget-stats bg-blue">-->
-                    <!--<div class="stats-icon stats-icon-lg"><i class="fa fa-tags fa-fw"></i></div>-->
-                    <!--<div class="stats-title">TODAY'S PROFIT</div>-->
-                    <!--<div class="stats-number">180,200</div>-->
-                    <!--<div class="stats-progress progress">-->
-                        <!--<div class="progress-bar" style="width: 40.5%;"></div>-->
-                    <!--</div>-->
-                    <!--<div class="stats-desc">Better than last week (40.5%)</div>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--&lt;!&ndash; end col-3 &ndash;&gt;-->
-            <!--&lt;!&ndash; begin col-3 &ndash;&gt;-->
-            <!--<div class="col-md-3 col-sm-6">-->
-                <!--<div class="widget widget-stats bg-purple">-->
-                    <!--<div class="stats-icon stats-icon fa-stack"><i class="fa fa-shopping-cart fa-fw"></i></div>-->
-                    <!--<div class="stats-title">NEW ORDERS</div>-->
-                    <!--<div class="stats-number">38,900</div>-->
-                    <!--<div class="stats-progress progress">-->
-                        <!--<div class="progress-bar" style="width: 76.3%;"></div>-->
-                    <!--</div>-->
-                    <!--<div class="stats-desc">Better than last week (76.3%)</div>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--&lt;!&ndash; end col-3 &ndash;&gt;-->
-            <!--&lt;!&ndash; begin col-3 &ndash;&gt;-->
-            <!--<div class="col-md-3 col-sm-6">-->
-                <!--<div class="widget widget-stats bg-black">-->
-                    <!--<div class="stats-icon stats-icon-lg"><i class="fa fa-comments fa-fw"></i></div>-->
-                    <!--<div class="stats-title">NEW COMMENTS</div>-->
-                    <!--<div class="stats-number">3,988</div>-->
-                    <!--<div class="stats-progress progress">-->
-                        <!--<div class="progress-bar" style="width: 54.9%;"></div>-->
-                    <!--</div>-->
-                    <!--<div class="stats-desc">Better than last week (54.9%)</div>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--&lt;!&ndash; end col-3 &ndash;&gt;-->
-        <!--</div>-->
-        <!-- end row -->
         <div class="row">
-            <a href="javascript:;" class="btn btn-lg btn-inverse">
-                <i class="fa fa-twitter fa-2x pull-left"></i>
-                Restock Product<br />
-                <small><a></a></small>
-            </a>
-        </div>
-        <div class="panel panel-inverse">
-            <div class="panel-heading">
-                <div class="panel-heading-btn">
-                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-                </div>
-                <h4 class="panel-title">Product List</h4>
-            </div>
-            <div class="panel-body">
-                <div class="table-responsive">
-                    <!--<div class="tbl-print"><a class="btn btn-default" onclick="window.print()">Print</a> </div>-->
-                    <table class="table table-hover display data-table" cellspacing="0" width="100%">
-                        <thead>
-                        <tr>
-                            <th>Code</th>
-                            <th>Product</th>
-                            <th>Category</th>
-                            <th>Suggested Price ($)</th>
-                            <th>Stock</th>
-                            <th>Closet Expire Date</th>
-                        </tr>
-                        </thead>
-                        <tbody id="tbl-products">
+            <div class="col-md-7">
+                <div class="panel panel-inverse">
+                    <div class="panel-heading">
+                        <div class="panel-heading-btn">
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                        </div>
+                        <h4 class="panel-title">Restocking Products Tracking</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-10 col-md-offset-1">
+                                <ol class="progtrckr" data-progtrckr-steps="3">
+                                    <li class="progtrckr-done">Restocking Order Placed</li>
+                                    <li class="progtrckr-done">Dispatched</li>
+                                    <li class="progtrckr-todo">Delivered</li>
+                                </ol>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top:50px;">
+                            <div class="col-md-4 col-md-offset-1">
+                                <p><strong>Reference No : </strong><span class="restock-ref"></span></p>
+                                <p><strong>Expected Date : </strong><span class="restock-date"></span></p>
+                                <p><strong>Restocking Product Details: </strong></p>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top:10px;">
+                            <div class="col-md-10 col-md-offset-1">
+                                <div class="table-responsive">
 
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <!--end of panel-->
-        <div class="panel panel-inverse">
-            <div class="panel-heading">
-                <div class="panel-heading-btn">
-                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-                </div>
-                <h4 class="panel-title">Sales Report</h4>
-            </div>
-            <div class="panel-body">
-                <div class="table-responsive">
-                    <!--<div class="tbl-print"><a class="btn btn-default" onclick="window.print()">Print</a> </div>-->
-                    <table class="table table-hover display data-table" cellspacing="0" width="100%">
-                        <tr class="success"><td>Receipt No. <span>12314342</span></td></tr>
-                        <tr><th>Product</th><th>Quantity</th><th>Price</th><th>Subtotal</th></tr>
-                        <tr><td>qweqwe</td><td>2</td><td>12</td><td>24</td></tr>
-                        <tr><td>qweqwe</td><td>1</td><td>20</td><td>20</td></tr>
-                        <tr><td>qweqwe</td><td>3</td><td>2</td><td>6</td></tr>
+                                    <table class="table table-hover display" cellspacing="0" width="100%">
+                                        <thead>
+                                        <tr>
+                                            <th>Code</th>
+                                            <th>Product</th>
+                                            <th>Quantity</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="tbl-restocking">
 
-                    </table>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row" style="margin-top:20px;">
+                            <div class="col-md-10 col-md-offset-1">
+                                <a class="btn btn-success pull-right" style="margin-left:10px;" onclick="received">Received</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+            <div class="col-md-5">
+                <div class="panel panel-inverse">
+                    <div class="panel-heading">
+                        <div class="panel-heading-btn">
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                        </div>
+                        <h4 class="panel-title">Find Expiring Product</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-6 col-md-offset-1">
+                                <div class="slider-wrapper">
+                                    <div style="margin-bottom: 10px;">
+                                        Expired within : <span id="slider-value"></span> days
+                                    </div>
+                                    <input type="text" data-render="powerange-slider" id="month-slider" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10 col-md-offset-1">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <th></th>
+                                        <th>Product</th>
+                                        <th>Expiring Quantity</th>
+                                        <th>Expired Date</th>
+                                    </thead>
+                                    <tbody id="tbl-expiring">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
         </div>
-        <!--end of panel-->
+        <!-- end row -->
+
+
+        <div class="row m-t-20">
+            <div class="col-md-12">
+                <div class="panel panel-inverse">
+                    <div class="panel-heading">
+                        <div class="panel-heading-btn">
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                        </div>
+                        <h4 class="panel-title">Product List</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive col-md-10 col-md-offset-1">
+                            <table class="table table-hover display data-table" cellspacing="0" width="100%">
+                                <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Product</th>
+                                    <th>Category</th>
+                                    <th>Suggested Price ($)</th>
+                                    <th>Stock</th>
+                                    <th>Closet Expire Date</th>
+                                </tr>
+                                </thead>
+                                <tbody id="tbl-products">
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!--end of panel-->
+            </div>
+        </div>
+
     </div>
+    <a class="btn btn-default btn-icon btn-circle btn-ex-lg btn-fixed">
+        <span class="fa-stack">
+            <i class="fa fa-square-o fa-stack-2x"></i>
+            <i class="fa fa-qrcode fa-stack-1x"></i>
+        </span>
+    </a>
+
+
     <!-- end #content -->
 
     <!-- begin scroll to top btn -->
@@ -274,8 +305,7 @@
 
 <!-- ================== BEGIN PAGE LEVEL JS ================== -->
 <script src="../../plugins/DataTables/js/jquery.dataTables.js"></script>
-<script src="../../plugins/DataTables/js/dataTables.buttons.js"></script>
-<script src="../../plugins/DataTables/js/buttons.print.js"></script>
+<script src="../../plugins/powerange/powerange.min.js"></script>
 
 <script src="../../js/apps.min.js"></script>
 <!-- ================== END PAGE LEVEL JS ================== -->
@@ -283,10 +313,67 @@
 <script>
     $(document).ready(function() {
         App.init();
-        $('#data-table').DataTable();
+        sliderInit();
+        $('.data-table').dataTable();
+
     });
-    var products = DB.getStocksOfRetail(2);
-    var returnProducts = DB.getReturnProducts(2);
+
+    var id = parseInt($.url().param('id'));
+
+    var storeName = alasql('COLUMN OF SELECT name FROM retail WHERE id = ?',[id])[0];
+    $('#store-name').text(storeName);
+    function sliderInit (){
+        var elem = document.querySelector('#month-slider');
+        var init = new Powerange(elem, {
+            callback: function(){
+                    var days = elem.value;
+                    $('#slider-value').text(days);
+                    highlightExpiring(days);
+            },
+            start: 90,
+            max:300,
+            hideRange: true
+        });
+    }
+
+
+    var Timer;
+    var DAY;
+    function highlightExpiring (days){
+        clearTimeout(Timer);
+        Timer = setTimeout(function(){
+            if(days!==DAY){
+                DAY=days;
+                var exProducts = DB.getExpiringProducts(days,id);
+                var table = $('#tbl-expiring');
+                var length = exProducts.length;
+                table.empty();
+                for(var i = 0; i<length; i++){
+                    var product = exProducts[i];
+                    var row = $('<tr></tr>');
+                    row.append('<td>'+(i+1)+'</td>');
+                    row.append('<td>'+ product.item +'</td>');
+                    row.append('<td>'+ product.qty +'</td>');
+                    row.append('<td>'+ product.expiration +'</td>');
+                    table.append(row);
+                }
+
+            }
+        },1000);
+    }
+
+    var restocks = DB.getAllRestock(id);
+    for(var i = 0; i < restocks.length; i++){
+        var restock = restocks[i];
+        var row = $('<tr></tr>');
+        row.append('<td>'+ restock.code +'</td>');
+        row.append('<td>'+ restock.item +'</td>');
+        row.append('<td>'+ restock.qty +'</td>');
+        $('#tbl-restocking').append(row);
+    }
+
+    var products = DB.getStocksOfRetail(id);
+    var returnProducts = DB.getReturnProducts(id);
     var returnList = [];
     var returnCnt = 0;
     for(var i = 0; i<returnProducts.length; i++){
@@ -327,21 +414,9 @@
         window.open($(this).attr('data-href'));
     });
 
-//    var receipts = DB.getReceiptList(2);
-//    for (var i = 0; i < products.length; i++) {
-//        var product = products[i];
-//        var tr = $('<tr data-href="product.html?id=' + product.id + '" id='+product.id+'></tr>');
-////		tr.append('<td><img src="../../img/'+product.id+'.jpg" style="width: 15%;" "/></td>');
-//        tr.append('<td>' + product.code + '</td>');
-//        tr.append('<td>' + product.name + ' ('+product.size+' '+product.unit+')</td>');
-//        tr.append('<td>' + product.kind + '</td>');
-//        tr.append('<td>' + product.price + '</td>');
-//        tr.append('<td>' + product.balance +'</td>');
-//        tr.append('<td>' + product.expire + '</td>');
-//        tr.appendTo(tbody);
-//    }
-
-
+    function received (){
+        DB.receiveRestock(id);
+    }
 
 </script>
 </body>

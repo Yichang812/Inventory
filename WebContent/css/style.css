@@ -1396,6 +1396,13 @@ legend {
   line-height: 34px
 }
 
+.btn-icon.btn-ex-lg{
+  width: 68px;
+  height: 68px;
+  font-size: 26px;
+  line-height: 68px
+}
+
 .btn-scroll-to-top {
   position: fixed;
   bottom: 20px;
@@ -4218,7 +4225,6 @@ ul.tagit.inverse li.tagit-choice .tagit-close:focus .ui-icon-close:before, ul.ta
   display: block;
   margin: 15px -15px -15px;
   padding: 7px 15px;
-  background: url(../img/transparent/black-0.4.png);
   background: rgba(0, 0, 0, .4);
   text-align: right;
   color: #ddd;
@@ -4227,7 +4233,6 @@ ul.tagit.inverse li.tagit-choice .tagit-close:focus .ui-icon-close:before, ul.ta
 }
 
 .widget-stats .stats-link a:focus, .widget-stats .stats-link a:hover {
-  background: url(../img/transparent/black-0.6.png);
   background: rgba(0, 0, 0, .6);
   color: #fff
 }
@@ -4262,7 +4267,6 @@ ul.tagit.inverse li.tagit-choice .tagit-close:focus .ui-icon-close:before, ul.ta
 }
 
 .widget-stats .stats-progress {
-  background: url(../img/transparent/black-0.2.png);
   background: rgba(0, 0, 0, .2);
   height: 2px;
   margin: 0 -15px 12px
@@ -4366,7 +4370,6 @@ ul.tagit.inverse li.tagit-choice .tagit-close:focus .ui-icon-close:before, ul.ta
   position: absolute;
   right: 25px;
   bottom: 25px;
-  background: url(../img/transparent/black-0.6.png);
   background: rgba(0, 0, 0, .6)
 }
 
@@ -4590,7 +4593,6 @@ ul.tagit.inverse li.tagit-choice .tagit-close:focus .ui-icon-close:before, ul.ta
   position: absolute;
   top: 15px;
   left: 0;
-  background: url(../img/transparent/black-0.6.png);
   background: rgba(0, 0, 0, .6);
   color: #fff;
   padding: 5px 15px;
@@ -4945,7 +4947,6 @@ ul.tagit.inverse li.tagit-choice .tagit-close:focus .ui-icon-close:before, ul.ta
 }
 
 .coming-soon .coming-soon-header {
-  background: url(../img/coming-soon.jpg);
   padding: 100px 0 50px;
   position: relative
 }
@@ -5342,7 +5343,7 @@ ul.tagit.inverse li.tagit-choice .tagit-close:focus .ui-icon-close:before, ul.ta
 }
 
 .login.login-v2 .login-header, .login.login-v2 a {
-  color: #fff
+  color: #707478
 }
 
 .login.login-v2 .login-header .icon {
@@ -5351,10 +5352,9 @@ ul.tagit.inverse li.tagit-choice .tagit-close:focus .ui-icon-close:before, ul.ta
 }
 
 .login-v2 .form-control {
-  background: url(../img/transparent/black-0.4.png);
-  background: rgba(0, 0, 0, .4);
+  background: white;
   border: none;
-  color: #fff
+  color: #000
 }
 
 .login-cover, .login-cover-bg, .login-cover-image {
@@ -5492,7 +5492,6 @@ ul.tagit.inverse li.tagit-choice .tagit-close:focus .ui-icon-close:before, ul.ta
 }
 
 .morris-inverse .morris-hover {
-  background: url(../img/transparent/black-0.4.png);
   background: rgba(0, 0, 0, .4) !important;
   border: none !important;
   padding: 8px !important;
@@ -6376,12 +6375,149 @@ body.flat-black {
     visibility: hidden;
 }
 
-@media print{
-  body * { visibility: hidden; }
-  .print * {
-    visibility: visible;
-  }
-}
+
 a{
   cursor:pointer;
+}
+
+.btn-fixed{
+  position: fixed;
+  top: 90px;
+  left: 4%;
+}
+
+@media (min-width: 1600px){
+  .container {
+    width: 1570px;
+  }
+}
+
+
+/*===================================*/
+.setting-panel {
+  position: relative;
+  right: 192px;
+  top: 10px;
+  z-index: 1020;
+  background: #fff;
+  padding: 15px;
+  box-shadow: 0 0 2px rgba(0, 0, 0, .4);
+  -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, .4);
+  -moz-box-shadow: 0 0 2px rgba(0, 0, 0, .4);
+  width: 175px;
+  -webkit-transition: right .2s linear;
+  -moz-transition: right .2s linear;
+  transition: right .2s linear
+}
+
+.setting-panel.active {
+  right: 14px
+}
+
+.setting-panel .setting-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0
+}
+
+.setting-panel .setting-list + .setting-list {
+  margin-top: 10px
+}
+
+.setting-panel .setting-list > li {
+  float: left
+}
+
+.setting-panel .setting-list > li + li {
+  margin-left: 5px
+}
+
+.setting-panel .setting-list > li > a {
+  text-decoration: none
+}
+
+.setting-panel .setting-list > li.active > a {
+  position: relative
+}
+
+.setting-panel .setting-list > li.active > a:before {
+  content: '\f00c';
+  font-family: FontAwesome;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  font-size: 14px;
+  color: #fff;
+  opacity: .4;
+  filter: alpha(opacity=40);
+  text-align: center
+}
+
+.setting-panel .setting-list > li.active > a.bg-white:before {
+  color: #666
+}
+
+.setting-panel .setting-list > li > a {
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+  display: block;
+  -webkit-transition: all .2s linear;
+  -moz-transition: all .2s linear;
+  transition: all .2s linear
+}
+
+.setting-panel .setting-list > li > a:focus, .setting-panel .setting-list > li > a:hover {
+  opacity: .6;
+  filter: alpha(opacity=60)
+}
+
+.setting-panel .setting-collapse-btn {
+  position: absolute;
+  right: -30px;
+  top: 10%;
+  margin-top: -15px;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  font-size: 18px;
+  color: #333;
+  background: #fff;
+  border-radius: 0 4px 4px 0;
+  text-align: center;
+  box-shadow: 0 0 3px 0 rgba(0, 0, 0, .4);
+  -webkit-box-shadow: 0 0 3px 0 rgba(0, 0, 0, .4);
+  -moz-box-shadow: 0 0 3px 0 rgba(0, 0, 0, .4);
+}
+
+.setting-panel .setting-panel-content {
+  margin: -15px;
+  padding: 15px;
+  background: #fff;
+  position: relative;
+  z-index: 1020
+}
+
+.setting-panel.active .setting-collapse-btn .fa:before {
+  content: '\f00d'
+}
+
+.setting-panel .setting-list a.bg-white {
+  border: 1px solid #e2e7eb
+}
+
+.setting-panel .control-label {
+  line-height: 30px
+}
+
+.setting-panel .control-label.double-line {
+  line-height: 15px
+}
+
+.setting-panel .divider {
+  height: 1px;
+  margin: 15px 0;
+  background: #f2f2f2
 }

@@ -19,6 +19,8 @@
 
     <!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
     <link href="../../plugins/DataTables/css/data-table.css" rel="stylesheet" />
+    <link href="../../plugins/select2/css/select2.css" rel="stylesheet" />
+    <link href="../../plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
     <!-- ================== END PAGE LEVEL STYLE ================== -->
 
     <!-- ================== BEGIN BASE JS ================== -->
@@ -144,32 +146,46 @@
                 </div>
                 <h4 class="panel-title">Top Selling Products</h4>
             </div>
-            <div class="panel-body">
-                <p>page body</p>
-            </div>
-        </div>
-        <div class="panel panel-inverse">
-            <div class="panel-heading">
-                <div class="panel-heading-btn">
-                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+            <div class="panel-body" style="overflow-x:hidden;">
+
+                <div class="setting-panel">
+                    <a href="javascript:;" data-click="setting-panel-expand" class="setting-collapse-btn"><i class="fa fa-filter"></i></a>
+                    <div class="setting-panel-content">
+                        <form role="form" class="form-horizontal">
+
+                            <div class="row m-t-10">
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <label for="cat">Categories</label>
+                                        <select class="form-control select" id="cat">
+                                            <option>kjskadfj</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <label for="store">Stores</label>
+                                        <select class="form-control select" id="store">
+                                            <option>kjskadfj</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row m-t-10">
+                                <div class="col-sm-12">
+                                    <button type="button" class="btn btn-success pull-right">Apply</button>
+                                </div>
+                            </div>
+
+                        </form>
+
+                    </div>
+                    <!--end setting-panel content-->
                 </div>
-                <h4 class="panel-title">Top Grossing Products</h4>
-            </div>
-            <div class="panel-body">
-                <p>page body</p>
-            </div>
-        </div>
-        <div class="panel panel-inverse">
-            <div class="panel-heading">
-                <div class="panel-heading-btn">
-                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-                </div>
-                <h4 class="panel-title">Top Selling Stores</h4>
-            </div>
-            <div class="panel-body">
-                <p>page body</p>
+
             </div>
         </div>
     </div>
@@ -199,13 +215,20 @@
 <script src="../../plugins/DataTables/js/dataTables.buttons.js"></script>
 <script src="../../plugins/DataTables/js/buttons.print.js"></script>
 
+<script src="../../plugins/select2/js/select2.js"></script>
+
+<script src="../../plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+
 <script src="../../js/apps.min.js"></script>
 <!-- ================== END PAGE LEVEL JS ================== -->
 
 <script>
     $(document).ready(function() {
         App.init();
-        $('#data-table').DataTable();
+//        $('#data-table').DataTable();
+        $('.select').select2({
+            tags:true
+        });
     });
 
 </script>

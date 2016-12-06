@@ -15,6 +15,7 @@
     <link href="../css/style.css" rel="stylesheet" />
     <link href="../css/style-responsive.min.css" rel="stylesheet" />
     <link href="../css/default.css" rel="stylesheet" id="theme" />
+    <link href="../css/test.css" rel="stylesheet"/>
     <!-- ================== END BASE CSS STYLE ================== -->
 </head>
 <body>
@@ -70,7 +71,7 @@
             </div>
             <div class="row m-t-10">
                 <div class="col-md-12">
-                    <a href="retail/retail.html" class="btn btn-danger btn-block btn-sm"> Retail Page</a>
+                    <a href="retail/retail.html?id=3" class="btn btn-danger btn-block btn-sm"> Retail Page</a>
                 </div>
             </div>
             <div class="row m-t-10">
@@ -78,8 +79,19 @@
                     <a href="marketing/marketing.html" class="btn btn-warning btn-block btn-sm"> Marketing Page</a>
                 </div>
             </div>
+            <div class="row m-t-10">
+                <div class="col-md-12">
+                    <a href="transportation.html" class="btn btn-info btn-block btn-sm"> Transportation Page</a>
+                </div>
+            </div>
+            <div class="row m-t-10">
+                <div class="col-md-12">
+                    <a href="#" class="btn btn-info btn-block btn-sm" onclick="$('.modal').modal('show')">Modal</a>
+                </div>
+            </div>
         </div>
     </div>
+
 
 </div>
 <!-- end page container -->
@@ -122,6 +134,8 @@
             case 2:window.location = "retail/retail.html";
                 break;
             case 3:window.location = "marketing/marketing.html";
+                break;
+            case 4:window.location = "transportation.html";
                 break;
         }
     });
