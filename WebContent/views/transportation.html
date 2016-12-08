@@ -52,8 +52,8 @@
                     <label for="expect" class="col-md-5 control-label">Delivery Duration:</label>
                     <input type="number" min="0" class="form-control" id="expect" placeholder="Expected days to delivery the products" />
                 </div>
-                <div class="login-buttons">
-                    <button type="submit" class="btn btn-success btn-block" onclick="dispatch()">Dispatched</button>
+                <div>
+                    <button class="btn btn-success btn-block" onclick="dispatch()">Dispatched</button>
                 </div>
 
             </form>
@@ -69,12 +69,11 @@
 <script src="../plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
 <script src="../plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
 <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
-
+<script src="../plugins/moment/moment.min.js"></script>
 <script src="../plugins/slimscroll/jquery.slimscroll.min.js"></script>
 <script src="../plugins/jquery-cookie/jquery.cookie.js"></script>
 <script src="../lib/alasql.js"></script>
 <script src="../lib/purl.js"></script>
-<script src="../plugins/moment/moment.min.js"></script>
 <script src="../js/db.js"></script>
 <!-- ================== END BASE JS ================== -->
 
@@ -91,11 +90,10 @@
 
     });
 
-    var restockings = DB.getAllRestock();
+    var restockings = DB.getAllRestock(0);
     var refs = [];
     for(var i = 0; i<restockings.length; i++){
         var ref = restockings[i].ref;
-        console.log(refs.indexOf(ref));
         if(refs.indexOf(ref)===-1){
             var op = $('<option>'+ref+'</option>');
             $('#restock-ref').append(op);
@@ -106,6 +104,7 @@
         var ref = $('#restock-ref').val();
         var days = $('#expect').val();
         DB.dispatchRestock(ref,days);
+        location().reload();//refresh page
     }
 
 

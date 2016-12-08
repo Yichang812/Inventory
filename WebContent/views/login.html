@@ -84,11 +84,6 @@
                     <a href="transportation.html" class="btn btn-info btn-block btn-sm"> Transportation Page</a>
                 </div>
             </div>
-            <div class="row m-t-10">
-                <div class="col-md-12">
-                    <a href="#" class="btn btn-info btn-block btn-sm" onclick="$('.modal').modal('show')">Modal</a>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -123,17 +118,16 @@
         e.preventDefault();
         var username = $('input[name="user"]').val();
         var password = $('input[name="password"]').val();
-        console.log(username,password);
-        var usertype = DB.loginUser(username,password);
-        console.log(usertype);
-        switch (usertype){
+        var user = DB.loginUser(username,password);
+        console.log(user);
+        switch (user.type){
             case 0:$('#error').toggleClass('hide');
                 break;
             case 1:window.location = "central/central.html";
                 break;
-            case 2:window.location = "retail/retail.html";
+            case 2:window.location = "marketing/marketing.html";
                 break;
-            case 3:window.location = "marketing/marketing.html";
+            case 3:window.location = "retail/retail.html?id="+user.retail;
                 break;
             case 4:window.location = "transportation.html";
                 break;

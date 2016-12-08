@@ -1,6 +1,6 @@
 ID,TYPE,OPERATOR,DATE
 1,Init Stock,Alice,2016-01-01
-2,Init Stock,Alice,2016-01-02
+2,Init Stock,Alice,2016-01-03
 3,Sold,Bob,2016-02-02
 4,Sold,Bob,2016-02-03
 5,Sold,Bob,2016-02-04
@@ -10,6 +10,7 @@ ID,TYPE,OPERATOR,DATE
 9,Sold,Bob,2016-02-14
 10,Sold,Bob,2016-02-15
 11,Restock,Alice,2016-02-29
-12,Init Stock,Alice,2016-01-01
+12,Init Stock,Alice,2016-01-02
 13,Restock,Alice,2016-02-27
 14,StockIn,Alice,2016-03-15
+15,Sold,Bob,2016-04-01

@@ -1,4 +1,10 @@
-ID,NAME,PASSWORD,TYPE,LOGIN
-1,Alice,AliceAlice,1,false
-2,Bob,BobBob,2,false
-3,Charlie,CharlieCharlie,3,false
+ID,NAME,PASSWORD,TYPE,LOGIN,RETAIL
+1,Alice,AliceAlice,1,false,0
+2,Charlie,CharlieCharlie,2,false,0
+3,Bob,BobBob,3,false,2
+4,Bobby,BobbyBobby,3,false,3
+5,Bill,BillBill,3,false,4
+6,Bush,BushBush,3,false,5
+7,Brown,BrownBrown,3,false,6
+8,Billy,BillyBilly,3,false,7
+9,Donald,DonaldDonald,4,false,0

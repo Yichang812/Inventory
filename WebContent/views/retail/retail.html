@@ -140,6 +140,42 @@
         <h1 class="page-header" id="store-name" style="margin-top:20px;">Store Name</h1>
         <!-- end page-header -->
         <!-- begin row -->
+
+        <div class="row m-t-20">
+            <div class="col-md-12">
+                <div class="panel panel-inverse">
+                    <div class="panel-heading">
+                        <div class="panel-heading-btn">
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                        </div>
+                        <h4 class="panel-title">Product List</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive col-md-10 col-md-offset-1">
+                            <table class="table table-hover display data-table" cellspacing="0" width="100%">
+                                <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Product</th>
+                                    <th>Category</th>
+                                    <th>Suggested Price ($)</th>
+                                    <th>Stock</th>
+                                    <th>Closet Expire Date</th>
+                                </tr>
+                                </thead>
+                                <tbody id="tbl-products">
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!--end of panel-->
+            </div>
+        </div>
+
+
         <div class="row">
             <div class="col-md-7">
                 <div class="panel panel-inverse">
@@ -154,16 +190,16 @@
                         <div class="row">
                             <div class="col-md-10 col-md-offset-1">
                                 <ol class="progtrckr" data-progtrckr-steps="3">
-                                    <li class="progtrckr-done">Restocking Order Placed</li>
-                                    <li class="progtrckr-done">Dispatched</li>
+                                    <li class="progtrckr-todo">Restocking Order Placed</li>
+                                    <li class="progtrckr-todo">Dispatched</li>
                                     <li class="progtrckr-todo">Delivered</li>
                                 </ol>
                             </div>
                         </div>
                         <div class="row" style="margin-top:50px;">
                             <div class="col-md-4 col-md-offset-1">
-                                <p><strong>Reference No : </strong><span class="restock-ref"></span></p>
-                                <p><strong>Expected Date : </strong><span class="restock-date"></span></p>
+                                <p><strong>Reference No : </strong><span id="restock-ref"></span></p>
+                                <p><strong>Expected Date : </strong><span id="restock-date"></span></p>
                                 <p><strong>Restocking Product Details: </strong></p>
                             </div>
                         </div>
@@ -189,7 +225,7 @@
                         </div>
                         <div class="row" style="margin-top:20px;">
                             <div class="col-md-10 col-md-offset-1">
-                                <a class="btn btn-success pull-right" style="margin-left:10px;" onclick="received">Received</a>
+                                <a class="btn btn-success pull-right" style="margin-left:10px;" onclick="received()">Received</a>
                             </div>
                         </div>
                     </div>
@@ -239,42 +275,10 @@
         <!-- end row -->
 
 
-        <div class="row m-t-20">
-            <div class="col-md-12">
-                <div class="panel panel-inverse">
-                    <div class="panel-heading">
-                        <div class="panel-heading-btn">
-                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-                        </div>
-                        <h4 class="panel-title">Product List</h4>
-                    </div>
-                    <div class="panel-body">
-                        <div class="table-responsive col-md-10 col-md-offset-1">
-                            <table class="table table-hover display data-table" cellspacing="0" width="100%">
-                                <thead>
-                                <tr>
-                                    <th>Code</th>
-                                    <th>Product</th>
-                                    <th>Category</th>
-                                    <th>Suggested Price ($)</th>
-                                    <th>Stock</th>
-                                    <th>Closet Expire Date</th>
-                                </tr>
-                                </thead>
-                                <tbody id="tbl-products">
 
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <!--end of panel-->
-            </div>
-        </div>
 
     </div>
-    <a class="btn btn-default btn-icon btn-circle btn-ex-lg btn-fixed">
+    <a class="btn btn-default btn-icon btn-circle btn-ex-lg btn-fixed" id="btn-cashier">
         <span class="fa-stack">
             <i class="fa fa-square-o fa-stack-2x"></i>
             <i class="fa fa-qrcode fa-stack-1x"></i>
@@ -311,6 +315,8 @@
 <!-- ================== END PAGE LEVEL JS ================== -->
 
 <script>
+    var id = parseInt($.url().param('id'));
+
     $(document).ready(function() {
         App.init();
         sliderInit();
@@ -318,10 +324,10 @@
 
     });
 
-    var id = parseInt($.url().param('id'));
 
     var storeName = alasql('COLUMN OF SELECT name FROM retail WHERE id = ?',[id])[0];
     $('#store-name').text(storeName);
+
     function sliderInit (){
         var elem = document.querySelector('#month-slider');
         var init = new Powerange(elem, {
@@ -335,7 +341,6 @@
             hideRange: true
         });
     }
-
 
     var Timer;
     var DAY;
@@ -365,6 +370,15 @@
     var restocks = DB.getAllRestock(id);
     for(var i = 0; i < restocks.length; i++){
         var restock = restocks[i];
+        if(i === 0){
+            $('#restock-ref').text(restock.ref);
+            $('#restock-date').text(restock.expect);
+            $('.progtrckr-todo').each(function(index){
+                if(index<=restock.status){
+                    $(this).addClass('progtrckr-done').removeClass('progtrckr-todo');
+                }
+            });
+        }
         var row = $('<tr></tr>');
         row.append('<td>'+ restock.code +'</td>');
         row.append('<td>'+ restock.item +'</td>');
@@ -375,22 +389,18 @@
     var products = DB.getStocksOfRetail(id);
     var returnProducts = DB.getReturnProducts(id);
     var returnList = [];
-    var returnCnt = 0;
     for(var i = 0; i<returnProducts.length; i++){
         var r = returnProducts[i];
-        returnCnt += r.qty;
         returnList.push(r.id);
     }
 
-    $('#returnCnt').text(returnCnt);
     var tbody = $('#tbl-products');
 
     for (var i = 0; i < products.length; i++) {
         var product = products[i];
         var tr = $('<tr id='+product.id+'></tr>');
 
-
-        tr.append('<td><a data-href="product.html?id=' + product.id + '">' + product.code + '</a></td>');
+        tr.append('<td><a data-href="product.html?id=' + product.id + '&retail='+id+'">' + product.code + '</a></td>');
         tr.append('<td>' + product.name + ' ('+product.size+' '+product.unit+')</td>');
         tr.append('<td>' + product.kind + '</td>');
         tr.append('<td>' + product.price + '</td>');
@@ -410,12 +420,16 @@
         tr.appendTo(tbody);
     }
 
-    $('tbody > a').on('click', function() {
+    tbody.find('a').on('click', function() {
         window.open($(this).attr('data-href'));
+    });
+    $('#btn-cashier').on('click',function(){
+        window.open('cash-register.html?id='+id);
     });
 
     function received (){
         DB.receiveRestock(id);
+        location().reload();
     }
 
 </script>

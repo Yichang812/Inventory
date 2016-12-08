@@ -5160,7 +5160,7 @@ ul.tagit.inverse li.tagit-choice .tagit-close:focus .ui-icon-close:before, ul.ta
 }
 
 .slider-wrapper {
-  padding: 15px 30px !important;
+  /*padding: 15px 30px !important;*/
   margin-bottom: 10px !important
 }
 
@@ -6520,4 +6520,7 @@ a{
   height: 1px;
   margin: 15px 0;
   background: #f2f2f2
+}
+svg{
+  width:100% !important;
 }

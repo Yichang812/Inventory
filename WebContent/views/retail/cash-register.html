@@ -30,7 +30,7 @@
         <div class="container-fluid">
             <!-- begin mobile sidebar expand / collapse button -->
             <div class="navbar-header">
-                <a href="#" class="navbar-brand"><span class="navbar-logo"></span>Eventory</a>
+                <a class="navbar-brand" onclick="backHome()"><i class="fa fa-chevron-left"></i> Home</a>
             </div>
             <!-- end mobile sidebar expand / collapse button -->
         </div>
@@ -91,7 +91,7 @@
                             <a href="javascript:;" onclick="window.print()" class="btn btn-sm btn-success m-b-10"><i class="fa fa-print m-r-5"></i> Print</a>
                             </span>
                             Receipt (#<span id="ref">20161208123</span>)<br>
-                            <small><span id="operator">August 3,2012</span></small>
+                            <small><span id="date">August 3,2012</span></small>
                         </div>
 
                         <div class="invoice-content">
@@ -173,8 +173,9 @@
     $(document).ready(function() {
         App.init();
     });
+    var id = parseInt($.url().param('id'));
 
-    var products = DB.getStocksOfRetail(2);
+    var products = DB.getStocksOfRetail(id);
     var tbody = $('#tbl-products');
 
     for (var i = 0; i < products.length; i++) {
@@ -186,25 +187,29 @@
         tr.appendTo(tbody);
     }
 
-
+    function backHome() {
+        window.location = "retail.html?id="+id;
+    }
     function updateStock(){
         var soldQty = [];
         var soldProducts = [];
 
         tbody.find('tr').each(function(){
             var row = $(this);
-            var id = row.attr('id');
+            var stockId = row.attr('id');
             var qty = row.find('input').val();
             soldQty.push(qty);
             if(qty>0){
                 var record = {
-                    stock : id,
+                    stock : stockId,
                     amount : -qty
                 };
                 soldProducts.push(record);
             }
         });
-//        DB.newSold(soldProducts);
+        var ref = DB.newSold(soldProducts);
+        $('#ref').text(ref.receipt);
+        $('#date').text(ref.date);
         $('#receipt-modal').modal('show');
         showReceipt(soldQty);
     }
@@ -220,6 +225,7 @@
                 row.append('<td>'+product.price+'</td>');
                 row.append('<td>'+qty+'</td>');
                 var subtotal = product.price*qty;
+                subtotal = Math.round(subtotal*100)/100;
                 total += subtotal;
                 row.append('<td>'+subtotal+'</td>');
                 $('#tbl-receipt').append(row);

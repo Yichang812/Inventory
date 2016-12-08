@@ -219,7 +219,7 @@
             row.append('<td>'+record.retail+'</td>');
             row.append('<td>'+record.item+'</td>');
             row.append('<td>'+ steps[parseInt(record.status)] +'</td>');
-            row.append('<td> nothing</td>');
+            row.append('<td>'+ record.expect +'</td>');
             $('#restock-records').append(row);
         }
     }

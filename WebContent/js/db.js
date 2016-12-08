@@ -10,11 +10,11 @@ DB.load = function() {
 	alasql.options.joinstar = 'overwrite';
 	//Users
 	alasql('DROP TABLE IF EXISTS user;');
-	alasql('CREATE TABLE user(id INT IDENTITY, name STRING, password STRING, type INT, login BOOLEAN);');
+	alasql('CREATE TABLE user(id INT IDENTITY, name STRING, password STRING, type INT, login BOOLEAN, retail INT);');
 	var puser = alasql.promise('SELECT MATRIX * FROM CSV("../data/USER-USER.csv", {headers: true})').then(function(users) {
 		for (var i = 0; i < users.length; i++) {
 			var user = users[i];
-			alasql('INSERT INTO user VALUES(?,?,?,?,?);', user);
+			alasql('INSERT INTO user VALUES(?,?,?,?,?,?);', user);
 		}
 	});
 
@@ -230,8 +230,6 @@ DB.newExpire = function(record) {
 
     //update the expire in stock table if the expire date is earlier than the current expire date
     var expire  = alasql('COLUMN OF SELECT expire FROM stock WHERE id ='+record.stock)[0];
-    // var stock_expire = moment(expire,'YYYY-MM-DD');
-    // var new_expire = moment(record.expire,'YYYY-MM-DD');
     var diff = moment(expire,'YYYY-MM-DD').diff(moment(record.expire,'YYYY-MM-DD'),'days');
     if(diff>0){
         alasql('UPDATE stock SET expire = ? WHERE id = ?',[record.expire,record.stock]);
@@ -314,6 +312,7 @@ DB.newSold = function (soldProducts) {
 		product['receipt'] = receipt;
 		DB.newTrans(product);
 	}
+	return {receipt: receipt, date: today};
 };
 
 DB.updateStock = function(record,stock){
@@ -331,15 +330,16 @@ DB.updateStock = function(record,stock){
 };
 
 DB.dispatchRestock = function(ref,days){
-    var today = alasql('SELECT date FROM restock WHERE ref = ?',[ref]);
-    var expect = moment(today,'YYYY-MM-DD').add(days,'days');
-    alasql('UPDATE restock SET status = 1, expect = ?',[expect]);
+    var today = alasql('SELECT date FROM restock WHERE ref = ?',[ref])[0].date;
+    var expect = moment(today,'YYYY-MM-DD').add(parseInt(days),'day').format('YYYY-MM-DD');
+    alasql('UPDATE restock SET status = 1, expect = ? WHERE ref = ?',[expect,ref]);
 };
 
 DB.receiveRestock = function(retail){
-    var stocks = alasql('SELECT id, restock FROM stock where retail = ?',[retail]);
+    var stocks = alasql('SELECT id, restock FROM stock WHERE retail = ? AND restock<>0',[retail]);
     for(var i = 0 ; i< stocks.length; i++){
         var record = stocks[i];
+        console.log(record);
         alasql('UPDATE stock SET balance = balance + r_qty, restock = 0, r_qty = 0 WHERE id = ?',[record.id]);
         alasql('UPDATE restock SET status = 2 WHERE ref = ?',[record.restock]);
     }
@@ -349,11 +349,12 @@ DB.getNextID = function(table){
     return alasql('COLUMN OF SELECT MAX(id)+1 AS id FROM '+table)[0];
 };
 
-DB.getProductHistory = function(id,retail){
-	var sql = 'SELECT trans.qty, trans.date ' +
+DB.getProductHistory = function(id){
+	var sql = 'SELECT trans.qty, receipt.date ' +
         'FROM trans ' +
         'JOIN stock on trans.stock = stock.id ' +
-        'WHERE stock.retail = '+retail+' AND stock.item = '+id;
+        'JOIN receipt ON trans.receipt = receipt.id ' +
+        'WHERE stock.id = '+id;
     var trans = alasql(sql);
     var history = [];
     var balance = 0;
@@ -380,12 +381,12 @@ DB.getRestockInfo = function(retail){
     return alasql(sql);
 };
 
-DB.getProductInfo = function(id,retail){
+DB.getProductInfo = function(id){
 	var sql = 'SELECT item.*, stock.balance, kind.name AS kind ' +
 		'FROM item ' +
 		'JOIN stock ON item.id = stock.item ' +
 		'JOIN kind ON item.kind = kind.id ' +
-		'WHERE item.id = '+id+' AND stock.retail = '+retail;
+		'WHERE stock.id = '+id;
 	return alasql(sql)[0];
 };
 
@@ -432,8 +433,13 @@ DB.getAllRestock = function(retail){
         'JOIN stock ON restock.ref = stock.restock ' +
         'JOIN retail ON stock.retail = retail.id ' +
         'JOIN item ON stock.item = item.id ';
+    var condition = '';
     if(retail){
-        var condition = 'WHERE stock.retail = '+retail;
+        condition = 'WHERE stock.retail = '+retail;
+        sql = sql + condition;
+
+    }else if(retail === 0){
+        condition = 'WHERE restock.status = 0 ';
         sql = sql + condition;
     }
     return alasql(sql);
@@ -477,7 +483,6 @@ DB.getExpiringProducts = function(days,retail){
         'JOIN item ON stock.item = item.id ' +
 		'WHERE retail = ?';
 	var products = alasql(sql,[retail]);
-
 	var today = new Date();
 	var expiring =[];
 	for(var i = 0; i<products.length; i++){
@@ -490,19 +495,222 @@ DB.getExpiringProducts = function(days,retail){
 	return expiring;
 };
 
+DB.getProductExpiration = function(stock){
+    var sql = 'SELECT * FROM expire WHERE stock = '+stock;
+    return alasql(sql);
+};
+
+DB.getProductReport = function(kinds,retails,period){
+	var i;
+	var q1 = '"'+kinds[0]+'"';
+	for(i = 1; i<kinds.length; i++){
+		q1 += ',"'+kinds[i]+'"';
+	}
+
+	var q2 = '"'+retails[0]+'"';
+	for(i = 1; i<retails.length; i++){
+		q2 += ',"'+retails[i]+'"';
+	}
+
+	var sql = 'COLUMN OF SELECT stock.id ' +
+		'FROM stock ' +
+		'JOIN item on stock.item = item. id ' +
+		'JOIN kind ON item.kind = kind.id ' +
+		'JOIN retail ON stock.retail = retail.id ' +
+		'WHERE kind.name IN ('+q1+') ' +
+		'AND retail.name IN ('+q2+') ' +
+		'AND stock.retail <> 1';
+	var stocks = alasql(sql);
+
+	sql = 'SELECT stock.item, SUM(trans.qty) AS total ' +
+		'FROM trans ' +
+		'JOIN stock ON trans.stock = stock.id ' +
+		'JOIN receipt ON trans.receipt = receipt.id ' +
+		'WHERE trans.stock IN ('+stocks.toString()+') ' +
+		'AND receipt.date <= ? ' +
+		'AND trans.qty < 0 GROUP BY stock.item';
+
+	var today = new Date();
+	var date = today.getFullYear()+'-'+(today.getMonth()-period+1)+'-'+today.getDate();
+	var trans = alasql(sql,[date]);
+	var result = [];
+	for(i = 0; i<trans.length;i++){
+		var tran = trans[i];
+		record = {
+			item : alasql('COLUMN OF SELECT name FROM item WHERE id = ?',[tran.item])[0],
+			qty : Math.abs(tran.total)
+		};
+		result.push(record);
+	}
+	return result;
+
+};
+
+DB.getSoldDetail = function(item,retails,period){
+	var q1 = '"'+retails[0]+'"';
+	for(i = 1; i<retails.length; i++){
+		q1 += ',"'+retails[i]+'"';
+	}
+
+    var sql = 'SELECT trans.qty, receipt.date, stock.retail ' +
+        'FROM trans ' +
+        'JOIN stock on trans.stock = stock.id ' +
+        'JOIN receipt ON trans.receipt = receipt.id ' +
+		'JOIN item ON stock.item = item.id ' +
+		'JOIN retail ON stock.retail = retail.id ' +
+        'WHERE trans.qty<0 ' +
+		'AND retail.name IN ('+q1+') ' +
+        'AND receipt.date <= ? ' +
+        'AND item.name = ?';
+
+    var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()-period+1)+'-'+today.getDate();
+    var trans = alasql(sql,[date,item]);
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var record = [];
+    var result = [];
+
+    for(var i = 0; i<trans.length; i++){
+        var r = trans[i];
+        var d = new Date(r.date);
+        var test = months[d.getMonth()]+' '+d.getFullYear();
+        var index = record.indexOf(test);
+        if(index === -1){
+            record.push(test);
+			var data = {
+				month : test
+			};
+			data[r.retail] = Math.abs(r.qty);
+            result.push(data);
+        }else{
+			//if the month exists
+            if(result[index][r.retail]){
+				result[index][r.retail] += Math.abs(r.qty);
+			}else{
+				result[index][r.retail] = Math.abs(r.qty);
+			}
+        }
+    }
+    return result;
+};
+
+DB.getRetailReport = function(items,cities,period){
+    var i;
+    var q1 = '"'+items[0]+'"';
+    for(i = 1; i<items.length; i++){
+        q1 += ',"'+items[i]+'"';
+    }
+
+    var q2 = '"'+cities[0]+'"';
+    for(i = 1; i<cities.length; i++){
+        q2 += ',"'+cities[i]+'"';
+    }
+
+    var sql = 'COLUMN OF SELECT stock.id ' +
+        'FROM stock ' +
+        'JOIN item on stock.item = item. id ' +
+        'JOIN kind ON item.kind = kind.id ' +
+        'JOIN retail ON stock.retail = retail.id ' +
+        'WHERE item.name IN ('+q1+') ' +
+        'AND retail.city IN ('+q2+') ' +
+        'AND stock.retail <> 1';
+    var stocks = alasql(sql);
+    sql = 'SELECT stock.retail, SUM(trans.qty) AS total ' +
+        'FROM trans ' +
+        'JOIN stock ON trans.stock = stock.id ' +
+        'JOIN receipt ON trans.receipt = receipt.id ' +
+        'WHERE trans.stock IN ('+stocks.toString()+') ' +
+        'AND receipt.date <= ? ' +
+        'AND trans.qty < 0 GROUP BY stock.retail';
+
+    if(isNaN(period)){
+        period = 0;
+    }
+    var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()-period+1)+'-'+today.getDate();
+    var trans = alasql(sql,[date]);
+    var result = [];
+    for(i = 0; i<trans.length;i++){
+        var tran = trans[i];
+        record = {
+            retail : alasql('COLUMN OF SELECT name FROM retail WHERE id = ?',[tran.retail])[0],
+            qty : Math.abs(tran.total)
+        };
+        result.push(record);
+    }
+    return result;
+};
+
+DB.getRetailSoldDetail = function(retail,items,period){
+    var q1 = '"'+items[0]+'"';
+    for(i = 1; i<items.length; i++){
+        q1 += ',"'+items[i]+'"';
+    }
+
+    var sql = 'SELECT trans.qty, receipt.date, stock.item ' +
+        'FROM trans ' +
+        'JOIN stock on trans.stock = stock.id ' +
+        'JOIN receipt ON trans.receipt = receipt.id ' +
+        'JOIN item ON stock.item = item.id ' +
+        'JOIN retail ON stock.retail = retail.id ' +
+        'WHERE trans.qty<0 ' +
+        'AND item.name IN ('+q1+') ' +
+        'AND receipt.date <= ? ' +
+        'AND retail.name = ?';
+
+    var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()-period+1)+'-'+today.getDate();
+    var trans = alasql(sql,[date,retail]);
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var record = [];
+    var result = [];
+
+    for(var i = 0; i<trans.length; i++){
+        var r = trans[i];
+        var d = new Date(r.date);
+        var test = months[d.getMonth()]+' '+d.getFullYear();
+        var index = record.indexOf(test);
+        if(index === -1){
+            record.push(test);
+            var data = {
+                month : test
+            };
+            data[r.item] = Math.abs(r.qty);
+            result.push(data);
+        }else{
+            //if the month exists
+            if(result[index][r.item]){
+                result[index][r.item] += Math.abs(r.qty);
+            }else{
+                result[index][r.item] = Math.abs(r.qty);
+            }
+        }
+    }
+    console.log(result);
+    return result;
+};
+
+DB.getMonthPeriod = function(){
+    var first = alasql('COLUMN OF SELECT TOP 1 date FROM receipt ORDER BY date ASC')[0];
+    var today = new Date();
+    var diff = moment(first,'YYYY-MM-DD').diff(today,'months');
+    return Math.abs(diff);
+
+};
 //User
 DB.loginUser = function(user,password){
 	var rs = alasql('SELECT * FROM user WHERE name = ?',[user])[0];
 	password = password.toString();
-	if(!rs){
-		return 0;
-	}else if(password === rs.password){
+	var info = {
+		type:0
+	};
+	if(rs && password === rs.password){
 		alasql('UPDATE user SET login = true WHERE name = ?',[user]);
-		localStorage.setItem('loginUser',JSON.stringify(rs));
-		return rs.type;
+		info.name = rs.name;
+		info.type = rs.type;
+		info.retail = rs.retail;
 	}
-	//user is not found or invalid password
-	return 0;
+	return info;
 };
 
 DB.logoutUser = function(){

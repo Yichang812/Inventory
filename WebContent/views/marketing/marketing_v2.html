@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<!--[if !IE]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8" />
+    <title>COMPANY | Eventory</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="../../plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
+    <link href="../../plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../../css/animate.min.css" rel="stylesheet" />
+    <link href="../../css/style.css" rel="stylesheet" />
+    <link href="../../css/style-responsive.min.css" rel="stylesheet" />
+    <link href="../../css/default.css" rel="stylesheet" id="theme" />
+    <!-- ================== END BASE CSS STYLE ================== -->
+
+    <!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
+    <link href="../../plugins/DataTables/css/data-table.css" rel="stylesheet" />
+    <link href="../../plugins/multiple-select/multiple-select.css" rel="stylesheet" />
+    <link href="../../plugins/powerange/powerange.min.css" rel="stylesheet" />
+
+    <!-- ================== END PAGE LEVEL STYLE ================== -->
+
+    <!-- ================== BEGIN BASE JS ================== -->
+    <script src="../../plugins/pace/pace.min.js"></script>
+    <!-- ================== END BASE JS ================== -->
+</head>
+<body>
+<!-- begin #page-loader -->
+<div id="page-loader" class="fade in"><span class="spinner"></span></div>
+<!-- end #page-loader -->
+
+<!-- begin #page-container -->
+<div id="page-container" class="fade page-without-sidebar page-header-fixed">
+    <!-- begin #header -->
+    <div id="header" class="header navbar navbar-default navbar-fixed-top">
+        <!-- begin container-fluid -->
+        <div class="container-fluid">
+            <!-- begin mobile sidebar expand / collapse button -->
+            <div class="navbar-header">
+                <a href="marketing.html" class="navbar-brand"><span class="navbar-logo"></span> Eventory </a>
+                <button type="button" class="navbar-toggle" data-click="sidebar-toggled">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <!-- end mobile sidebar expand / collapse button -->
+
+            <!-- begin header navigation right -->
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown navbar-user">
+                    <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+                        <img src="../../img/user.jpg" alt="" />
+                        <span class="hidden-xs">Charlie</span> <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="arrow"></li>
+                        <li><a href="javascript:;">Edit Profile</a></li>
+                        <li><a href="javascript:;">Setting</a></li>
+                        <li class="divider"></li>
+                        <li><a href="../login.html">Log Out</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- end header navigation right -->
+
+        </div>
+        <!-- end container-fluid -->
+    </div>
+    <!-- end #header -->
+
+    <!-- begin #content -->
+    <div id="content" class="content">
+
+        <!-- begin page-header -->
+        <h1 class="page-header">Sales Report</h1>
+        <!-- end page-header -->
+        <!-- begin row -->
+        <div class="row">
+            <!-- begin col-3 -->
+            <div class="col-md-3 col-sm-6">
+                <div class="widget widget-stats bg-green">
+                    <div class="stats-icon"><i class="fa fa-desktop"></i></div>
+                    <div class="stats-info">
+                        <h4>TOTAL VISITORS</h4>
+                        <p>3,291,922</p>
+                    </div>
+                    <div class="stats-link">
+                        <a href="javascript:;">View Detail <i class="fa fa-arrow-circle-o-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <!-- end col-3 -->
+            <!-- begin col-3 -->
+            <div class="col-md-3 col-sm-6">
+                <div class="widget widget-stats bg-yellow-darker">
+                    <div class="stats-icon"><i class="fa fa-chain-broken"></i></div>
+                    <div class="stats-info">
+                        <h4>BOUNCE RATE</h4>
+                        <p>20.44%</p>
+                    </div>
+                    <div class="stats-link">
+                        <a href="javascript:;">View Detail <i class="fa fa-arrow-circle-o-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <!-- end col-3 -->
+            <!-- begin col-3 -->
+            <div class="col-md-3 col-sm-6">
+                <div class="widget widget-stats bg-blue">
+                    <div class="stats-icon"><i class="fa fa-users"></i></div>
+                    <div class="stats-info">
+                        <h4>UNIQUE VISITORS</h4>
+                        <p>1,291,922</p>
+                    </div>
+                    <div class="stats-link">
+                        <a href="javascript:;">View Detail <i class="fa fa-arrow-circle-o-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <!-- end col-3 -->
+            <!-- begin col-3 -->
+            <div class="col-md-3 col-sm-6">
+                <div class="widget widget-stats bg-purple">
+                    <div class="stats-icon"><i class="fa fa-clock-o"></i></div>
+                    <div class="stats-info">
+                        <h4>AVG TIME ON SITE</h4>
+                        <p>00:12:23</p>
+                    </div>
+                    <div class="stats-link">
+                        <a href="javascript:;">View Detail <i class="fa fa-arrow-circle-o-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <!-- end col-3 -->
+        </div>
+        <!-- end row -->
+        <div class="panel panel-inverse">
+            <div class="panel-heading">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                </div>
+                <h4 class="panel-title">Top Selling Products</h4>
+            </div>
+            <div class="panel-body" style="min-height:500px;">
+                <div class="row">
+                    <div class="col-md-1 pull-right">
+                        <a data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample" onclick="toggleArrow()">Filter
+                            <i id="icon-arrow" class="fa fa-chevron-down"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="collapse" id="collapseExample">
+                        <form class="form-inline">
+                            <!--<div class="form-group col-md-1"></div>-->
+                            <div class="form-group m-r-10 col-md-3">
+                                <label for="cat">Categories</label>
+                                <select class="select" id="cat" multiple="multiple">
+                                </select>
+                            </div>
+                            <!--<div class="form-group col-md-1"></div>-->
+                            <div class="form-group m-r-10 col-md-3">
+                                <label for="store">Stores</label>
+                                <select class="select" id="store" multiple="multiple">
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="slider-wrapper">
+                                    <div style="margin-bottom: 10px;">
+                                        Period : <span id="slider-value"></span> days
+                                    </div>
+                                    <input type="text" data-render="powerange-slider" id="month-slider" />
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <a class="btn btn-sm btn-success" style="margin-top:12px;" onclick="applyRule()">Apply</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!--end row-->
+                <div class="row">
+                    <div class="col-md-5 m-l-40 m-t-30">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr class="success">
+                                    <th colspan="3">Top Selling Products</th>
+                                </tr>
+                                <tr>
+                                    <th>Product</th><th>Sold Qty</th><th>Details</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="tbl-top-selling">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-5 col-md-offset-1 m-t-30">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr class="info">
+                                    <th colspan="3">Top Grossing Products</th>
+                                </tr>
+                                <tr>
+                                    <th>Product</th><th>Sold Qty</th><th>Details</th></thead>
+                                </tr>
+                            </thead>
+
+                            <tbody id="">
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <!-- end #content -->
+
+    <!-- begin scroll to top btn -->
+    <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+    <!-- end scroll to top btn -->
+</div>
+<!-- end page container -->
+
+<!-- ================== BEGIN BASE JS ================== -->
+<script src="../../plugins/jquery/jquery-1.9.1.min.js"></script>
+<script src="../../plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
+<script src="../../plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+<script src="../../plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="../../plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="../../plugins/jquery-cookie/jquery.cookie.js"></script>
+
+<script src="../../lib/alasql.js"></script>
+<script src="../../lib/purl.js"></script>
+<script src="../../js/db.js"></script>
+<!-- ================== END BASE JS ================== -->
+
+<!-- ================== BEGIN PAGE LEVEL JS ================== -->
+<script src="../../plugins/DataTables/js/jquery.dataTables.js"></script>
+<script src="../../plugins/DataTables/js/dataTables.buttons.js"></script>
+<script src="../../plugins/DataTables/js/buttons.print.js"></script>
+
+<script src="../../plugins/multiple-select/multiple-select.js"></script>
+<script src="../../plugins/powerange/powerange.min.js"></script>
+
+<script src="../../js/apps.min.js"></script>
+<!-- ================== END PAGE LEVEL JS ================== -->
+
+<script>
+    $(document).ready(function() {
+        App.init();
+
+        sliderInit();
+
+        $('.select').multipleSelect({
+            width:'100%',
+            multipleWidth:120,
+            multiple: true
+        });
+    });
+
+    function sliderInit (){
+        var elem = document.querySelector('#month-slider');
+        var init = new Powerange(elem, {
+            callback: function(){
+                var days = elem.value;
+                $('#slider-value').text(days);
+            },
+            start: 180,
+            max:900,
+            hideRange: true
+        });
+    }
+
+    var cats = DB.getAllKinds();
+    for(var i = 0; i< cats.length; i++){
+        var op = $('<option>'+cats[i].name+'</option>');
+        $('#cat').append(op);
+    }
+
+    var stores = alasql('COLUMN OF SELECT name FROM retail');
+    for(var i = 0; i< stores.length; i++){
+        var op = $('<option>'+stores[i]+'</option>');
+        $('#store').append(op);
+    }
+
+    function applyRule(){
+        var kinds = $('#cat').val();
+        var retails = $('#store').val();
+        var period = $('#month-slider').val();
+        var data = DB.getSoldProducts(kinds,retails,period);
+        for(var i =0; i<data.length; i++){
+            var d = data[i];
+            var row = $('<tr></tr>');
+            row.append('<td>'+d.item+'</td>');
+            row.append('<td>'+d.qty+'</td>');
+            row.append('<td>NIL</td>');
+            $('#tbl-top-selling').append(row);
+        }
+    }
+    var collapse = true;
+    function toggleArrow() {
+        if(collapse){
+            $('#icon-arrow').removeClass('fa-chevron-down').addClass('fa-chevron-up');
+            collapse = false;
+        }else{
+            $('#icon-arrow').removeClass('fa-chevron-up').addClass('fa-chevron-down');
+            collapse = true;
+        }
+
+    }
+
+</script>
+</body>
+</html>

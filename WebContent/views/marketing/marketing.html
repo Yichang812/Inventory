@@ -1,7 +1,4 @@
 <!DOCTYPE html>
-<!--[if !IE]><!-->
-<html lang="en">
-<!--<![endif]-->
 <head>
     <meta charset="utf-8" />
     <title>COMPANY | Eventory</title>
@@ -17,10 +14,16 @@
     <link href="../../css/default.css" rel="stylesheet" id="theme" />
     <!-- ================== END BASE CSS STYLE ================== -->
 
+    <!-- ================== BEGIN PAGE CSS STYLE ================== -->
+    <link href="../../plugins/morris/morris.css" rel="stylesheet" />
+    <!-- ================== END PAGE CSS STYLE ================== -->
+
     <!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
     <link href="../../plugins/DataTables/css/data-table.css" rel="stylesheet" />
-    <link href="../../plugins/select2/css/select2.css" rel="stylesheet" />
-    <link href="../../plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
+    <link href="../../plugins/multiple-select/multiple-select.css" rel="stylesheet" />
+    <link href="../../plugins/powerange/powerange.min.css" rel="stylesheet" />
+
+
     <!-- ================== END PAGE LEVEL STYLE ================== -->
 
     <!-- ================== BEGIN BASE JS ================== -->
@@ -73,121 +76,177 @@
     <!-- end #header -->
 
     <!-- begin #content -->
-    <div id="content" class="content">
-
-        <!-- begin page-header -->
-        <h1 class="page-header">Sales Report</h1>
-        <!-- end page-header -->
-        <!-- begin row -->
-        <div class="row">
-            <!-- begin col-3 -->
-            <div class="col-md-3 col-sm-6">
-                <div class="widget widget-stats bg-green">
-                    <div class="stats-icon"><i class="fa fa-desktop"></i></div>
-                    <div class="stats-info">
-                        <h4>TOTAL VISITORS</h4>
-                        <p>3,291,922</p>
-                    </div>
-                    <div class="stats-link">
-                        <a href="javascript:;">View Detail <i class="fa fa-arrow-circle-o-right"></i></a>
-                    </div>
-                </div>
-            </div>
-            <!-- end col-3 -->
-            <!-- begin col-3 -->
-            <div class="col-md-3 col-sm-6">
-                <div class="widget widget-stats bg-yellow-darker">
-                    <div class="stats-icon"><i class="fa fa-chain-broken"></i></div>
-                    <div class="stats-info">
-                        <h4>BOUNCE RATE</h4>
-                        <p>20.44%</p>
-                    </div>
-                    <div class="stats-link">
-                        <a href="javascript:;">View Detail <i class="fa fa-arrow-circle-o-right"></i></a>
+    <!-- begin #content -->
+    <div id="content" class="content content-full-width">
+        <div class="p-20">
+            <!-- begin row -->
+            <div class="row">
+                <!-- begin col-2 -->
+                <div class="col-md-2">
+                    <form>
+                        <div class="input-group m-b-15">
+                            <input type="text" class="form-control input-sm input-white" placeholder="Search Mail" />
+                            <span class="input-group-btn">
+                                <button class="btn btn-sm btn-inverse" type="button"><i class="fa fa-search"></i></button>
+                            </span>
+                        </div>
+                    </form>
+                    <div class="hidden-sm hidden-xs">
+                        <h5 class="m-t-20">Email</h5>
+                        <ul class="nav nav-pills nav-stacked nav-inbox">
+                            <li class="active"><a href="test.html#topproduct" data-toggle="tab"><i class="fa fa-usd fa-fw m-r-5"></i> Top Selling Product</a></li>
+                            <li><a href="test.html#growth" data-toggle="tab"><i class="fa fa-arrow-circle-up fa-fw m-r-5"></i> Top Grossing Product</a></li>
+                            <li><a href="test.html#topshop" data-toggle="tab"><i class="fa fa-home fa-fw m-r-5"></i> Top Selling Retail Store</a></li>
+                        </ul>
                     </div>
                 </div>
-            </div>
-            <!-- end col-3 -->
-            <!-- begin col-3 -->
-            <div class="col-md-3 col-sm-6">
-                <div class="widget widget-stats bg-blue">
-                    <div class="stats-icon"><i class="fa fa-users"></i></div>
-                    <div class="stats-info">
-                        <h4>UNIQUE VISITORS</h4>
-                        <p>1,291,922</p>
-                    </div>
-                    <div class="stats-link">
-                        <a href="javascript:;">View Detail <i class="fa fa-arrow-circle-o-right"></i></a>
-                    </div>
-                </div>
-            </div>
-            <!-- end col-3 -->
-            <!-- begin col-3 -->
-            <div class="col-md-3 col-sm-6">
-                <div class="widget widget-stats bg-purple">
-                    <div class="stats-icon"><i class="fa fa-clock-o"></i></div>
-                    <div class="stats-info">
-                        <h4>AVG TIME ON SITE</h4>
-                        <p>00:12:23</p>
-                    </div>
-                    <div class="stats-link">
-                        <a href="javascript:;">View Detail <i class="fa fa-arrow-circle-o-right"></i></a>
-                    </div>
-                </div>
-            </div>
-            <!-- end col-3 -->
-        </div>
-        <!-- end row -->
-        <div class="panel panel-inverse">
-            <div class="panel-heading">
-                <div class="panel-heading-btn">
-                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-                </div>
-                <h4 class="panel-title">Top Selling Products</h4>
-            </div>
-            <div class="panel-body" style="overflow-x:hidden;">
-
-                <div class="setting-panel">
-                    <a href="javascript:;" data-click="setting-panel-expand" class="setting-collapse-btn"><i class="fa fa-filter"></i></a>
-                    <div class="setting-panel-content">
-                        <form role="form" class="form-horizontal">
-
-                            <div class="row m-t-10">
-                                <div class="form-group">
-                                    <div class="col-sm-12">
-                                        <label for="cat">Categories</label>
-                                        <select class="form-control select" id="cat">
-                                            <option>kjskadfj</option>
-                                        </select>
+                <!-- end col-2 -->
+                <!-- begin col-10 -->
+                <div class="col-md-10">
+                    <div class="tab-content email-content">
+                        <div class="tab-pane fade active in" id="topproduct">
+                            <div class="row m-top-30">
+                                <div class="collapse in" id="collapseExample">
+                                    <div style="height:90px;">
+                                        <form class="form-inline m-l-20">
+                                            <!--<div class="form-group col-md-1"></div>-->
+                                            <div class="form-group m-r-10 col-md-3">
+                                                <label for="cat">Categories</label>
+                                                <select class="select" id="cat" multiple="multiple">
+                                                </select>
+                                            </div>
+                                            <!--<div class="form-group col-md-1"></div>-->
+                                            <div class="form-group m-r-10 col-md-3">
+                                                <label for="store">Stores</label>
+                                                <select class="select" id="store" multiple="multiple">
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="slider-wrapper">
+                                                    <div style="margin-bottom: 10px;">
+                                                        Period : <span id="slider-value-1"></span> months
+                                                    </div>
+                                                    <input type="text" data-render="powerange-slider" id="topproduct-slider" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <a class="btn btn-sm btn-success" style="margin-top:12px;" onclick="applyRule1()">Apply</a>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row m-t-10">
-                                <div class="form-group">
-                                    <div class="col-sm-12">
-                                        <label for="store">Stores</label>
-                                        <select class="form-control select" id="store">
-                                            <option>kjskadfj</option>
-                                        </select>
+                            <div class="row"  style="border-bottom: solid 1px #ecf0f1">
+                                <div class="col-md-1 pull-right">
+                                    <h5 class="text-success">
+                                        <a data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample" onclick="toggleArrow(this)">Filter
+                                            <i class="fa fa-chevron-up"></i>
+                                        </a>
+                                    </h5>
+                                </div>
+                            </div>
+                            <table class="table table-email">
+                                <thead>
+                                <tr>
+                                    <th class="email-select"><a href="test.html#" data-click="email-select-all"><i class="fa fa-square-o fa-fw"></i></a></th>
+                                    <th> Product</th>
+                                    <th> Total Sold</th>
+                                    <!--<th> Details</th>-->
+                                </tr>
+                                </thead>
+                                <tbody id="tbl-top-selling">
+
+                                </tbody>
+                            </table>
+                            <!--<div class="email-footer clearfix">-->
+                                <!--<a class="btn btn-success btn-sm pull-right"><i class="fa fa-print"></i> Print</a>-->
+                            <!--</div>-->
+                            <div class="email-footer clearfix">
+                                <div class="col-md-6 col-md-offset-3">
+                                    <h4 style="text-align: center;" id="top-product-name"></h4>
+                                    <div id="top-product-chart" class="height-sm well"></div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                        <div class="tab-pane fade" id="growth">
+                            <p>tab 2</p>
+                        </div>
+                        <div class="tab-pane fade" id="topshop">
+
+                            <div class="row m-top-30">
+                                <div class="collapse in" id="filter-shop">
+                                    <div style="height:90px;">
+                                        <form class="form-inline m-l-20">
+                                            <!--<div class="form-group col-md-1"></div>-->
+                                            <div class="form-group m-r-10 col-md-3">
+                                                <label for="cat">Cities</label>
+                                                <select class="select" id="city" multiple="multiple">
+                                                </select>
+                                            </div>
+                                            <!--<div class="form-group col-md-1"></div>-->
+                                            <div class="form-group m-r-10 col-md-3">
+                                                <label for="store">Products</label>
+                                                <select class="select" id="item" multiple="multiple">
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="slider-wrapper">
+                                                    <div style="margin-bottom: 10px;">
+                                                        Period : <span id="slider-value-3"></span> months
+                                                    </div>
+                                                    <input type="text" data-render="powerange-slider" id="topshop-slider" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <a class="btn btn-sm btn-success" style="margin-top:12px;" onclick="applyRule3()">Apply</a>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="row m-t-10">
-                                <div class="col-sm-12">
-                                    <button type="button" class="btn btn-success pull-right">Apply</button>
+                            <div class="row"  style="border-bottom: solid 1px #ecf0f1">
+                                <div class="col-md-1 pull-right">
+                                    <h5 class="text-success">
+                                        <a data-toggle="collapse" href="#filter-shop" aria-expanded="false" aria-controls="collapseExample" onclick="toggleArrow(this)">Filter
+                                            <i class="fa fa-chevron-up"></i>
+                                        </a>
+                                    </h5>
                                 </div>
                             </div>
+                            <table class="table table-email">
+                                <thead>
+                                <tr>
+                                    <th class="email-select"><a href="test.html#" data-click="email-select-all"><i class="fa fa-square-o fa-fw"></i></a></th>
+                                    <th> Product</th>
+                                    <th> Total Sold</th>
+                                    <!--<th> Details</th>-->
+                                </tr>
+                                </thead>
+                                <tbody id="tbl-top-shop">
 
-                        </form>
+                                </tbody>
+                            </table>
+                            <div class="email-footer clearfix">
+                                <div class="col-md-6 col-md-offset-3">
+                                    <h4 style="text-align: center;" id="top-shop-name"></h4>
+                                    <div id="top-shop-chart" class="height-sm"></div>
+                                </div>
 
+                            </div>
+
+
+                        </div>
                     </div>
-                    <!--end setting-panel content-->
                 </div>
 
             </div>
+            <!-- end row -->
         </div>
+
+
     </div>
     <!-- end #content -->
 
@@ -204,6 +263,7 @@
 <script src="../../plugins/bootstrap/js/bootstrap.min.js"></script>
 <script src="../../plugins/slimscroll/jquery.slimscroll.min.js"></script>
 <script src="../../plugins/jquery-cookie/jquery.cookie.js"></script>
+<script src="../../plugins/moment/moment.min.js"></script>
 
 <script src="../../lib/alasql.js"></script>
 <script src="../../lib/purl.js"></script>
@@ -215,9 +275,12 @@
 <script src="../../plugins/DataTables/js/dataTables.buttons.js"></script>
 <script src="../../plugins/DataTables/js/buttons.print.js"></script>
 
-<script src="../../plugins/select2/js/select2.js"></script>
+<script src="../../plugins/multiple-select/multiple-select.js"></script>
 
-<script src="../../plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="../../plugins/powerange/powerange.min.js"></script>
+
+<script src="../../plugins/morris/raphael.min.js"></script>
+<script src="../../plugins/morris/morris.js"></script>
 
 <script src="../../js/apps.min.js"></script>
 <!-- ================== END PAGE LEVEL JS ================== -->
@@ -225,12 +288,200 @@
 <script>
     $(document).ready(function() {
         App.init();
-//        $('#data-table').DataTable();
-        $('.select').select2({
-            tags:true
+        slider1Init();
+        slider3Init();
+        selectInit();
+        $('.select').multipleSelect({
+            width:'100%',
+            multipleWidth:180,
+            multiple: true
         });
+        applyRule1();
+        applyRule3();
+
     });
 
+    var COLLAPSED = true;
+    var FILTER = {
+        kinds : [],
+        stores : [],
+        cities : [],
+        items : [],
+        duration: DB.getMonthPeriod()
+    };
+
+    var CHART3;
+
+    function slider1Init (){
+        var maxMonth = DB.getMonthPeriod();
+
+        var elem = document.querySelector('#topproduct-slider');
+        var init = new Powerange(elem, {
+            callback: function(){
+                $('#slider-value-1').text(elem.value);
+            },
+            start: 0,
+            max:maxMonth,
+            hideRange: true
+        });
+    }
+
+    function slider3Init (){
+        var maxMonth = DB.getMonthPeriod();
+
+        var elem = document.querySelector('#topshop-slider');
+        var init = new Powerange(elem, {
+            callback: function(){
+                var month = 0;
+                if(!isNaN(elem.value)){
+                    month = elem.value;
+                }
+                $('#slider-value-3').text(month);
+            },
+            start: 0,
+            max:maxMonth,
+            hideRange: true
+        });
+    }
+
+    function selectInit(){
+        var cats = alasql('COLUMN OF SELECT name FROM kind');
+        FILTER.kinds = cats;
+        for(var i = 0; i< cats.length; i++){
+            var op = $('<option selected="selected">'+cats[i]+'</option>');
+            $('#cat').append(op);
+        }
+
+        var stores = alasql('COLUMN OF SELECT name FROM retail WHERE id<>1');
+        FILTER.stores = stores;
+        for(var i = 0; i< stores.length; i++){
+            var op = $('<option selected="selected">'+stores[i]+'</option>');
+            $('#store').append(op);
+        }
+
+        var cities = alasql('COLUMN OF SELECT DISTINCT city FROM retail WHERE id<>1');
+        FILTER.cities = cities;
+        for(var i = 0; i< cities.length; i++){
+            var op = $('<option selected="selected">'+cities[i]+'</option>');
+            $('#city').append(op);
+        }
+
+        var items = alasql('COLUMN OF SELECT name FROM item');
+        FILTER.items = items;
+        for(var i = 0; i< items.length; i++){
+            var op = $('<option selected="selected">'+items[i]+'</option>');
+            $('#item').append(op);
+        }
+    }
+
+    function chartInit1(item){
+        $('#top-product-name').text(item);
+        var data = DB.getSoldDetail(item,FILTER.stores,FILTER.duration);
+        var ykeys = alasql('COLUMN OF SELECT id FROM retail WHERE id<>1');
+        var labels = alasql('COLUMN OF SELECT name FROM retail WHERE id<>1');
+        $('#top-product-chart').empty();
+        Morris.Bar({
+            element:"top-product-chart",
+            data:data,
+            xkey:"month",
+            ykeys:ykeys,
+            labels:labels,
+            behaveLikeLine:true,
+            hideHover:"auto",
+            barGrap:4,
+            barSizeRatio:0.3,
+            resize:true,
+            stacked:true,
+            barColors:["#5da5e8","#3a92ab","#727cb6","#348fe2","#00acac","#f59c1a"]})
+    }
+
+    function chartInit3(retail){
+        $('#top-shop-name').text(retail);
+        var data = DB.getRetailSoldDetail(retail,FILTER.items,FILTER.duration);
+        var ykeys = alasql('COLUMN OF SELECT id FROM item');
+        var labels = alasql('COLUMN OF SELECT name FROM item');
+        $('#top-shop-chart').empty();
+        CHART3 = Morris.Bar({
+            element:"top-shop-chart",
+            data:data,
+            xkey:"month",
+            ykeys:ykeys,
+            labels:labels,
+            behaveLikeLine:true,
+            hideHover:"auto",
+            barGrap:4,
+            barSizeRatio:0.3,
+            resize:true,
+            stacked:true,
+            barColors:["#5da5e8","#3a92ab","#727cb6","#348fe2","#00acac","#f59c1a"]})
+    }
+
+    function applyRule1(){
+        FILTER.kinds = $('#cat').val();
+        FILTER.stores = $('#store').val();
+        FILTER.duration = $('#topproduct-slider').val();
+        var table = $('#tbl-top-selling');
+        var data = DB.getProductReport(FILTER.kinds,FILTER.stores,FILTER.duration);
+        table.empty();
+        for(var i =0; i<data.length; i++){
+            var d = data[i];
+            var row = $('<tr onclick="showDetails1(this)"></tr>');
+            row.append('<td class="email-select"><a data-click="email-select-single"><i class="fa fa-square-o fa-fw"></i></a></td>');
+            row.append('<td>'+d.item+'</td>');
+            row.append('<td>'+d.qty+'</td>');
+            table.append(row);
+        }
+        chartInit1(data[0].item);
+    }
+
+    function applyRule3(){
+        FILTER.cities = $('#city').val();
+        FILTER.items = $('#item').val();
+        FILTER.duration = $('#topshop-slider').val();
+        var table = $('#tbl-top-shop');
+        var data = DB.getRetailReport(FILTER.items,FILTER.cities,FILTER.duration);
+        table.empty();
+        for(var i =0; i<data.length; i++){
+            var d = data[i];
+            var row = $('<tr onclick="showDetails3(this)"></tr>');
+            row.append('<td class="email-select"><a data-click="email-select-single"><i class="fa fa-square-o fa-fw"></i></a></td>');
+            row.append('<td>'+d.retail+'</td>');
+            row.append('<td>'+d.qty+'</td>');
+            table.append(row);
+        }
+        console.log(data);
+        chartInit3(data[0].retail);
+    }
+
+
+    function toggleArrow(ele) {
+        if(COLLAPSED){
+            $(ele).find('i').removeClass('fa-chevron-up').addClass('fa-chevron-down');
+            COLLAPSED = false;
+        }else{
+            $(ele).find('i').removeClass('fa-chevron-down').addClass('fa-chevron-up');
+            COLLAPSED = true;
+        }
+    }
+
+    function showDetails1(ele){
+        var item = $(ele).find('td:eq(1)').text();
+        $('#top-product-name').text(item);
+        chartInit1(item);
+    }
+
+    function showDetails3(ele){
+        var retail = $(ele).find('td:eq(1)').text();
+        $('#top-shop-name').text(retail);
+        chartInit3(retail);
+    }
+
+   $('ul.nav a').on('shown.bs.tab',function(e){
+       CHART3.redraw();
+       CHART3.width = 658;
+       console.log(CHART3);
+
+   })
 </script>
 </body>
 </html>
