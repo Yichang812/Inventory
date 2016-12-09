@@ -38,7 +38,7 @@
         <div class="container-fluid">
             <!-- begin mobile sidebar expand / collapse button -->
             <div class="navbar-header">
-                <a href="central.html" class="navbar-brand"><span class="navbar-logo"></span>Eventory</a>
+                <a href="../index.html" class="navbar-brand"><span class="navbar-logo"></span>Eventory</a>
                 <button type="button" class="navbar-toggle" data-click="sidebar-toggled">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -60,7 +60,7 @@
                         <li><a href="javascript:;">Edit Profile</a></li>
                         <li><a href="javascript:;">Setting</a></li>
                         <li class="divider"></li>
-                        <li><a href="javascript:;">Log Out</a></li>
+                        <li><a href="../index.html">Log Out</a></li>
                     </ul>
                 </li>
             </ul>
@@ -73,7 +73,7 @@
     <div class="container">
         <div class="row">
             <ol class="breadcrumb pull-right">
-                <li><a href="product-list.html">Product List</a></li>
+                <li><a onclick="backHome()">Product List</a></li>
                 <li class="active">Product Info</li>
             </ol>
         </div>
@@ -203,6 +203,7 @@
 
 <script>
     var id = parseInt($.url().param('id'));
+    var retail = parseInt($.url().param('retail'));
     $(document).ready(function() {
         App.init();
         DB.getProductHistory(id,1);
@@ -222,8 +223,6 @@
     });
 
 
-//    var retail = parseInt($.url().param('retail'));
-//    $('#image').attr('src', '../../img/' + id + '.jpg');
     var product = DB.getProductInfo(id);
     $('.name').text(product.name);
     $('#code').text(product.code);
@@ -239,6 +238,10 @@
         var stock = stocks[i];
         var row = $('<tr><td>'+stock.expiration+'</td><td>'+stock.qty+'</td></tr>');
         $('#store-stock-records').append(row);
+    }
+
+    function backHome() {
+        window.location = "retail.html?id="+retail;
     }
 </script>
 </body>

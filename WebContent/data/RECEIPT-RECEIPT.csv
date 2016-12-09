@@ -1,16 +1,21 @@
 ID,TYPE,OPERATOR,DATE
-1,Init Stock,Alice,2016-01-01
-2,Init Stock,Alice,2016-01-03
-3,Sold,Bob,2016-02-02
-4,Sold,Bob,2016-02-03
-5,Sold,Bob,2016-02-04
-6,Sold,Bob,2016-02-05
-7,Sold,Bob,2016-02-06
-8,Sold,Bob,2016-02-08
-9,Sold,Bob,2016-02-14
-10,Sold,Bob,2016-02-15
-11,Restock,Alice,2016-02-29
-12,Init Stock,Alice,2016-01-02
-13,Restock,Alice,2016-02-27
-14,StockIn,Alice,2016-03-15
-15,Sold,Bob,2016-04-01
+1,StockIn,Alice,2016-01-01
+2,Received,Bob,2016-01-03
+3,Received,Bobby,2016-01-03
+4,Received,Bill,2016-01-04
+5,Received,Bush,2016-01-04
+6,Received,Brown,2016-01-05
+7,Received,Billy,2016-01-05
+8,Sold,Bob,2016-02-02
+9,Sold,Bob,2016-02-03
+10,Sold,Bob,2016-02-04
+11,Sold,Bob,2016-02-05
+12,Sold,Bob,2016-02-06
+13,Sold,Bob,2016-02-08
+14,Sold,Bob,2016-02-14
+15,Sold,Bobby,2016-02-15
+16,Restock,Alice,2016-02-29
+17,Init Stock,Alice,2016-01-02
+18,Restock,Alice,2016-02-27
+19,StockIn,Alice,2016-03-15
+20,Sold,Bob,2016-04-01

@@ -140,44 +140,8 @@
         <h1 class="page-header" id="store-name" style="margin-top:20px;">Store Name</h1>
         <!-- end page-header -->
         <!-- begin row -->
-
         <div class="row m-t-20">
             <div class="col-md-12">
-                <div class="panel panel-inverse">
-                    <div class="panel-heading">
-                        <div class="panel-heading-btn">
-                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-                        </div>
-                        <h4 class="panel-title">Product List</h4>
-                    </div>
-                    <div class="panel-body">
-                        <div class="table-responsive col-md-10 col-md-offset-1">
-                            <table class="table table-hover display data-table" cellspacing="0" width="100%">
-                                <thead>
-                                <tr>
-                                    <th>Code</th>
-                                    <th>Product</th>
-                                    <th>Category</th>
-                                    <th>Suggested Price ($)</th>
-                                    <th>Stock</th>
-                                    <th>Closet Expire Date</th>
-                                </tr>
-                                </thead>
-                                <tbody id="tbl-products">
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <!--end of panel-->
-            </div>
-        </div>
-
-
-        <div class="row">
-            <div class="col-md-7">
                 <div class="panel panel-inverse">
                     <div class="panel-heading">
                         <div class="panel-heading-btn">
@@ -231,6 +195,75 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-inverse">
+                    <div class="panel-heading">
+                        <div class="panel-heading-btn">
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                        </div>
+                        <h4 class="panel-title">Product List</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive col-md-10 col-md-offset-1">
+                            <table class="table table-hover display data-table" cellspacing="0" width="100%">
+                                <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Product</th>
+                                    <th>Category</th>
+                                    <th>Suggested Price ($)</th>
+                                    <th>Available Stock</th>
+                                </tr>
+                                </thead>
+                                <tbody id="tbl-products">
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!--end of panel-->
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-7">
+                <div class="panel panel-inverse">
+                    <div class="panel-heading">
+                        <div class="panel-heading-btn">
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                        </div>
+                        <h4 class="panel-title">Returnable Products</h4>
+                    </div>
+                    <div class="panel-body">
+
+                        <div class="row">
+                            <div class="col-md-10 col-md-offset-1">
+                                <table class="table table-hover">
+                                    <thead>
+                                    <th>Product</th>
+                                    <th>Returnable Quantity</th>
+                                    <th>Expired Date</th>
+                                    </thead>
+                                    <tbody id="tbl-returnable">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top:20px;">
+                            <div class="col-md-10 col-md-offset-1">
+                                <a class="btn btn-success pull-right" style="margin-left:10px;" onclick="returnProduct()">Return</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="col-md-5">
                 <div class="panel panel-inverse">
                     <div class="panel-heading">
@@ -273,7 +306,6 @@
 
         </div>
         <!-- end row -->
-
 
 
 
@@ -386,38 +418,31 @@
         $('#tbl-restocking').append(row);
     }
 
-    var products = DB.getStocksOfRetail(id);
-    var returnProducts = DB.getReturnProducts(id);
-    var returnList = [];
-    for(var i = 0; i<returnProducts.length; i++){
-        var r = returnProducts[i];
-        returnList.push(r.id);
-    }
 
+    var products = DB.getReturnProducts(id);
     var tbody = $('#tbl-products');
-
     for (var i = 0; i < products.length; i++) {
         var product = products[i];
         var tr = $('<tr id='+product.id+'></tr>');
 
+        console.log(product.balance,product.returnable);
         tr.append('<td><a data-href="product.html?id=' + product.id + '&retail='+id+'">' + product.code + '</a></td>');
         tr.append('<td>' + product.name + ' ('+product.size+' '+product.unit+')</td>');
         tr.append('<td>' + product.kind + '</td>');
         tr.append('<td>' + product.price + '</td>');
-
-        if(product.balance===0){
-            tr.append('<td>' + product.balance +' <label class="label label-warning">Restock</label> </td>');
-        }else{
-            tr.append('<td>' + product.balance +'</td>');
-        }
-
-        if(returnList.indexOf(product.id)===-1){
-            tr.append('<td>' + product.expire + '</td>');
-        }else{
-            tr.append('<td>' + product.expire + ' <label class="label label-danger">Return</label></td>');
-        }
+        tr.append('<td>' + (product.balance - product.returnable) + '</td>');
 
         tr.appendTo(tbody);
+
+        var row = $('<tr id='+product.id+'></tr>');
+
+        if(product.returnable !== 0){
+            row.append('<td>' + product.name + ' ('+product.size+' '+product.unit+')</td>');
+            row.append('<td>' + product.returnable + '</td>');
+            row.append('<td>' + product.expire + '</td>');
+            $('#tbl-returnable').append(row);
+        }
+
     }
 
     tbody.find('a').on('click', function() {
@@ -429,7 +454,7 @@
 
     function received (){
         DB.receiveRestock(id);
-        location().reload();
+        location.reload();
     }
 
 </script>

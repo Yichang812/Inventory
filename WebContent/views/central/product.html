@@ -64,7 +64,7 @@
                         <li><a href="javascript:;">Edit Profile</a></li>
                         <li><a href="javascript:;">Setting</a></li>
                         <li class="divider"></li>
-                        <li><a href="javascript:;">Log Out</a></li>
+                        <li><a href="../index.html">Log Out</a></li>
                     </ul>
                 </li>
             </ul>
@@ -122,11 +122,26 @@
                             <td id="price"></td>
                         </tr>
                         <tr>
-                            <th>Central Warehouse Stock</th>
+                            <th>
+                                <a data-toggle="collapse" href="#stock-detail-panel" aria-expanded="false" aria-controls="collapseExample" style="color:#707478;">Central Warehouse Stock
+                                    <i class="fa fa-chevron-down"></i>
+                                </a>
+                            </th>
                             <td id="central-stock"></td>
                         </tr>
                         </tbody>
                     </table>
+                    <div class="row">
+
+                        <div class="collapse" id="stock-detail-panel">
+                            <div class="col-md-8">
+                                <table class="table">
+                                    <thead><th>Quantity</th><th>Expiration Date</th></thead>
+                                    <tbody id="stock-detail"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
             </div>
@@ -227,7 +242,17 @@
                 })
     }
 
+
+
     var id = parseInt($.url().param('id'));
+    var details = DB.getProductExpiration(id);
+    for(var i = 0; i<details.length; i++){
+        var record = details[i];
+        var row = $('<tr></tr>');
+        row.append('<td>'+record.qty+'</td>');
+        row.append('<td>'+record.expiration+'</td>');
+        $('#stock-detail').append(row);
+    }
 //    $("input[name=id]").val(id);
     $('#image').attr('src', '../../img/' + id + '.jpg');
     var product = DB.getProductInfo(id,1);
