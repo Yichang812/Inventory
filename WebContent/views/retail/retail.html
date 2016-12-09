@@ -291,7 +291,7 @@
                                         <th></th>
                                         <th>Product</th>
                                         <th>Expiring Quantity</th>
-                                        <th>Expired Date</th>
+                                        <th>Expired Before Date</th>
                                     </thead>
                                     <tbody id="tbl-expiring">
                                     </tbody>
@@ -424,8 +424,7 @@
     for (var i = 0; i < products.length; i++) {
         var product = products[i];
         var tr = $('<tr id='+product.id+'></tr>');
-
-        console.log(product.balance,product.returnable);
+        console.log(product.balance, product.returnable);
         tr.append('<td><a data-href="product.html?id=' + product.id + '&retail='+id+'">' + product.code + '</a></td>');
         tr.append('<td>' + product.name + ' ('+product.size+' '+product.unit+')</td>');
         tr.append('<td>' + product.kind + '</td>');
@@ -457,6 +456,19 @@
         location.reload();
     }
 
+
+    function returnProduct(){
+        var items = [];
+        $('#tbl-returnable').find('tr').each(function(){
+            var row = $(this);
+            items.push({
+                id : row.attr('id'),
+                qty : row.find('td:eq(1)').text(),
+                expire : row.find('td:eq(2)').text()
+            });
+        });
+        DB.returnProduct(items);
+    }
 </script>
 </body>
 </html>

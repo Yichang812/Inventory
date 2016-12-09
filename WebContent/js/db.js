@@ -116,7 +116,7 @@ DB.load = function() {
 
 	//Dead Stock
 	alasql('DROP TABLE IF EXISTS dead;');
-	alasql('CREATE TABLE dead(id INT IDENTITY, item INT, qty INT, detail STRING);');
+	alasql('CREATE TABLE dead(id INT IDENTITY, stock INT, qty INT, handled BOOLEAN);');
 	var pdead = alasql.promise('SELECT MATRIX * FROM CSV("../data/DEADSTOCK-DEADSTOCK.csv", {headers: true})').then(
 		function(deads) {
 			for (var i = 0; i < deads.length; i++) {
@@ -202,14 +202,6 @@ DB.newTrans = function(trans,target){
 	keys: stock, amount, receipt
 	 */
 
-    var id = DB.getNextID('trans');
-
-    //insert a new transaction record
-    alasql('INSERT INTO trans VALUES (?,?,?,?)',[id,trans.stock,trans.amount,trans.receipt]);
-
-    //update the balance in stock table
-    var sql = 'UPDATE stock SET balance = balance +('+trans.amount+') WHERE id = '+trans.stock;
-
     //update expire if the qty of the closet-expired product is 0
     var qty = trans.amount;
     if(qty<0){
@@ -231,9 +223,17 @@ DB.newTrans = function(trans,target){
         }
         if(qty<0){
             alert('OUT-OF-STOCK!');
+            return;
         }
 
     }
+    var id = DB.getNextID('trans');
+
+    //insert a new transaction record
+    alasql('INSERT INTO trans VALUES (?,?,?,?)',[id,trans.stock,trans.amount,trans.receipt]);
+
+    //update the balance in stock table
+    var sql = 'UPDATE stock SET balance = balance +('+trans.amount+') WHERE id = '+trans.stock;
     alasql(sql);
 };
 
@@ -316,65 +316,7 @@ DB.newSold = function (soldProducts) {
 	return {receipt: receipt, date: today};
 };
 
-DB.updateStock = function(record,stock){
-    var keys = Object.keys(record);
-    var sql = 'UPDATE stock SET ' + keys[0]+ '= '+record[keys[0]];
-    for(var i = 1; i<keys.length; i++){
-        var key = keys[i];
-        var value = record[key];
-        sql += ', '+ key+'= '+ value;
-    }
 
-    sql += ' WHERE id = '+stock;
-    alasql(sql);
-
-};
-
-DB.dispatchRestock = function(ref,days){
-    var today = alasql('SELECT date FROM restock WHERE ref = ?',[ref])[0].date;
-    var expect = moment(today,'YYYY-MM-DD').add(parseInt(days),'day').format('YYYY-MM-DD');
-    alasql('UPDATE restock SET status = 1, expect = ? WHERE ref = ?',[expect,ref]);
-};
-
-DB.receiveRestock = function(retail){
-    var stocks = alasql('SELECT id, restock, r_qty, balance FROM stock WHERE retail = ? AND restock<>0',[retail]);
-    var date  = new Date();
-    var today = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();
-
-
-    for(var i = 0 ; i< stocks.length; i++){
-        var record = stocks[i];
-        alasql('UPDATE stock SET restock = 0, r_qty = 0 WHERE id = ?',[record.id]);
-        alasql('UPDATE restock SET status = 2 WHERE ref = ?',[record.restock]);
-        alasql('UPDATE expire SET received = "true" WHERE stock = ?',[record.id]);
-
-        var receipt = DB.newReceipt('Received','Bob',today);
-        var trans = {
-            amount : record.r_qty,
-            stock : record.id,
-            receipt : receipt
-        };
-        console.log(trans);
-
-        DB.newTrans(trans);
-    }
-};
-
-DB.returnProduct = function(items,retail){
-	var date  = new Date();
-	var d = date.getFullYear().toString() + (date.getMonth()+1).toString() + date.getDate().toString();
-	var today = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();
-	var ref = d +retail;
-	var receipt = DB.newReceipt('Return expiring products','Bob',today);
-	for(var i = 0; i<items.length; i++){
-		var item = items[i];
-
-		//update balance of the retail by: newTrans
-		//stock, amount, receipt
-		DB.newTrans(item);
-
-	}
-};
 
 DB.getNextID = function(table){
     return alasql('COLUMN OF SELECT MAX(id)+1 AS id FROM '+table)[0];
@@ -501,7 +443,6 @@ DB.getReturnProducts = function(retail){
 	var item = [];
     for(var i = 0; i<products.length; i++){
         var product = products[i];
-
         var diff = moment(product.expiration,'YYYY-MM-DD').diff(today,'days');
 		product.returnable = 0;
 		if(diff<product.returning){
@@ -515,6 +456,9 @@ DB.getReturnProducts = function(retail){
 			item.push(product.id);
 		}else{
 			result[index].returnable += product.returnable;
+            if(result[index].expire < product.expire){
+                result[index].expire = product.expire;
+            }
 		}
     }
     return result;
@@ -741,6 +685,92 @@ DB.getMonthPeriod = function(){
     var diff = moment(first,'YYYY-MM-DD').diff(today,'months');
     return Math.abs(diff);
 
+};
+
+DB.getDeadProduct = function(){
+    var sql = 'SELECT item.name AS item, retail.name AS retail, dead.qty ' +
+        'FROM dead ' +
+        'JOIN stock ON dead.stock = stock.id ' +
+        'JOIN item ON stock.item = item.id ' +
+        'JOIN retail ON stock.retail = retail.id ' +
+        'WHERE dead.handled = false';
+    return alasql(sql);
+};
+
+
+
+DB.updateStock = function(record,stock){
+    var keys = Object.keys(record);
+    var sql = 'UPDATE stock SET ' + keys[0]+ '= '+record[keys[0]];
+    for(var i = 1; i<keys.length; i++){
+        var key = keys[i];
+        var value = record[key];
+        sql += ', '+ key+'= '+ value;
+    }
+
+    sql += ' WHERE id = '+stock;
+    alasql(sql);
+
+};
+
+DB.dispatchRestock = function(ref,days){
+    var today = alasql('SELECT date FROM restock WHERE ref = ?',[ref])[0].date;
+    var expect = moment(today,'YYYY-MM-DD').add(parseInt(days),'day').format('YYYY-MM-DD');
+    alasql('UPDATE restock SET status = 1, expect = ? WHERE ref = ?',[expect,ref]);
+};
+
+DB.receiveRestock = function(retail){
+    var stocks = alasql('SELECT id, restock, r_qty, balance FROM stock WHERE retail = ? AND restock<>0',[retail]);
+    var date  = new Date();
+    var today = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();
+
+
+    for(var i = 0 ; i< stocks.length; i++){
+        var record = stocks[i];
+        alasql('UPDATE stock SET restock = 0, r_qty = 0 WHERE id = ?',[record.id]);
+        alasql('UPDATE restock SET status = 2 WHERE ref = ?',[record.restock]);
+        alasql('UPDATE expire SET received = "true" WHERE stock = ?',[record.id]);
+
+        var receipt = DB.newReceipt('Received','Bob',today);
+        var trans = {
+            amount : record.r_qty,
+            stock : record.id,
+            receipt : receipt
+        };
+        console.log(trans);
+
+        DB.newTrans(trans);
+    }
+};
+
+DB.returnProduct = function(items){
+    var date  = new Date();
+    var today = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();
+    var receipt = DB.newReceipt('Return expiring products','Bob',today);
+    for(var i = 0; i<items.length; i++){
+        var item = items[i];//item.id should be stock id
+        //update balance of the retail
+        console.log(item);
+        var id = DB.getNextID('trans');
+        //insert a new transaction record
+        alasql('INSERT INTO trans VALUES (?,?,?,?)',[id,item.id,(-item.qty),receipt]);
+
+        //update the balance in stock table
+        var sql = 'UPDATE stock SET balance = balance - '+item.qty+' WHERE id = '+item.id;
+        alasql(sql);
+
+        //update expire
+        sql = 'DELETE FROM expire WHERE stock =' + item.id + ' AND expiration <= "' + item.expire + '"';
+        alasql(sql);
+
+        //update dead stock
+        id = DB.getNextID('dead');
+        alasql('INSERT INTO dead VALUES (?,?,?,?)',[id,item.id,item.qty,false]);
+    }
+};
+
+DB.handleDeadProduct = function(){
+    alasql('UPDATE dead SET handled = true WHERE handled = false');
 };
 //User
 DB.loginUser = function(user,password){

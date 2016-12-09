@@ -143,19 +143,39 @@
         <!-- begin page-header -->
         <h1 class="page-header">Inventory Overview</h1>
         <!-- end page-header -->
+        <div class="row">
+            <div class="col-md-8">
+                <div class="panel panel-inverse">
+                    <div class="panel-heading">
+                        <div class="panel-heading-btn">
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                        </div>
+                        <h4 class="panel-title">Returned Products</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-10 col-md-offset-1">
+                                <table class="table">
+                                    <thead>
+                                    <th>Retail Store</th>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                    </thead>
+                                    <tbody id="tbl-returned"></tbody>
+                                </table>
+                            </div>
 
-        <div class="panel panel-inverse">
-            <div class="panel-heading">
-                <div class="panel-heading-btn">
-                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                        </div>
+
+                        <div class="row col-md-11">
+                            <a class="btn btn-success pull-right" onclick="DB.handleDeadProduct()">Handled</a>
+                        </div>
+                    </div>
                 </div>
-                <h4 class="panel-title"></h4>
-            </div>
-            <div class="panel-body">
-                Panel Content Here
             </div>
         </div>
+
     </div>
     <!-- end #content -->
 
@@ -186,6 +206,16 @@
     $(document).ready(function() {
         App.init();
     });
+
+    var deadProducts = DB.getDeadProduct();
+    for(var i =0;i<deadProducts.length; i++){
+        var product = deadProducts[i];
+        var row = $('<tr></tr>')
+        row.append('<td>'+product.retail+'</td>');
+        row.append('<td>'+product.item+'</td>');
+        row.append('<td>'+product.qty+'</td>');
+        $('#tbl-returned').append(row);
+    }
 </script>
 </body>
 </html>
