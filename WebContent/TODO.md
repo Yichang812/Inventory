@@ -4,6 +4,8 @@
 - [ ] the system should no sell returning products 
 - [ ] set the max qty for cash register
 - [ ] calculate the safe stock automatically
+- [ ] restocking amount = 1.5* (avg(sold/day)*restocking duration)
+- [ ] retailer can send emergency request for restocking
 - [ ] alert the central warehouse, when the stock of a retailer is lower than the safe stock
 - [ ] add confirm dialog when there is changes to db 
 

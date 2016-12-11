@@ -343,15 +343,54 @@ DB.getProductHistory = function(id){
     return history;
 };
 
+DB.getSafeStock = function(retail){
+
+	var safeStocks = [];
+	var sql = 'SELECT stock.*, SUM(trans.qty) AS total ' +
+		'FROM stock ' +
+		'JOIN trans ON trans.stock = stock.id ' +
+		'JOIN receipt ON trans.receipt = receipt.id ' +
+		'WHERE receipt.type = "Sold" ';
+	if(retail){
+		sql += 'AND stock.retail = ? ';
+	}
+	sql += 'GROUP BY stock.item';
+	var stocks = alasql(sql,[retail]);
+	var today = new Date();
+	for(var i = 0; i<stocks.length; i++){
+		var stock = stocks[i];
+		var first_day = alasql('COLUMN OF SELECT TOP 1 date FROM receipt ORDER BY date ASC')[0];
+		var diff = moment(first_day,'YYYY-MM-DD').diff(today,'days');
+		var safe_stock = Math.ceil((stock.total/diff)*30);
+
+		safeStocks[stock.id] = safe_stock;
+	}
+	return safeStocks;
+};
+
 DB.getRestockInfo = function(retail){
-	var sql = 'SELECT stock.id, item.name AS item, retail.name AS retail, stock.safe, stock.balance, (stock.safe - stock.balance - stock.r_qty) AS restock ' +
-        'FROM stock JOIN item ON stock.item = item.id ' +
+	var safeStocks = DB.getSafeStock(retail);
+
+    var sql = 'SELECT stock.id, item.name AS item, retail.name AS retail, stock.balance ' +
+        'FROM stock ' +
+		'JOIN item ON stock.item = item.id ' +
         'JOIN retail ON stock.retail = retail.id ' +
         'WHERE stock.retail <> 1';
-	if(retail){
+    if(retail){
 		sql += ' AND stock.retail = '+retail;
+    }
+    var stocks = alasql(sql);
+	for(var i = 0; i<stocks.length; i ++){
+		var stock = stocks[i];
+		if(safeStocks[stock.id]){
+			stock.safe = safeStocks[stock.id];
+			stock.qty = stock.safe>stock.balance?(stock.safe-stock.balance):0;
+		}else{
+			stock.qty = 0;
+			stock.safe = 0;
+		}
 	}
-    return alasql(sql);
+	return stocks;
 };
 
 DB.getProductInfo = function(id){
