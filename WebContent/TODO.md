@@ -2,7 +2,9 @@
 - [*] retailer returns product to central warehouse
 - [*] central warehouse receives the returning products
 - [ ] the system should no sell returning products 
-- [ ] set the max qty for cash register 
+- [ ] set the max qty for cash register
+- [ ] calculate the safe stock automatically
+- [ ] alert the central warehouse, when the stock of a retailer is lower than the safe stock
 - [ ] add confirm dialog when there is changes to db 
 
 
