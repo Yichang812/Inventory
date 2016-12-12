@@ -322,6 +322,7 @@
 
     function getSummary(){
         var rSummary = getRestockAmounts();
+        console.log(rSummary);
         for(var i=0; i<rSummary.length; i++){
             var record = rSummary[i];
             var row = $('<tr></tr>');

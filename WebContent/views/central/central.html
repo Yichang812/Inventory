@@ -145,7 +145,7 @@
         <!-- begin page-header -->
         <h1 class="page-header">Inventory Overview</h1>
         <!-- end page-header -->
-        <div class="row">
+        <div class="row" id="panel-dead">
             <div class="col-md-8">
                 <div class="panel panel-inverse">
                     <div class="panel-heading">
@@ -177,10 +177,52 @@
                 </div>
             </div>
         </div>
+        <!--end row-->
+        <div class="row">
+            <div class="col-md-8" id="panel-request">
+                <div class="panel panel-inverse">
+                    <div class="panel-heading">
+                        <div class="panel-heading-btn">
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                        </div>
+                        <h4 class="panel-title">Emergency Restock Request</h4>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table" id="tbl-request">
+                        </table>
 
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end row-->
+        <a class="btn btn-default" onclick="$('#feedbackModal').modal('show')">Show</a>
     </div>
     <!-- end #content -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="feedbackModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Send feedback</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="feedback">Feedback</label>
+                            <textarea name="msg" id="feedback" class="form-control"></textarea>
+                        </div>
+                    </form>
+                </div>
 
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="rejectRequest()" >Send Feedback</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
     <!-- begin scroll to top btn -->
     <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
     <!-- end scroll to top btn -->
@@ -201,15 +243,21 @@
 <!-- ================== END BASE JS ================== -->
 
 <!-- ================== BEGIN PAGE LEVEL JS ================== -->
+<script src="../../plugins/moment/moment.min.js"></script>
 <script src="../../js/apps.min.js"></script>
 <!-- ================== END PAGE LEVEL JS ================== -->
 
 <script>
     $(document).ready(function() {
         App.init();
+        requestInit();
     });
 
     var deadProducts = DB.getDeadProduct();
+    if(deadProducts.length===0){
+        $('#panel-dead').toggleClass('hide');
+    }
+
     for(var i =0;i<deadProducts.length; i++){
         var product = deadProducts[i];
         var row = $('<tr></tr>')
@@ -218,6 +266,75 @@
         row.append('<td>'+product.qty+'</td>');
         $('#tbl-returned').append(row);
     }
+
+    var requests = DB.getAllPending();
+    if(requests.length===0){
+        $('#panel-request').toggleClass('hide');
+    }
+    function requestInit (){
+        var table = $('#tbl-request');
+        for(var t = 0; t<requests.length; t++){
+            var request = requests[t];
+            var tbl_head = $('<thead id="requesth'+request.id+'"></thead>');
+            tbl_head.append('<tr class="info store-name"><th colspan="2" class="store">'+request.retail+'</th></tr>');
+            tbl_head.append('<tr><th>Product</th><th>Restocking Quantity</th></tr>');
+            var tbl_body = $('<tbody id="requestb'+request.id+'"></tbody>');
+            var items = request.item.split('|');
+            var qty = request.qty.split('|');
+            var stock = request.stock.split('|');
+            for(var i = 0; i<stock.length; i++){
+                var row = $('<tr id="'+stock[i]+'"></tr>');
+                row.append('<td class="item">'+items[i]+'</td>');
+                row.append('<td class="qty">'+qty[i]+'</td>');
+                tbl_body.append(row);
+
+            }
+            row = $('<tr><td><strong>Message: </strong>'+request.msg+'</td>' +
+                    '<td>' +
+                    '<a class="btn btn-white btn-sm" data-content="'+request.id+'" onclick="approveRequest(this)">Approve</a>' +
+                    '<a class="btn btn-danger btn-sm m-l-10" data-content="'+request.id+'" onclick="showModal(this)">Reject</a></td>' +
+                    '</tr>');
+            tbl_body.append(row);
+            table.append(tbl_head);
+            table.append(tbl_body);
+        }
+
+    }
+    
+    function approveRequest(ele){
+        var r_id = $(ele).attr('data-content');
+        var thead = $('#requesth'+r_id);
+        var tbody = $('#requestb'+r_id);
+        var retail = thead.find('.store').text();
+        restocks = [];
+        tbody.find('tr').each(function () {
+
+            var row = $(this);
+            var id = row.attr('id');
+            if(id){
+                var item = row.find('.item').text();
+                var qty = row.find('.qty').text();
+                restocks.push({id:id,item:item,amount:qty,retail:retail});
+            }
+
+        });
+        DB.newRestock(restocks);
+        alasql('UPDATE request SET status = "Approved" WHERE id = ?',[r_id]);
+        location.reload();
+    }
+    function rejectRequest() {
+        var msg = $('textarea[name="msg"]').val();
+        var sql = 'UPDATE request SET status = "Rejected", msg = "'+msg+'" WHERE id = ' + request_id;
+        console.log(sql);
+        alasql(sql);
+    }
+    var request_id = 0;
+    function showModal(ele){
+        $('#feedbackModal').modal('show');
+        request_id = $(ele).attr('data-content');
+    }
+
+
 </script>
 </body>
 </html>

@@ -21,6 +21,8 @@
     <link href="../../plugins/DataTables/css/data-table.css" rel="stylesheet" />
     <link href="../../plugins/powerange/powerange.min.css" rel="stylesheet" />
     <link href="../../plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
+    <link href="../../plugins/bootstrap-calendar/css/bootstrap_calendar.css" rel="stylesheet" />
+    <link href="../../plugins/gritter/css/jquery.gritter.css" rel="stylesheet">
     <link href="../../css/progress.css" rel="stylesheet" />
 
     <!-- ================== END PAGE LEVEL STYLE ================== -->
@@ -53,65 +55,6 @@
 
             <!-- begin header navigation right -->
             <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                    <a href="javascript:;" data-toggle="dropdown" class="dropdown-toggle f-s-14">
-                        <i class="fa fa-bell-o"></i>
-                        <span class="label">5</span>
-                    </a>
-                    <ul class="dropdown-menu media-list pull-right">
-                        <li class="dropdown-header">Notifications (5)</li>
-                        <li class="media">
-                            <a href="javascript:;">
-                                <div class="pull-left media-object bg-red"><i class="fa fa-bug"></i></div>
-                                <div class="media-body">
-                                    <h6 class="media-heading">Server Error Reports</h6>
-                                    <div class="text-muted">3 minutes ago</div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="media">
-                            <a href="javascript:;">
-                                <div class="pull-left"><img src="../../img/user.jpg" class="media-object" alt="" /></div>
-                                <div class="media-body">
-                                    <h6 class="media-heading">Bob</h6>
-                                    <p>Quisque pulvinar tellus sit amet sem scelerisque tincidunt.</p>
-                                    <div class="text-muted">25 minutes ago</div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="media">
-                            <a href="javascript:;">
-                                <div class="pull-left"><img src="../../img/user.jpg" class="media-object" alt="" /></div>
-                                <div class="media-body">
-                                    <h6 class="media-heading">Olivia</h6>
-                                    <p>Quisque pulvinar tellus sit amet sem scelerisque tincidunt.</p>
-                                    <div class="text-muted">35 minutes ago</div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="media">
-                            <a href="javascript:;">
-                                <div class="pull-left media-object bg-green"><i class="fa fa-plus"></i></div>
-                                <div class="media-body">
-                                    <h6 class="media-heading"> New User Registered</h6>
-                                    <div class="text-muted">1 hour ago</div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="media">
-                            <a href="javascript:;">
-                                <div class="pull-left media-object bg-blue"><i class="fa fa-envelope"></i></div>
-                                <div class="media-body">
-                                    <h6 class="media-heading"> New Email From John</h6>
-                                    <div class="text-muted">2 hour ago</div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="dropdown-footer text-center">
-                            <a href="javascript:;">View more</a>
-                        </li>
-                    </ul>
-                </li>
                 <li class="dropdown navbar-user">
                     <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
                         <img src="../../img/user.jpg" alt="" />
@@ -140,8 +83,40 @@
         <h1 class="page-header" id="store-name" style="margin-top:20px;">Store Name</h1>
         <!-- end page-header -->
         <!-- begin row -->
-        <div class="row m-t-20">
+        <div class="row">
             <div class="col-md-12">
+                <div class="panel panel-inverse">
+                    <div class="panel-heading">
+                        <div class="panel-heading-btn">
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                        </div>
+                        <h4 class="panel-title">Product List</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive col-md-10 col-md-offset-1">
+                            <table class="table table-hover display data-table" cellspacing="0" width="100%">
+                                <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Product</th>
+                                    <th>Category</th>
+                                    <th>Suggested Price ($)</th>
+                                    <th>Available Stock</th>
+                                </tr>
+                                </thead>
+                                <tbody id="tbl-products">
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!--end of panel-->
+            </div>
+        </div>
+        <div class="row m-t-20">
+            <div class="col-md-7">
                 <div class="panel panel-inverse">
                     <div class="panel-heading">
                         <div class="panel-heading-btn">
@@ -195,40 +170,23 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-5">
                 <div class="panel panel-inverse">
                     <div class="panel-heading">
                         <div class="panel-heading-btn">
                             <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
                             <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
                         </div>
-                        <h4 class="panel-title">Product List</h4>
+                        <h4 class="panel-title">Send Restocking Request</h4>
                     </div>
                     <div class="panel-body">
-                        <div class="table-responsive col-md-10 col-md-offset-1">
-                            <table class="table table-hover display data-table" cellspacing="0" width="100%">
-                                <thead>
-                                <tr>
-                                    <th>Code</th>
-                                    <th>Product</th>
-                                    <th>Category</th>
-                                    <th>Suggested Price ($)</th>
-                                    <th>Available Stock</th>
-                                </tr>
-                                </thead>
-                                <tbody id="tbl-products">
-
-                                </tbody>
-                            </table>
-                        </div>
+                        <div id="schedule-calendar" class="bootstrap-calendar"></div>
+                        <a class="btn btn-success pull-right" style="margin-top:20px;" onclick="showRequestModal()">Request Restocking</a>
                     </div>
                 </div>
-                <!--end of panel-->
             </div>
         </div>
+
 
 
         <div class="row">
@@ -288,10 +246,10 @@
                             <div class="col-md-10 col-md-offset-1">
                                 <table class="table table-hover">
                                     <thead>
-                                        <th></th>
-                                        <th>Product</th>
-                                        <th>Expiring Quantity</th>
-                                        <th>Expired Before Date</th>
+                                    <th></th>
+                                    <th>Product</th>
+                                    <th>Expiring Quantity</th>
+                                    <th>Expired Before Date</th>
                                     </thead>
                                     <tbody id="tbl-expiring">
                                     </tbody>
@@ -305,11 +263,33 @@
             </div>
 
         </div>
-        <!-- end row -->
-
-
-
     </div>
+    <!--end container-->
+    <div class="modal fade" tabindex="-1" role="dialog" id="requestModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Restocking Request</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <thead><th>Product</th><th>Request Quantity</th></thead>
+                        <tbody id="tbl-request"></tbody>
+                    </table>
+                    <div>
+                        <label>Message</label>
+                        <textarea class="form-control" id="message" placeholder="Leave your message here"></textarea>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="sendRequest()" >Send Request</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
     <a class="btn btn-default btn-icon btn-circle btn-ex-lg btn-fixed" id="btn-cashier">
         <span class="fa-stack">
             <i class="fa fa-square-o fa-stack-2x"></i>
@@ -342,7 +322,8 @@
 <!-- ================== BEGIN PAGE LEVEL JS ================== -->
 <script src="../../plugins/DataTables/js/jquery.dataTables.js"></script>
 <script src="../../plugins/powerange/powerange.min.js"></script>
-
+<script src="../../plugins/bootstrap-calendar/js/bootstrap_calendar.min.js"></script>
+<script src="../../plugins/gritter/js/jquery.gritter.js"></script>
 <script src="../../js/apps.min.js"></script>
 <!-- ================== END PAGE LEVEL JS ================== -->
 
@@ -353,6 +334,7 @@
         App.init();
         sliderInit();
         $('.data-table').dataTable();
+        handleScheduleCalendar();
 
     });
 
@@ -468,6 +450,71 @@
         });
         DB.returnProduct(items);
     }
+
+    function showRequestModal(){
+        fillModal();
+        $('#requestModal').modal('show');
+    }
+    function fillModal(){
+        for(var i = 0; i<products.length; i++){
+            var product = products[i];
+            var row = $('<tr id="'+product.id+'"></tr>');
+            row.append('<td class="item-name">'+product.name+'</td>');
+            row.append('<td><input type="number" min="0" value="0"/></td>');
+            $('#tbl-request').append(row);
+        }
+    }
+
+    function sendRequest(){
+        var requests = [];
+        $('#tbl-request').find('tr').each(function(){
+            var row = $(this);
+            var qty = row.find('input').val();
+            if(qty>0){
+                var item = row.find('.item-name').text();
+                var stock = row.attr('id');
+                requests.push({stock:stock, item:item, qty:qty});
+           }
+
+        });
+        var msg = $('#message').val();
+        DB.newRequest(requests,msg,id);
+    }
+    function handleScheduleCalendar(){
+        var e=["January","February","March","April","May","June","July","August","September","October","November","December"];
+        var t=["S","M","T","W","T","F","S"];
+        var n=new Date,r=n.getMonth()+1,i=n.getFullYear();
+        var s=[
+            ["25/"+r+"/"+i,"Dispatched day","#","#00acac",""],
+            ["28/"+r+"/"+i,"Estimated delivered day","#","#2d353c",""],
+            ["12/"+r+"/"+i,"Today","#","#b6c832",""]
+        ];
+        var o=$("#schedule-calendar");
+        $(o).calendar({months:e,days:t,events:s,tooltip_options:{placement:"top",html:true}});
+        $(o).find("td.event").each(
+                function(){var e=$(this).css("background-color");
+                    $(this).removeAttr("style");
+                    $(this).find("a").css("background-color",e)
+                });
+        $(o).find(".icon-arrow-left, .icon-arrow-right").parent().on("click",function(){$(o).find("td.event").each(function(){var e=$(this).css("background-color");$(this).removeAttr("style");$(this).find("a").css("background-color",e)})})
+    }
+
+
+    var feedback = alasql('SELECT * FROM request WHERE status = "Rejected" AND retail = ?',[id]);
+    for(var i = 0; i<feedback.length; i++){
+        var id = feedback[i].id;
+        $.gritter.add({
+            title:"Your restocking request has been rejected!",
+            text:"Feedback from central warehouse:<br>"+feedback[i].msg,
+            sticky:true,
+            time:"",
+            class_name:"my-sticky-class",
+            after_close:function(){
+                alasql('UPDATE request SET status = "READ" WHERE id = ?',[id]);
+            }
+        });
+    }
+
 </script>
 </body>
 </html>

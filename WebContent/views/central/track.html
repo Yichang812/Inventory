@@ -207,14 +207,13 @@
     });
 
     var records = DB.getAllRestock();
-    var steps = ['Collecting Products', 'Dispatched', 'Received'];
+    var steps = ['Waiting for Dispatching', 'Dispatched', 'Received'];
 
     if(records.length === 0){
         $('.row').toggleClass('hide');
     }else{
         for(var i = 0; i<records.length; i++){
             var record = records[i];
-            console.log(status[1]);
             var row = $('<tr></tr>');
             row.append('<td>'+record.ref+'</td>');
             row.append('<td>'+record.retail+'</td>');

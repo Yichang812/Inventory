@@ -125,8 +125,19 @@ DB.load = function() {
 			}
 		});
 
+    //request
+    alasql('DROP TABLE IF EXISTS request;');
+    alasql('CREATE TABLE request(id INT IDENTITY, stock STRING, item STRING, qty STRING, msg STRING, retail INT, status STRING);');
+    var prequest = alasql.promise('SELECT MATRIX * FROM CSV("../data/REQUEST-REQUEST.csv", {headers: true})').then(
+        function(requests) {
+            for (var i = 0; i < requests.length; i++) {
+                var request = requests[i];
+                alasql('INSERT INTO request VALUES(?,?,?,?,?,?,?);', request);
+            }
+        });
+
 	// Reload page
-	Promise.all([puser, pkind, ppkind, pitem, pretail, pstock, ptrans, pexpire, prestock, preceipt, pdead]).then(function() {
+	Promise.all([puser, pkind, ppkind, pitem, pretail, pstock, ptrans, pexpire, prestock, preceipt, pdead, prequest]).then(function() {
 		window.location.reload(true);
 	});
 };
@@ -225,7 +236,7 @@ DB.newTrans = function(trans,target){
         }
         if(qty<0){
             alert('OUT-OF-STOCK!');
-            return;
+            return false;
         }
 
     }
@@ -237,6 +248,7 @@ DB.newTrans = function(trans,target){
     //update the balance in stock table
     var sql = 'UPDATE stock SET balance = balance +('+trans.amount+') WHERE id = '+trans.stock;
     alasql(sql);
+    return true;
 };
 
 DB.newReceipt = function (type,operator,today){
@@ -278,8 +290,8 @@ DB.newRestock = function (restocks) {
         var ref = d + r;
         //if the ref does not exist, create a new restock ref
         if(refs.indexOf(ref)===-1){
-            var id = DB.getNextID('restock');
-            alasql('INSERT INTO restock VALUES (?,?,?,?,?)',[id,ref,today,0,null]);
+            var restock_id = DB.getNextID('restock');
+            alasql('INSERT INTO restock VALUES (?,?,?,?,?)',[restock_id,ref,today,0,null]);
             refs.push(ref);
         }
 
@@ -289,7 +301,7 @@ DB.newRestock = function (restocks) {
             r_qty : restock.amount,
             restock : ref
         };
-        DB.updateStock(record_r,restock.id);
+
 
         //update the stock of the central warehouse
         //add a new trans --> update the balance of central warehouse
@@ -299,7 +311,13 @@ DB.newRestock = function (restocks) {
             stock : central,
 			receipt : receipt
         };
-        DB.newTrans(record_c,restock.id);
+        if(DB.newTrans(record_c,restock.id)){
+            DB.updateStock(record_r,restock.id);
+        }else{
+            alasql('DELETE FROM receipt WHERE id = ?',[receipt]);
+            alasql('DELETE FROM restock WHERE id = ?',[restock_id]);
+        }
+
 
     }
 
@@ -318,6 +336,19 @@ DB.newSold = function (soldProducts) {
 	return {receipt: receipt, date: today};
 };
 
+DB.newRequest = function (requests,msg,retail){
+    var stock = requests[0].stock;
+    var qty = requests[0].qty;
+    var item = requests[0].item;
+    for(var i = 1; i<requests.length; i++){
+        var request = requests[i];
+        stock += "|"+request.stock;
+        item += "|"+request.item;
+        qty += "|"+request.qty;
+    }
+    var id = DB.getNextID('request');
+    alasql("INSERT INTO request VALUES (?,?,?,?,?,?,?)",[id, stock, item, qty, msg, retail, 'Pending']);
+};
 
 
 DB.getNextID = function(table){
@@ -453,6 +484,16 @@ DB.getAllRestock = function(retail){
         sql = sql + condition;
     }
     return alasql(sql);
+};
+
+DB.getAllPending = function(){
+    var requests = alasql('SELECT * FROM request WHERE status = "Pending"');
+    for(var i = 0; i<requests.length; i++){
+        var retail = requests[i].retail;
+        var name = alasql('SELECT name FROM retail WHERE id = ?',[retail])[0].name;
+        requests[i].retail = name;
+    }
+    return requests;
 };
 
 DB.getReceiptList = function(retail){
