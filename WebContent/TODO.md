@@ -3,10 +3,10 @@
 - [*] central warehouse receives the returning products
 - [ ] the system should no sell returning products 
 - [ ] set the max qty for cash register
-- [ ] calculate the safe stock automatically
-- [ ] restocking amount = 1.5* (avg(sold/day)*restocking duration)
+- [ ] function for user to return a particular item
+- [*] calculate the safe stock automatically | safe = 1.5* (avg(sold/day)*restocking duration)
+- [*] restocking amount = safe - balance
 - [ ] retailer can send emergency request for restocking
-- [ ] alert the central warehouse, when the stock of a retailer is lower than the safe stock
 - [ ] add confirm dialog when there is changes to db 
 
 

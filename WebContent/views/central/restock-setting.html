@@ -45,14 +45,7 @@
 
             <!-- begin header navigation right -->
             <ul class="nav navbar-nav navbar-right">
-                <!--<li>-->
-                    <!--<form class="navbar-form full-width">-->
-                        <!--<div class="form-group">-->
-                            <!--<input type="text" class="form-control" placeholder="Enter keyword" />-->
-                            <!--<button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>-->
-                        <!--</div>-->
-                    <!--</form>-->
-                <!--</li>-->
+
                 <li class="dropdown navbar-user">
                     <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
                         <img src="../../img/user.jpg" alt="" />
@@ -63,7 +56,7 @@
                         <li><a href="javascript:;">Edit Profile</a></li>
                         <li><a href="javascript:;">Setting</a></li>
                         <li class="divider"></li>
-                        <li><a href="../index.html" onclick="DB.logoutUser()">Log Out</a></li>
+                        <li><a href="../index.html">Log Out</a></li>
                     </ul>
                 </li>
             </ul>
@@ -93,7 +86,7 @@
             <!-- begin sidebar nav -->
             <ul class="nav">
 
-                <li class="active"><a href="central.html"><i class="fa fa-laptop"></i> <span>Dashboard</span></a></li>
+                <li><a href="central.html"><i class="fa fa-laptop"></i> <span>Dashboard</span></a></li>
                 <li class="has-sub">
                     <a href="javascript:;">
                         <b class="caret pull-right"></b>
@@ -117,7 +110,7 @@
                         <li><a href="store-form.html">New Store</a></li>
                     </ul>
                 </li>
-                <li class="has-sub">
+                <li class="has-sub active">
                     <a href="javascript:;">
                         <b class="caret pull-right"></b>
                         <i class="fa fa-truck"></i>
@@ -126,10 +119,9 @@
                     <ul class="sub-menu">
                         <li><a href="restock.html">Restock products</a></li>
                         <li><a href="track.html">Track delivery</a></li>
-                        <li><a href="restock-setting.html">Restock Setting</a></li>
+                        <li class="active"><a href="restock-setting.html">Restock Setting</a></li>
                     </ul>
                 </li>
-
                 <li><a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify"><i class="fa fa-angle-double-left"></i></a></li>
                 <!-- end sidebar minify button -->
             </ul>
@@ -142,39 +134,42 @@
 
     <!-- begin #content -->
     <div id="content" class="content">
-        <!-- begin page-header -->
-        <h1 class="page-header">Inventory Overview</h1>
-        <!-- end page-header -->
         <div class="row">
-            <div class="col-md-8">
-                <div class="panel panel-inverse">
-                    <div class="panel-heading">
-                        <div class="panel-heading-btn">
-                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-                        </div>
-                        <h4 class="panel-title">Returned Products</h4>
+            <div class="panel panel-inverse">
+                <div class="panel-heading">
+                    <div class="panel-heading-btn">
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
                     </div>
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-md-10 col-md-offset-1">
-                                <table class="table">
-                                    <thead>
-                                    <th>Retail Store</th>
-                                    <th>Product</th>
-                                    <th>Quantity</th>
-                                    </thead>
-                                    <tbody id="tbl-returned"></tbody>
-                                </table>
-                            </div>
+                    <h4 class="panel-title">Delivery Status</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table id="data-table" class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>Reference No.</th>
+                                <th>Retail Store</th>
+                                <th>Products</th>
+                                <th>Status</th>
+                                <th>Expected Delivery Date</th>
+                            </tr>
 
-                        </div>
-
-                        <div class="row col-md-11">
-                            <a class="btn btn-success pull-right" onclick="DB.handleDeadProduct()">Handled</a>
-                        </div>
+                            </thead>
+                            <tbody id="restock-records">
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="row hide">
+            <div class="jumbotron">
+                <div class="container">
+                    <h1>Good job!</h1>
+                    <p> All the restocking products have been delivered! </p>
+                </div>
+
             </div>
         </div>
 
@@ -194,13 +189,15 @@
 <script src="../../plugins/bootstrap/js/bootstrap.min.js"></script>
 <script src="../../plugins/slimscroll/jquery.slimscroll.min.js"></script>
 <script src="../../plugins/jquery-cookie/jquery.cookie.js"></script>
-
 <script src="../../lib/alasql.js"></script>
 <script src="../../lib/purl.js"></script>
 <script src="../../js/db.js"></script>
 <!-- ================== END BASE JS ================== -->
 
 <!-- ================== BEGIN PAGE LEVEL JS ================== -->
+<script src="../../plugins/DataTables/js/jquery.dataTables.js"></script>
+<script src="../../plugins/DataTables/js/dataTables.tableTools.js"></script>
+
 <script src="../../js/apps.min.js"></script>
 <!-- ================== END PAGE LEVEL JS ================== -->
 
@@ -209,15 +206,8 @@
         App.init();
     });
 
-    var deadProducts = DB.getDeadProduct();
-    for(var i =0;i<deadProducts.length; i++){
-        var product = deadProducts[i];
-        var row = $('<tr></tr>')
-        row.append('<td>'+product.retail+'</td>');
-        row.append('<td>'+product.item+'</td>');
-        row.append('<td>'+product.qty+'</td>');
-        $('#tbl-returned').append(row);
-    }
+
+
 </script>
 </body>
 </html>

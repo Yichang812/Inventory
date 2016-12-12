@@ -362,7 +362,6 @@ DB.getSafeStock = function(retail){
 		var first_day = alasql('COLUMN OF SELECT TOP 1 date FROM receipt ORDER BY date ASC')[0];
 		var diff = moment(first_day,'YYYY-MM-DD').diff(today,'days');
 		var safe_stock = Math.ceil((stock.total/diff)*30);
-
 		safeStocks[stock.id] = safe_stock;
 	}
 	return safeStocks;
@@ -370,7 +369,6 @@ DB.getSafeStock = function(retail){
 
 DB.getRestockInfo = function(retail){
 	var safeStocks = DB.getSafeStock(retail);
-
     var sql = 'SELECT stock.id, item.name AS item, retail.name AS retail, stock.balance ' +
         'FROM stock ' +
 		'JOIN item ON stock.item = item.id ' +
@@ -384,9 +382,7 @@ DB.getRestockInfo = function(retail){
 		var stock = stocks[i];
 		if(safeStocks[stock.id]){
 			stock.safe = safeStocks[stock.id];
-			stock.qty = stock.safe>stock.balance?(stock.safe-stock.balance):0;
 		}else{
-			stock.qty = 0;
 			stock.safe = 0;
 		}
 	}
@@ -735,8 +731,6 @@ DB.getDeadProduct = function(){
         'WHERE dead.handled = false';
     return alasql(sql);
 };
-
-
 
 DB.updateStock = function(record,stock){
     var keys = Object.keys(record);
