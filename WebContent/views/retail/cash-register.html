@@ -44,7 +44,8 @@
             <div class="col-md-12">
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="cash-register.html#manual" data-toggle="tab">Manual Update</a></li>
-                    <li class=""><a href="cash-register.html#qr" data-toggle="tab">Scan QR Codes</a></li>
+                    <li><a href="cash-register.html#qr" data-toggle="tab">Scan QR Codes</a></li>
+                    <li><a href="cash-register.html#return" data-toggle="tab">Return Product</a></li>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane fade active in" id="manual">
@@ -55,6 +56,7 @@
                                     <tr>
                                         <th>Product</th>
                                         <th>Price ($)</th>
+                                        <th>Available Qty</th>
                                         <th>Qty</th>
                                     </tr>
                                     </thead>
@@ -75,6 +77,31 @@
                                     <i class="fa fa-qrcode fa-stack-1x"></i>
                                 </span>
                             </a>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="return">
+                        <div class="row">
+                            <form class="form-inline">
+                                <div class="form-group">
+                                    <label for="receipt-no">Receipt Number</label>
+                                    <input type="text" class="form-control" id="receipt-no" placeholder="">
+                                </div>
+
+                                <button type="submit" class="btn btn-success">Search</button>
+                            </form>
+                        </div>
+                        <div class="row">
+                            <table class="table">
+                                <thead>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                    <th>Return Quantity</th>
+                                    <th>Comments</th>
+                                </thead>
+                                <tbody id="tbl-return">
+
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -166,6 +193,7 @@
 <!-- ================== END BASE JS ================== -->
 
 <!-- ================== BEGIN PAGE LEVEL JS ================== -->
+<script src="../../plugins/moment/moment.min.js"></script>
 <script src="../../js/apps.min.js"></script>
 <!-- ================== END PAGE LEVEL JS ================== -->
 
@@ -175,7 +203,7 @@
     });
     var id = parseInt($.url().param('id'));
 
-    var products = DB.getStocksOfRetail(id);
+    var products = DB.getReturnProducts(id);
     var tbody = $('#tbl-products');
 
     for (var i = 0; i < products.length; i++) {
@@ -183,6 +211,7 @@
         var tr = $('<tr id='+product.id+'></tr>');
         tr.append('<td>' + product.name + ' ('+product.size+' '+product.unit+')</td>');
         tr.append('<td>' + product.price + '</td>');
+        tr.append('<td>' + (product.balance - product.returnable) +'</td>');
         tr.append('<td><input type="number" min=0 class="form-control" value="0"/></td>');
         tr.appendTo(tbody);
     }
@@ -190,29 +219,45 @@
     function backHome() {
         window.location = "retail.html?id="+id;
     }
+
+
     function updateStock(){
         var soldQty = [];
         var soldProducts = [];
 
-        tbody.find('tr').each(function(){
+        var validate = true;
+        tbody.find('tr').each(function(index){
             var row = $(this);
             var stockId = row.attr('id');
             var qty = row.find('input').val();
-            soldQty.push(qty);
-            if(qty>0){
+            var available = products[index].balance - products[index].returnable;
+            if(qty<= available && qty>0){
+                soldQty.push(qty);
                 var record = {
                     stock : stockId,
                     amount : -qty
                 };
                 soldProducts.push(record);
+                console.log(record);
+            }else{
+                if(qty<0){
+                    row.addClass('danger');
+                    validate = false;
+                }else if(qty>available) {
+                    row.addClass('danger');
+                    validate = false;
+                }
             }
         });
-        var ref = DB.newSold(soldProducts);
-        $('#ref').text(ref.receipt);
-        $('#date').text(ref.date);
-        $('#receipt-modal').modal('show');
-        showReceipt(soldQty);
+        if(validate){
+            var ref = DB.newSold(soldProducts);
+            $('#ref').text(ref.receipt);
+            $('#date').text(ref.date);
+            $('#receipt-modal').modal('show');
+            showReceipt(soldQty);
+        }
     }
+
     function showReceipt(soldQty){
         var total = 0;
         for(var i = 0; i<soldQty.length; i++){

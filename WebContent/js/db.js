@@ -207,7 +207,9 @@ DB.newTrans = function(trans,target){
     if(qty<0){
         //if stock out
         //send out products that will be expired earlier
-        var records = alasql('SELECT * FROM expire WHERE stock = ? ORDER BY expiration ASC',[parseInt(trans.stock)]);
+        var returning = alasql('SELECT returning FROM item JOIN stock ON stock.item = item.id WHERE stock.id = ?',[parseInt(trans.stock)])[0].returning;
+        var returning_day = moment().add(returning,'d').format('YYYY-MM-DD');
+        var records = alasql('SELECT * FROM expire WHERE stock = ? AND expiration > ? ORDER BY expiration ASC',[parseInt(trans.stock),returning_day]);
         for(var i = 0; i<records.length; i++){
             var record = records[i];
             qty += record.qty;
@@ -731,6 +733,8 @@ DB.getDeadProduct = function(){
         'WHERE dead.handled = false';
     return alasql(sql);
 };
+
+
 
 DB.updateStock = function(record,stock){
     var keys = Object.keys(record);

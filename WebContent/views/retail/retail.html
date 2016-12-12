@@ -424,7 +424,6 @@
     for (var i = 0; i < products.length; i++) {
         var product = products[i];
         var tr = $('<tr id='+product.id+'></tr>');
-        console.log(product.balance, product.returnable);
         tr.append('<td><a data-href="product.html?id=' + product.id + '&retail='+id+'">' + product.code + '</a></td>');
         tr.append('<td>' + product.name + ' ('+product.size+' '+product.unit+')</td>');
         tr.append('<td>' + product.kind + '</td>');
