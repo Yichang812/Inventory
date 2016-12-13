@@ -20,6 +20,8 @@
     <!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
     <link href="../../plugins/DataTables/css/data-table.css" rel="stylesheet" />
     <link href="../../plugins/bootstrap-wizard/css/bwizard.min.css" rel="stylesheet" />
+    <link href="../../plugins/parsley/src/parsley.css" rel="stylesheet" />
+
     <!-- ================== END PAGE LEVEL STYLE ================== -->
 
     <!-- ================== BEGIN BASE JS ================== -->
@@ -202,7 +204,7 @@
                                 </div>
                             </div>
                             <div class="row" style="margin-top:20px;">
-                                <a class="btn btn-default" onclick="$('#wizard').bwizard('back');">&larr; Previous</a>
+                                <a class="btn btn-default" onclick="goBack()">&larr; Previous</a>
                                 <a class="btn btn-success pull-right" style="margin-right:10px;" onclick="sendRestock()">Confirm</a>
                             </div>
                         </div>
@@ -251,6 +253,7 @@
 <script src="../../plugins/DataTables/js/dataTables.buttons.js"></script>
 <script src="../../plugins/DataTables/js/buttons.html5.js"></script>
 
+<script src="../../plugins/parsley/dist/parsley.js"></script>
 <script src="../../plugins/bootstrap-wizard/js/bwizard.js" type="text/javascript"></script>
 
 <script src="../../js/apps.min.js"></script>
@@ -278,9 +281,10 @@
 
 
         $("#wizard").bwizard({
-                clickableSteps : false,
-                nextBtnText : '',
-                backBtnText : ''
+            clickableSteps : false,
+//            validating:function(e,t){if(t.index===0){return $('.amount').parsley().isValid({force:true})}},
+            nextBtnText : '',
+            backBtnText : ''
             }
         );
     });
@@ -295,7 +299,7 @@
         row.append('<td class="item">'+restock.item+'</td>');
         row.append('<td>'+safe+'</td>');
         row.append('<td>'+restock.balance+'</td>');
-        row.append('<td><input class="amount" name="'+restock.id+'" type="number" min="0" value="'+qty +'"/></td>');
+        row.append('<td><input class="amount form-control" name="'+restock.id+'" type="number" min="0" data-parsley-type="integer" data-parsley-min="0" value="'+qty +'" /></td>');
         $('#tbl-restock').append(row);
     }
 
@@ -306,7 +310,7 @@
         for(var i = 0; i<rows.length; i++){
             var input = amounts[i];
             var info = rows[i];
-            if(parseInt(input.value)!==0){
+            if(input.value!== '' && parseInt(input.value)!==0){
                 var record = {
                     id : input.name,
                     amount :input.value,
@@ -321,7 +325,6 @@
 
     function getSummary(){
         var rSummary = getRestockAmounts();
-        console.log(rSummary);
         for(var i=0; i<rSummary.length; i++){
             var record = rSummary[i];
             var row = $('<tr></tr>');
@@ -341,6 +344,10 @@
 
     }
 
+    function goBack(){
+        $('#wizard').bwizard('back');
+        $('#tbl-summary').empty();
+    }
 </script>
 </body>
 </html>

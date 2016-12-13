@@ -12,8 +12,15 @@
 - [x] creating a new store ADD: create a new user, ask for estimated delivery time
 - [x] deal with the dead stock in central warehouse
 - [x] restock setting
-- [x] retail store calendar **Cannot display event in further month**
+- [x] retail store calendar
 - [ ] marketing page, sales by category, a table contains sales report, add filter too
+
+
+### ISSUES
+- [x] restock <Back>
+- [ ] out of stock
+- [ ] delivery on same day
+- [x] safe stock 
 
 ### To be done after work:
 

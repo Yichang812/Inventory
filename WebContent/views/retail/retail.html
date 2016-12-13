@@ -384,7 +384,10 @@
     $(document).ready(function() {
         App.init();
         sliderInit();
-        $('.data-table').dataTable();
+        $('.data-table').dataTable({
+            "paging":false,
+            "info":false
+        });
         handleScheduleCalendar();
 
     });
@@ -535,8 +538,6 @@
         var today=new Date,d = today.getDate(),m=today.getMonth()+1,y=today.getFullYear();
         var s = DB.getRestockDates(10);
         s.push([d+"/"+m+"/"+y,"Today","#","#b6c832",""]);
-        console.log(s);
-
         var o=$("#schedule-calendar");
         $(o).calendar({events:s,tooltip_options:{placement:"top",html:true}});
         $(o).find("td.event").each(
@@ -562,7 +563,7 @@
             }
         });
     }
-    var COLLAPSED = false
+    var COLLAPSED = false;
     function toggleArrow(ele) {
         if(COLLAPSED){
             $(ele).find('i').removeClass('fa-chevron-up').addClass('fa-chevron-down');
