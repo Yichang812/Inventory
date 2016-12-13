@@ -1729,7 +1729,12 @@ Licensed under the BSD-2-Clause License.
         }
         return _results;
       }).call(this);
-      return this.redraw();
+      if(this.el && this.el.width()>0 && this.el.height() >0){
+        return this.redraw();
+      }else{
+        return null;
+      }
+
     };
 
     Donut.prototype.click = function(idx) {
@@ -1786,8 +1791,13 @@ Licensed under the BSD-2-Clause License.
 
     Donut.prototype.resizeHandler = function() {
       this.timeoutId = null;
-      this.raphael.setSize(this.el.width(), this.el.height());
-      return this.redraw();
+      if(this.el && this.el.width()>0 && this.el.height() >0){
+        this.raphael.setSize(this.el.width(), this.el.height());
+        return this.redraw();
+      }else{
+        return null;
+      }
+
     };
 
     return Donut;

@@ -94,9 +94,9 @@
                     <div class="hidden-sm hidden-xs">
                         <h5 class="m-t-20">Email</h5>
                         <ul class="nav nav-pills nav-stacked nav-inbox">
-                            <li><a href="test.html#growth" data-toggle="tab"><i class="fa fa-arrow-circle-up fa-fw m-r-5"></i>Sales Summary</a></li>
-                            <li class="active"><a href="test.html#topproduct" data-toggle="tab"><i class="fa fa-usd fa-fw m-r-5"></i> Top Selling Product</a></li>
-                            <li><a href="test.html#topshop" data-toggle="tab"><i class="fa fa-home fa-fw m-r-5"></i> Top Selling Retail Store</a></li>
+                            <li class="active"><a href="marketing.html#growth" data-toggle="tab"><i class="fa fa-arrow-circle-up fa-fw m-r-5"></i>Sales Summary</a></li>
+                            <li><a href="marketing.html#topproduct" data-toggle="tab"><i class="fa fa-usd fa-fw m-r-5"></i> Top Selling Product</a></li>
+                            <li><a href="marketing.html#topshop" data-toggle="tab"><i class="fa fa-home fa-fw m-r-5"></i> Top Selling Retail Store</a></li>
                         </ul>
                     </div>
                 </div>
@@ -104,7 +104,7 @@
                 <!-- begin col-10 -->
                 <div class="col-md-10">
                     <div class="tab-content email-content">
-                        <div class="tab-pane fade active in" id="topproduct">
+                        <div class="tab-pane fade" id="topproduct">
                             <div class="row m-top-30">
                                 <div class="collapse in" id="collapseExample">
                                     <div style="height:90px;">
@@ -171,8 +171,9 @@
 
 
                         </div>
-                        <div class="tab-pane fade" id="growth">
-                            <p>tab 2</p>
+                        <div class="tab-pane fade active in" id="growth">
+                            <h4 style="text-align: center">Sales By Categories</h4>
+                            <div id="donut-chart"></div>
                         </div>
                         <div class="tab-pane fade" id="topshop">
 
@@ -288,7 +289,7 @@
 <script>
     $(document).ready(function() {
         App.init();
-        slider1Init();
+        slider2Init();
         slider3Init();
         selectInit();
         $('.select').multipleSelect({
@@ -296,9 +297,9 @@
             multipleWidth:180,
             multiple: true
         });
-        applyRule1();
+        applyRule2();
         applyRule3();
-
+        chartInit1();
     });
 
     var COLLAPSED = true;
@@ -309,10 +310,10 @@
         items : [],
         duration: DB.getMonthPeriod()
     };
-
     var CHART3;
+    var CHART2;
 
-    function slider1Init (){
+    function slider2Init (){
         var maxMonth = DB.getMonthPeriod();
 
         var elem = document.querySelector('#topproduct-slider');
@@ -374,13 +375,35 @@
         }
     }
 
-    function chartInit1(item){
+    function chartInit1(){
+        var temp = DB.getCatReport();
+//        var temp = [{id:1,name:"Multivitamins",parent_id:1,total:-72},{id:2,name:"Test",parent_id:2,total:-21}];
+        var data = [];
+        var total = 0;
+        for(var i = 0; i<temp.length; i++){
+            var t = temp[i];
+            total += t.total;
+            data.push({label:t.name, value:t.total});
+        }
+        Morris.Donut({
+            element:"donut-chart",
+            data:data,
+            formatter:function(e){
+                var percent = Math.round(e/total*10000)/100;
+                return percent+"%"
+            },
+            resize:true,
+            colors:['#b6c832','#008a8a','#348fe2','#c47d15']
+        });
+    }
+
+    function chartInit2(item){
         $('#top-product-name').text(item);
         var data = DB.getSoldDetail(item,FILTER.stores,FILTER.duration);
         var ykeys = alasql('COLUMN OF SELECT id FROM retail WHERE id<>1');
         var labels = alasql('COLUMN OF SELECT name FROM retail WHERE id<>1');
         $('#top-product-chart').empty();
-        Morris.Bar({
+        CHART2 = Morris.Bar({
             element:"top-product-chart",
             data:data,
             xkey:"month",
@@ -416,7 +439,7 @@
             barColors:["#5da5e8","#3a92ab","#727cb6","#348fe2","#00acac","#f59c1a"]})
     }
 
-    function applyRule1(){
+    function applyRule2(){
         FILTER.kinds = $('#cat').val();
         FILTER.stores = $('#store').val();
         FILTER.duration = $('#topproduct-slider').val();
@@ -425,13 +448,13 @@
         table.empty();
         for(var i =0; i<data.length; i++){
             var d = data[i];
-            var row = $('<tr onclick="showDetails1(this)"></tr>');
+            var row = $('<tr onclick="showDetails2(this)"></tr>');
             row.append('<td class="email-select"><a data-click="email-select-single"><i class="fa fa-square-o fa-fw"></i></a></td>');
             row.append('<td>'+d.item+'</td>');
             row.append('<td>'+d.qty+'</td>');
             table.append(row);
         }
-        chartInit1(data[0].item);
+        chartInit2(data[0].item);
     }
 
     function applyRule3(){
@@ -449,10 +472,8 @@
             row.append('<td>'+d.qty+'</td>');
             table.append(row);
         }
-        console.log(data);
         chartInit3(data[0].retail);
     }
-
 
     function toggleArrow(ele) {
         if(COLLAPSED){
@@ -464,10 +485,10 @@
         }
     }
 
-    function showDetails1(ele){
+    function showDetails2(ele){
         var item = $(ele).find('td:eq(1)').text();
         $('#top-product-name').text(item);
-        chartInit1(item);
+        chartInit2(item);
     }
 
     function showDetails3(ele){
@@ -477,9 +498,10 @@
     }
 
    $('ul.nav a').on('shown.bs.tab',function(e){
+       CHART2.redraw();
+       CHART2.width = 658;
        CHART3.redraw();
        CHART3.width = 658;
-       console.log(CHART3);
 
    })
 </script>

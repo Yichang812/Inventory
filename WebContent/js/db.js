@@ -761,7 +761,6 @@ DB.getRetailSoldDetail = function(retail,items,period){
             }
         }
     }
-    console.log(result);
     return result;
 };
 
@@ -783,6 +782,20 @@ DB.getDeadProduct = function(){
     return alasql(sql);
 };
 
+DB.getCatReport = function (){
+	var sql = 'SELECT SUM(trans.qty) AS total, pkind.* ' +
+		'FROM trans ' +
+		'JOIN receipt ON trans.receipt = receipt.id ' +
+		'JOIN stock ON trans.stock = stock.id ' +
+		'JOIN item ON item.id = stock.item ' +
+		'JOIN kind ON item.kind = kind.id ' +
+		'JOIN pkind ON kind.parent_id = pkind.id ' +
+		'WHERE stock.retail <>1 ' +
+		'AND receipt.type = "Sold" ' +
+		'GROUP BY kind.parent_id';
+
+	return alasql(sql);
+};
 
 
 DB.updateStock = function(record,stock){
@@ -878,3 +891,4 @@ DB.logoutUser = function(){
 	alasql('UPDATE user SET login = false WHERE name = ?',[user]);
 	localStorage.removeItem('loginUser');
 };
+
