@@ -136,8 +136,19 @@ DB.load = function() {
             }
         });
 
+	//setting
+	alasql('DROP TABLE IF EXISTS setting;');
+	alasql('CREATE TABLE setting(id INT IDENTITY, factor FLOAT, duration INT, start DATE);');
+	var psetting = alasql.promise('SELECT MATRIX * FROM CSV("../data/SETTING-SETTING.csv", {headers: true})').then(
+		function(settings) {
+			for (var i = 0; i < settings.length; i++) {
+				var setting = settings[i];
+				alasql('INSERT INTO setting VALUES(?,?,?,?);', setting);
+			}
+		});
+
 	// Reload page
-	Promise.all([puser, pkind, ppkind, pitem, pretail, pstock, ptrans, pexpire, prestock, preceipt, pdead, prequest]).then(function() {
+	Promise.all([puser, pkind, ppkind, pitem, pretail, pstock, ptrans, pexpire, prestock, preceipt, pdead, prequest, psetting]).then(function() {
 		window.location.reload(true);
 	});
 };
@@ -359,6 +370,20 @@ DB.newRetailUser = function(){
 };
 
 
+
+DB.getRestockDates = function(n){
+	var setting = alasql('SELECT start, duration FROM setting')[0];
+	var result = [];
+	var start = moment(setting.start,'YYYY-MM-DD').format('DD/MM/YYYY');
+	for(var i = 0; i<n; i++){
+		var date = moment(start,'DD/MM/YYYY').add(setting.duration,'days').format('DD/MM/YYYY');
+		result.push([date,"Restocking day","#","#00acac",""]);
+		start = date;
+	}
+	return(result);
+	// return([["29/01/2017","Restocking day","#","#00acac",""]]);
+};
+
 DB.getNextID = function(table){
     return alasql('COLUMN OF SELECT MAX(id)+1 AS id FROM '+table)[0];
 };
@@ -385,7 +410,7 @@ DB.getProductHistory = function(id){
 };
 
 DB.getSafeStock = function(retail){
-
+	var setting = alasql('SELECT factor, duration FROM setting')[0];
 	var safeStocks = [];
 	var sql = 'SELECT stock.*, SUM(trans.qty) AS total ' +
 		'FROM stock ' +
@@ -402,7 +427,7 @@ DB.getSafeStock = function(retail){
 		var stock = stocks[i];
 		var first_day = alasql('COLUMN OF SELECT TOP 1 date FROM receipt ORDER BY date ASC')[0];
 		var diff = moment(first_day,'YYYY-MM-DD').diff(today,'days');
-		var safe_stock = Math.ceil((stock.total/diff)*30);
+		var safe_stock = Math.ceil((stock.total/diff)*setting.duration* setting.factor);
 		safeStocks[stock.id] = safe_stock;
 	}
 	return safeStocks;
@@ -797,6 +822,10 @@ DB.getCatReport = function (){
 	return alasql(sql);
 };
 
+
+DB.updateSetting = function(setting){
+	alasql('UPDATE setting SET factor =?, duration =?, start = ?',[setting.factor, setting.dur, setting.start]);
+};
 
 DB.updateStock = function(record,stock){
     var keys = Object.keys(record);

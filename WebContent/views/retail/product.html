@@ -118,12 +118,28 @@
                             <td id="price"></td>
                         </tr>
                         <tr>
-                            <th>Current Stock</th>
+                            <th>
+                                <a data-toggle="collapse" href="#stock-detail-panel" aria-expanded="false" aria-controls="collapseExample" style="color:#707478;">Current Stock
+                                    <i class="fa fa-chevron-down"></i>
+                            </a>
+                            </th>
                             <td id="cur-stock"></td>
                         </tr>
                         </tbody>
                     </table>
+                    <div class="row">
 
+                        <div class="collapse" id="stock-detail-panel">
+                            <div class="col-md-8">
+                                <table class="table">
+                                    <thead>
+                                    <tr><th>Quantity</th><th>Expiration Date</th></tr>
+                                    </thead>
+                                    <tbody id="store-stock-records">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                 </div>
             </div>
         </div>
@@ -138,31 +154,8 @@
                         <h4 class="panel-title">Inventory Level History</h4>
                     </div>
                     <div class="panel-body">
-                        <h4 class="text-center">Inventory Level in Central Warehouse</h4>
+                        <h4 class="text-center">Stock Level History</h4>
                         <div id="central-inventory-chart" class="height-sm"></div>
-                    </div>
-
-                </div>
-            </div>
-            <div class="col-md-5">
-                <div class="panel panel-inverse">
-                    <div class="panel-heading">
-                        <div class="panel-heading-btn">
-                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
-                        </div>
-                        <h4 class="panel-title">Stock of <span class="name"></span></h4>
-                    </div>
-                    <div class="panel-body">
-                        <div class="table-responsive">
-                            <table id="data-table" class="table table-bordered table-hover">
-                                <thead>
-                                <tr style="background-color: #ecf0f1"><th>Expiration Date</th><th>Stock</th></tr>
-                                </thead>
-                                <tbody id="store-stock-records">
-                                </tbody>
-                            </table>
-                        </div>
                     </div>
 
                 </div>
@@ -236,7 +229,7 @@
     var stocks = DB.getProductExpiration(id);
     for(var i = 0; i<stocks.length; i++){
         var stock = stocks[i];
-        var row = $('<tr><td>'+stock.expiration+'</td><td>'+stock.qty+'</td></tr>');
+        var row = $('<tr><td>'+stock.qty+'</td><td>'+stock.expiration+'</td></tr>');
         $('#store-stock-records').append(row);
     }
 

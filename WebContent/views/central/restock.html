@@ -285,11 +285,10 @@
         );
     });
 
-
     var restocks = DB.getRestockInfo();
     for(var i = 0; i<restocks.length; i++){
         var restock = restocks[i];
-        var safe = Math.ceil(1.5*restock.safe);
+        var safe = Math.ceil(restock.safe);
         var qty = safe>restock.balance?(safe-restock.balance):0;
         var row = $('<tr class="stock-records"></tr>');
         row.append('<td class="retail">'+restock.retail+'</td>');
@@ -333,8 +332,6 @@
         }
         $("#wizard").bwizard('next');
     }
-
-
 
     function sendRestock(){
 

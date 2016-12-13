@@ -532,16 +532,13 @@
         DB.newRequest(requests,msg,id);
     }
     function handleScheduleCalendar(){
-        var e=["January","February","March","April","May","June","July","August","September","October","November","December"];
-        var t=["S","M","T","W","T","F","S"];
-        var n=new Date,r=n.getMonth()+1,i=n.getFullYear();
-        var s=[
-            ["25/"+r+"/"+i,"Dispatched day","#","#00acac",""],
-            ["28/"+r+"/"+i,"Estimated delivered day","#","#2d353c",""],
-            ["12/"+r+"/"+i,"Today","#","#b6c832",""]
-        ];
+        var today=new Date,d = today.getDate(),m=today.getMonth()+1,y=today.getFullYear();
+        var s = DB.getRestockDates(10);
+        s.push([d+"/"+m+"/"+y,"Today","#","#b6c832",""]);
+        console.log(s);
+
         var o=$("#schedule-calendar");
-        $(o).calendar({months:e,days:t,events:s,tooltip_options:{placement:"top",html:true}});
+        $(o).calendar({events:s,tooltip_options:{placement:"top",html:true}});
         $(o).find("td.event").each(
                 function(){var e=$(this).css("background-color");
                     $(this).removeAttr("style");

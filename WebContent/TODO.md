@@ -6,13 +6,13 @@
 - [x] central warehouse receives the returning products
 - [x] the system should no sell returning products 
 - [x] set the max qty for cash register
-- [x] calculate the safe stock automatically | safe = 1.5* (avg(sold/day)*restocking duration)
+- [x] calculate the safe stock automatically 
 - [x] restocking amount = safe - balance | the balance should be available stock 
 - [x] retailer can send emergency request for restocking
 - [x] creating a new store ADD: create a new user, ask for estimated delivery time
 - [x] deal with the dead stock in central warehouse
-- [ ] restock setting
-- [ ] retail store calendar
+- [x] restock setting
+- [x] retail store calendar **Cannot display event in further month**
 - [ ] marketing page, sales by category, a table contains sales report, add filter too
 
 ### To be done after work:

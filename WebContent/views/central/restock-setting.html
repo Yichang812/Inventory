@@ -18,6 +18,8 @@
     <!-- ================== END BASE CSS STYLE ================== -->
 
     <!-- ================== BEGIN BASE JS ================== -->
+    <link href="../../plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
+
     <script src="../../plugins/pace/pace.min.js"></script>
     <!-- ================== END BASE JS ================== -->
 </head>
@@ -141,25 +143,49 @@
                         <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
                         <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
                     </div>
-                    <h4 class="panel-title">Delivery Status</h4>
+                    <h4 class="panel-title">Restock Settings</h4>
                 </div>
                 <div class="panel-body">
-                    <div class="table-responsive">
-                        <table id="data-table" class="table table-hover">
-                            <thead>
-                            <tr>
-                                <th>Reference No.</th>
-                                <th>Retail Store</th>
-                                <th>Products</th>
-                                <th>Status</th>
-                                <th>Expected Delivery Date</th>
-                            </tr>
+                    <div class="col-md-10 col-md-offset-1">
+                        <div class="note note-info">
+                            <h3>The calculation of restocking amount</h3>
+                            <p><strong>Restocking amount</strong> = safe stock - current stock </p>
+                            <p><strong>Safe stock</strong> = safe stock factor * (average sold quantity per day * restocking duration)</p>
+                        </div>
+                        <form class="form-horizontal">
 
-                            </thead>
-                            <tbody id="restock-records">
-                            </tbody>
-                        </table>
+                            <div class="form-group p-r-15">
+                                <label for="safeInput" class="col-sm-2 control-label">Safe Stock Factor</label>
+                                <div class="input-group col-sm-10" id="safeInput">
+                                    <input type="number" step="0.1", min="0" name="safe" class="form-control" value="1.5" disabled/>
+                                </div>
+
+                            </div>
+                            <div class="form-group p-r-15">
+                                <label for="freInput" class="col-sm-2 control-label">Restocking Duration</label>
+                                <div class="input-group" id="freInput">
+                                    <input type="number" min="0" name="frequency" class="form-control" value="30" disabled/>
+                                    <span class="input-group-addon">Days</span>
+                                </div>
+
+                            </div>
+                            <div class="form-group p-r-15">
+                                <label for="startInput" class="col-sm-2 control-label">Expiration Date:</label>
+
+                                <div class="input-group date" id="startInput" data-date-format="yyyy-mm-dd" data-date-start-date="-5d">
+                                    <input type="text" name="start" class="form-control" placeholder="Select Date" disabled/>
+                                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                </div>
+
+                            </div>
+
+                            <a class="btn btn-success disabled pull-right" id="btn-apply" onclick="updateSetting()">Apply</a>
+                            <a class="btn btn-white m-r-20 pull-right" onclick="enableEidt()"> Edit</a>
+
+
+                        </form>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -195,8 +221,7 @@
 <!-- ================== END BASE JS ================== -->
 
 <!-- ================== BEGIN PAGE LEVEL JS ================== -->
-<script src="../../plugins/DataTables/js/jquery.dataTables.js"></script>
-<script src="../../plugins/DataTables/js/dataTables.tableTools.js"></script>
+<script src="../../plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 
 <script src="../../js/apps.min.js"></script>
 <!-- ================== END PAGE LEVEL JS ================== -->
@@ -204,10 +229,31 @@
 <script>
     $(document).ready(function() {
         App.init();
+        $('#startInput').datepicker({todayHighlight:true,autoclose:true});
     });
 
+    var safeInput = $('input[name="safe"]');
+    var freInput = $('input[name="frequency"]');
+    var startInput = $('input[name="start"]');
+    var applyBtn = $('#btn-apply');
 
+    function enableEidt() {
 
+        safeInput.prop('disabled', false);
+        freInput.prop('disabled', false);
+        startInput.prop('disabled',false);
+        applyBtn.toggleClass('disabled');
+    }
+
+    function updateSetting(){
+        safeInput.prop('disabled', true);
+        freInput.prop('disabled', true);
+        startInput.prop('disabled',true);
+        applyBtn.toggleClass('disabled');
+
+        //if the inputs are validate
+        DB.updateSetting({factor:safeInput.val(),dur:freInput.val(),start:startInput.val()});
+    }
 </script>
 </body>
 </html>
