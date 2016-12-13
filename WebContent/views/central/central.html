@@ -251,21 +251,39 @@
     $(document).ready(function() {
         App.init();
         requestInit();
+        pageInit();
     });
 
-    var deadProducts = DB.getDeadProduct();
-    if(deadProducts.length===0){
-        $('#panel-dead').toggleClass('hide');
+
+    function pageInit (){
+        var returnProducts = DB.getReturnProducts(1);
+        var temp = [];
+        for(var i = 0; i<returnProducts.length; i++){
+            var product = returnProducts[i];
+
+            if(product.returnable!==0){
+                temp.push({id:product.id,qty:product.returnable,expire:product.expire});
+            }
+            if(i===(returnProducts.length-1)){
+                DB.returnProduct(temp);
+                var deadProducts = DB.getDeadProduct();
+
+                if(deadProducts.length===0){
+                    $('#panel-dead').toggleClass('hide');
+                }else{
+                    for(var t =0;t<deadProducts.length; t++){
+                        var dead = deadProducts[t];
+                        var row = $('<tr></tr>');
+                        row.append('<td>'+dead.retail+'</td>');
+                        row.append('<td>'+dead.item+'</td>');
+                        row.append('<td>'+dead.qty+'</td>');
+                        $('#tbl-returned').append(row);
+                    }
+                }
+            }
+        }
     }
 
-    for(var i =0;i<deadProducts.length; i++){
-        var product = deadProducts[i];
-        var row = $('<tr></tr>')
-        row.append('<td>'+product.retail+'</td>');
-        row.append('<td>'+product.item+'</td>');
-        row.append('<td>'+product.qty+'</td>');
-        $('#tbl-returned').append(row);
-    }
 
     var requests = DB.getAllPending();
     if(requests.length===0){

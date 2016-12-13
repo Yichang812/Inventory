@@ -828,7 +828,6 @@ DB.returnProduct = function(items){
     for(var i = 0; i<items.length; i++){
         var item = items[i];//item.id should be stock id
         //update balance of the retail
-        console.log(item);
         var id = DB.getNextID('trans');
         //insert a new transaction record
         alasql('INSERT INTO trans VALUES (?,?,?,?)',[id,item.id,(-item.qty),receipt]);

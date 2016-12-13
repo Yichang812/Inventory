@@ -8,7 +8,7 @@
 - [*] retailer can send emergency request for restocking
 - [ ] add confirm dialog when there is changes to db 
 - [ ] creating a new store ADD: create a new user, ask for estimated delivery time
-- [ ] deal with the dead stock in central warehouse
+- [*] deal with the dead stock in central warehouse
 - [ ] restock setting
 
 ===
