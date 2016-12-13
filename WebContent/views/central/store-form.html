@@ -252,8 +252,11 @@
                         <div class="wizard-step-3">
                             <div class="jumbotron m-b-0 text-center">
                                 <h2>The store is create successfully!</h2>
-                                <p>You can check the inventory information of this store at <a href="store-list.html">Store List</a> page.</p>
-
+                                <p>To log into the retail store page, use the following information: <br>
+                                    <strong>Username: </strong><span id="username"></span><br>
+                                    <strong>Password: </strong><span id="password"></span>
+                                </p>
+                                <p><small>You can check the inventory information of this store at <a href="store-list.html">Store List</a> page.</small></p>
                             </div>
                         </div>
                         <!-- end wizard step-3 -->
@@ -318,10 +321,10 @@
 
     function showSummary() {
 
-         record.name = nameInput.val();
-         record.addr = addrInput.val();
-         record.city = cityInput.val();
-         record.tel = telInput.val();
+        record.name = nameInput.val();
+        record.addr = addrInput.val();
+        record.city = cityInput.val();
+        record.tel = telInput.val();
 
         $('#name').text(record.name);
         $('#addr').text(record.addr);
@@ -332,6 +335,9 @@
 
     function createStore() {
         DB.newStore(record);
+        var userInfo = DB.newRetailUser();
+        $('#username').text(userInfo.username);
+        $('#password').text(userInfo.password);
         $("#wizard").bwizard('next');
     }
 

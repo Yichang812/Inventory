@@ -350,6 +350,14 @@ DB.newRequest = function (requests,msg,retail){
     alasql("INSERT INTO request VALUES (?,?,?,?,?,?,?)",[id, stock, item, qty, msg, retail, 'Pending']);
 };
 
+DB.newRetailUser = function(){
+	var id = DB.getNextID('user');
+	var r_id = DB.getNextID('retail');
+	var temp = "retailer"+r_id;
+	alasql('INSERT INTO user VALUES (?,?,?,?,?,?)',[id,temp,temp+temp,3,false,r_id]);
+	return({username:temp,password:(temp+temp)});
+};
+
 
 DB.getNextID = function(table){
     return alasql('COLUMN OF SELECT MAX(id)+1 AS id FROM '+table)[0];

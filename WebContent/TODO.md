@@ -7,9 +7,11 @@
 - [*] restocking amount = safe - balance | the balance should be available stock 
 - [*] retailer can send emergency request for restocking
 - [ ] add confirm dialog when there is changes to db 
-- [ ] creating a new store ADD: create a new user, ask for estimated delivery time
+- [*] creating a new store ADD: create a new user, ask for estimated delivery time
 - [*] deal with the dead stock in central warehouse
 - [ ] restock setting
+- [ ] retail store calendar
+- [ ] marketing page
 
 ===
 - [ ] function for user to return a particular item
