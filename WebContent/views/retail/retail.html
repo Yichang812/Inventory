@@ -22,6 +22,7 @@
     <link href="../../plugins/powerange/powerange.min.css" rel="stylesheet" />
     <link href="../../plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
     <link href="../../plugins/bootstrap-calendar/css/bootstrap_calendar.css" rel="stylesheet" />
+    <link href="../../plugins/bootstrap-table-expandable/css/bootstrap-table-expandable.css" rel="stylesheet"/>
     <link href="../../plugins/gritter/css/jquery.gritter.css" rel="stylesheet">
     <link href="../../css/progress.css" rel="stylesheet" />
 
@@ -126,7 +127,7 @@
                         <h4 class="panel-title">Send Restocking Request</h4>
                     </div>
                     <div class="panel-body">
-                        <a class="btn btn-success pull-right" style="margin-top:20px;" onclick="showRequestModal()">Request Restocking</a>
+                        <a class="btn btn-warning pull-right" style="margin-top:20px;" onclick="showRequestModal()">Request Restocking</a>
                         <div id="schedule-calendar" class="bootstrap-calendar"></div>
                         <div class="pull-right">
                             <h5>
@@ -136,48 +137,18 @@
                             </h5>
                         </div>
 
-                        <div class="collapse" id="track">
+                        <div class="collapse in" id="track">
                             <div class="row">
                                 <div class="col-md-10 col-md-offset-1">
                                     <ol class="progtrckr" data-progtrckr-steps="3">
-                                        <li class="progtrckr-todo">Restocking Order Placed</li>
-                                        <li class="progtrckr-todo">Dispatched</li>
-                                        <li class="progtrckr-todo">Delivered</li>
+                                        <li class="tracker progtrckr-todo">Restocking Order Placed</li>
+                                        <li class="tracker progtrckr-todo">Dispatched</li>
+                                        <li class="tracker progtrckr-todo">Delivered</li>
                                     </ol>
                                 </div>
                             </div>
                             <div class="row" style="margin-top:50px;">
-
-                                <div class="col-md-4 col-md-offset-1">
-                                    <p><strong>Reference No : </strong><span id="restock-ref"></span></p>
-                                    <p><strong>Expected Date : </strong><span id="restock-date"></span></p>
-                                    <p><strong>Restocking Product Details: </strong></p>
-                                </div>
-                            </div>
-                            <div class="row" style="margin-top:10px;">
-                                <div class="col-md-10 col-md-offset-1">
-                                    <div class="table-responsive">
-
-                                        <table class="table table-hover display" cellspacing="0" width="100%">
-                                            <thead>
-                                            <tr>
-                                                <th>Code</th>
-                                                <th>Product</th>
-                                                <th>Quantity</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody id="tbl-restocking">
-
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="row" style="margin-top:20px;">
-                                <div class="col-md-10 col-md-offset-1">
-                                    <a class="btn btn-success pull-right" style="margin-left:10px;" onclick="received()">Received</a>
-                                </div>
+                                <div class="panel-group" id="accordion"></div>
                             </div>
                         </div>
                     </div>
@@ -321,6 +292,7 @@
 <script src="../../plugins/DataTables/js/jquery.dataTables.js"></script>
 <script src="../../plugins/powerange/powerange.min.js"></script>
 <script src="../../plugins/bootstrap-calendar/js/bootstrap_calendar.min.js"></script>
+<script src="../../plugins/bootstrap-table-expandable/js/bootstrap-table-expandable.js"></script>
 <script src="../../plugins/gritter/js/jquery.gritter.js"></script>
 <script src="../../js/apps.min.js"></script>
 <!-- ================== END PAGE LEVEL JS ================== -->
@@ -336,6 +308,7 @@
             "info":false
         });
         handleScheduleCalendar();
+        updateTrack(1);
 
     });
 
@@ -382,31 +355,61 @@
         },1000);
     }
 
-    var restocks = DB.getAllRestock(id);
-    //diff restock 'id'
-
-    for(var i = 0; i<restocks.length; i++){
-        var restock = restocks[i];
-
+    var data = DB.getAllRestock(id);
+    var restocks = {};
+    for(var i = 0; i<data.length; i++){
+        var d = data[i];
+        if(restocks[d.id]){
+            restocks[d.id].push(d);
+        }else{
+            restocks[d.id] = [d];
+        }
     }
 
 
-    for(var i = 0; i < restocks.length; i++){
-        var restock = restocks[i];
-        if(i === 0){
-            $('#restock-ref').text(restock.ref);
-            $('#restock-date').text(restock.expect);
-            $('.progtrckr-todo').each(function(index){
-                if(index<=restock.status){
-                    $(this).addClass('progtrckr-done').removeClass('progtrckr-todo');
-                }
-            });
+    var COUNT = 1;
+    for(var record in restocks){
+        var restock = restocks[record];
+        var accordion = $('<div class="panel panel-default overflow-hidden" style="margin-top:0;"></div>');
+        var head;
+        var panel;
+        if(COUNT === 1){
+            head = $('<div class="panel-heading" id="accordion-heading"><h3 class="panel-title">' +
+                    '<a class="accordion-toggle accordion-toggle-styled" data-toggle="collapse" onclick="updateTrack('+record+')" data-parent="#accordion" href="#restock'+ record +'">' +
+                    '<i class="fa fa-minus-circle pull-right"></i>' +
+                    'Restock #'+COUNT+
+                    ' (Expected Date: '+restock[0].expect+')</a></h3></div>');
+            accordion.append(head);
+            panel = $('<div id="restock'+record+'" class="panel-collapse collapse in"></div>');
+
+        }else{
+            head = $('<div class="panel-heading" id="accordion-heading"><h3 class="panel-title">' +
+                    '<a class="accordion-toggle accordion-toggle-styled" data-toggle="collapse" onclick="updateTrack('+record+')" data-parent="#accordion" href="#restock'+ record +'">' +
+                    '<i class="fa fa-plus-circle pull-right"></i>' +
+                    'Restock #'+COUNT+
+                    '</a></h3></div>');
+            accordion.append(head);
+            panel = $('<div id="restock'+record+'" class="panel-collapse collapse"></div>');
         }
-        var row = $('<tr></tr>');
-        row.append('<td>'+ restock.code +'</td>');
-        row.append('<td>'+ restock.item +'</td>');
-        row.append('<td>'+ restock.qty +'</td>');
-        $('#tbl-restocking').append(row);
+
+        var body = $('<div class="panel-body"></div>');
+        var table = $('<table class="table display" cellspacing="0" width="100%"><thead><tr><th>Code</th><th>Product</th><th>Quantity</th></tr></thead></table>');
+        var tb = $('<tbody></tbody>');
+        for(var i = 0; i<restock.length; i++){
+            var d = restock[i];
+            var row = $('<tr></tr>');
+            row.append('<td>'+ d.code +'</td>');
+            row.append('<td>'+ d.item +'</td>');
+            row.append('<td>'+ d.qty +'</td>');
+            tb.append(row);
+        }
+        table.append(tb);
+        body.append(table);
+        body.append('<div class="row" style="margin-top:20px;"> <div class="col-md-12"> <a class="btn btn-info pull-right" onclick="received('+record+')">Received</a> </div> </div>');
+        panel.append(body);
+        accordion.append(panel);
+        $('#accordion').append(accordion);
+        COUNT++;
     }
 
 
@@ -441,11 +444,22 @@
         window.open('cash-register.html?id='+id);
     });
 
-    function received (){
+    function received (id){
         DB.receiveRestock(id);
         location.reload();
     }
 
+    function updateTrack(id){
+        var status = restocks[id][0].status;
+        console.log(id, restocks,status);
+        $('.tracker').each(function(index){
+            if(index<=status){
+                $(this).addClass('progtrckr-done').removeClass('progtrckr-todo');
+            }else{
+                $(this).addClass('progtrckr-todo').removeClass('progtrckr-done');
+            }
+        });
+    }
 
     function returnProduct(){
         var items = [];

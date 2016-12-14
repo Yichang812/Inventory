@@ -18,8 +18,7 @@
 
 ### ISSUES
 - [x] restock <Back>
-- [ ] out of stock
-- [ ] delivery on same day
+- [x] delivery on same day
 - [x] safe stock 
 - [ ] restock when something is out of stock //handle in front end
 

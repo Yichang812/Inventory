@@ -267,6 +267,46 @@
 
     }
 
+
+
+//    ============================================
+    var COUNT = 1;
+    for(var record in restocks){
+        var restock = restocks[record];
+        var accordion = $('<div class="panel panel-info overflow-hidden"></div>');
+        var head = $('<div class="panel-heading"><h3 class="panel-title">' +
+                '<a class="accordion-toggle accordion-toggle-styled" data-toggle="collapse" data-parent="#accordion" href="ui_tabs_accordions.html#restock'+ record +'">' +
+                '<i class="fa fa-plus-circle pull-right"></i>' +
+                'Restock #'+COUNT+
+                '</a></h3></div>');
+        accordion.append(head);
+        var panel;
+        if(COUNT === 1){
+            panel = $('<div id="restock'+record+'" class="panel-collapse collapse in"></div>');
+        }else{
+            panel = $('<div id="restock'+record+'" class="panel-collapse collapse"></div>');
+        }
+
+        var body = $('<div class="panel-body"></div>');
+        var table = $('<table class="table display" cellspacing="0" width="100%"><thead><tr><th>Code</th><th>Product</th><th>Quantity</th></tr></thead></table>');
+        var tb = $('<tbody></tbody>');
+        for(var i = 0; i<restock.length; i++){
+            var d = restock[i];
+            var row = $('<tr></tr>');
+            row.append('<td>'+ d.code +'</td>');
+            row.append('<td>'+ d.item +'</td>');
+            row.append('<td>'+ d.qty +'</td>');
+            tb.append(row);
+        }
+        table.append(tb);
+        body.append(table);
+        body.append('<div class="row" style="margin-top:20px;"> <div class="col-md-10 col-md-offset-1"> <a class="btn btn-info pull-right" style="margin-left:10px;" onclick="received()">Received</a> </div> </div>');
+        panel.append(body);
+        accordion.append(panel);
+        $('#accordion').append(accordion);
+        COUNT++;
+    }
+
 </script>
 </body>
 </html>

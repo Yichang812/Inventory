@@ -6524,3 +6524,10 @@ a{
 svg{
   width:100% !important;
 }
+
+
+#accordion-heading{
+  /*border-bottom:1px solid #e2e7eb;*/
+  border-top: 1px solid #e2e7eb;
+  background:#ffffff !important;
+}
