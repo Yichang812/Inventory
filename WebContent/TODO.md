@@ -20,12 +20,13 @@
 - [x] restock <Back>
 - [x] delivery on same day
 - [x] safe stock 
-- [ ] restock when something is out of stock //handle in front end
+- [x] restock when something is out of stock //handle in front end
 
 ### To be done after work:
 
 - [ ] more data
 - [ ] add confirm dialog when there is changes to db 
+- [ ] alert warehouse staff if the stock is not enough for restocking
 
 
 ### Optional Functions

@@ -18,6 +18,8 @@
     <!-- ================== END BASE CSS STYLE ================== -->
 
     <!-- ================== BEGIN BASE JS ================== -->
+    <link href="../../plugins/bootstrap-calendar/css/bootstrap_calendar.css" rel="stylesheet" />
+
     <script src="../../plugins/pace/pace.min.js"></script>
     <!-- ================== END BASE JS ================== -->
 </head>
@@ -145,6 +147,22 @@
         <!-- begin page-header -->
         <h1 class="page-header">Inventory Overview</h1>
         <!-- end page-header -->
+        <div class="row">
+            <div class="col-md-5">
+                <div class="panel panel-inverse">
+                    <div class="panel-heading">
+                        <div class="panel-heading-btn">
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                        </div>
+                        <h4 class="panel-title">Restocking Calendar</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div id="schedule-calendar" class="bootstrap-calendar"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row" id="panel-dead">
             <div class="col-md-8">
                 <div class="panel panel-inverse">
@@ -197,7 +215,6 @@
             </div>
         </div>
         <!--end row-->
-        <a class="btn btn-default" onclick="$('#feedbackModal').modal('show')">Show</a>
     </div>
     <!-- end #content -->
     <div class="modal fade" tabindex="-1" role="dialog" id="feedbackModal">
@@ -243,6 +260,8 @@
 <!-- ================== END BASE JS ================== -->
 
 <!-- ================== BEGIN PAGE LEVEL JS ================== -->
+<script src="../../plugins/bootstrap-calendar/js/bootstrap_calendar.min.js"></script>
+
 <script src="../../plugins/moment/moment.min.js"></script>
 <script src="../../js/apps.min.js"></script>
 <!-- ================== END PAGE LEVEL JS ================== -->
@@ -252,6 +271,7 @@
         App.init();
         requestInit();
         pageInit();
+        handleScheduleCalendar();
     });
 
 
@@ -337,9 +357,11 @@
 
         });
         DB.newRestock(restocks);
-        alasql('UPDATE request SET status = "Approved" WHERE id = ?',[r_id]);
+        alasql('UPDATE request SET status = "Approved" WHERE id = ?',[parseInt(r_id)]);
         location.reload();
     }
+
+
     function rejectRequest() {
         var msg = $('textarea[name="msg"]').val();
         var sql = 'UPDATE request SET status = "Rejected", msg = "'+msg+'" WHERE id = ' + request_id;
@@ -350,6 +372,20 @@
     function showModal(ele){
         $('#feedbackModal').modal('show');
         request_id = $(ele).attr('data-content');
+    }
+
+    function handleScheduleCalendar(){
+        var today=new Date,d = today.getDate(),m=today.getMonth()+1,y=today.getFullYear();
+        var s = DB.getRestockDates(10);
+        s.push([d+"/"+m+"/"+y,"Today","#","#b6c832",""]);
+        var o=$("#schedule-calendar");
+        $(o).calendar({events:s,tooltip_options:{placement:"top",html:true}});
+        $(o).find("td.event").each(
+                function(){var e=$(this).css("background-color");
+                    $(this).removeAttr("style");
+                    $(this).find("a").css("background-color",e)
+                });
+        $(o).find(".icon-arrow-left, .icon-arrow-right").parent().on("click",function(){$(o).find("td.event").each(function(){var e=$(this).css("background-color");$(this).removeAttr("style");$(this).find("a").css("background-color",e)})})
     }
 
 

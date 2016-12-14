@@ -312,7 +312,7 @@ DB.newRestock = function (restocks) {
     var res;
     for(var i = 0; i<restocks.length; i++){
         var record = restocks[i];
-        var r = alasql('COLUMN OF SELECT id FROM retail WHERE name =?',[restock.retail])[0];
+        var r = alasql('COLUMN OF SELECT id FROM retail WHERE name =?',[record.retail])[0];
         var ref = d + r + '0';
         if(refs.indexOf(ref)===-1){
             var restock_id = DB.getNextID('restock');
@@ -335,13 +335,13 @@ DB.newRestock = function (restocks) {
 
         //update the stock of the central warehouse
         //add a new trans --> update the balance of central warehouse
-        var central = alasql('SELECT stock.id FROM stock JOIN item ON item.id = stock.item WHERE item.name = ? AND stock.retail = 1',[restock.item])[0].id;
+        var central = alasql('SELECT stock.id FROM stock JOIN item ON item.id = stock.item WHERE item.name = ? AND stock.retail = 1',[record.item])[0].id;
         var record_c = {
-            amount : (0-restock.amount),
+            amount : (0-record.amount),
             stock : central,
 			receipt : receipt
         };
-        DB.newTrans(record_c,restock.id);
+        DB.newTrans(record_c,record.id);
     }
 
 };
@@ -447,7 +447,7 @@ DB.getSafeStock = function(retail){
 
 DB.getRestockInfo = function(retail){
 	var safeStocks = DB.getSafeStock(retail);
-    var sql = 'SELECT stock.id, item.name AS item, retail.name AS retail, stock.balance, delivery.qty as delivering ' +
+    var sql = 'SELECT stock.id, item.code, item.name AS item, retail.name AS retail, stock.balance, delivery.qty as delivering ' +
         'FROM stock ' +
 		'JOIN item ON stock.item = item.id ' +
         'JOIN retail ON stock.retail = retail.id ' +

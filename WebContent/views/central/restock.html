@@ -20,7 +20,6 @@
     <!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
     <link href="../../plugins/DataTables/css/data-table.css" rel="stylesheet" />
     <link href="../../plugins/bootstrap-wizard/css/bwizard.min.css" rel="stylesheet" />
-    <link href="../../plugins/parsley/src/parsley.css" rel="stylesheet" />
 
     <!-- ================== END PAGE LEVEL STYLE ================== -->
 
@@ -190,7 +189,7 @@
                                 </div>
                             </div>
                             <div class="row" style="margin-top:20px;">
-                                <a class="btn btn-success pull-right" style="margin-right:10px;" onclick="getSummary()">Summary →</a>
+                                <a class="btn btn-success pull-right" id="btn-summary" style="margin-right:10px;" onclick="getSummary()">Summary →</a>
                             </div>
                         </div>
                         <!--end wizard step-1-->
@@ -254,7 +253,6 @@
 <script src="../../plugins/DataTables/js/dataTables.buttons.js"></script>
 <script src="../../plugins/DataTables/js/buttons.html5.js"></script>
 
-<script src="../../plugins/parsley/dist/parsley.js"></script>
 <script src="../../plugins/bootstrap-wizard/js/bwizard.js" type="text/javascript"></script>
 
 <script src="../../js/apps.min.js"></script>
@@ -265,7 +263,7 @@
     var rows;
     $(document).ready(function() {
         App.init();
-
+        $('[data-toggle="tooltip"]').tooltip();
         table = $("#data-table").DataTable( {
             dom: 'Bfrtip',
             buttons: [
@@ -283,12 +281,19 @@
 
         $("#wizard").bwizard({
             clickableSteps : false,
-//            validating:function(e,t){if(t.index===0){return $('.amount').parsley().isValid({force:true})}},
             nextBtnText : '',
             backBtnText : ''
             }
         );
     });
+
+    var COUNT ={};
+    var AVAILABLE = {};
+    var stocks = DB.getReturnProducts(1);
+    for(var i = 0; i<stocks.length; i++){
+        var stock = stocks[i];
+        AVAILABLE[(stock.code).toString()] = stock.balance - stock.returnable;
+    }
 
     var restocks = DB.getRestockInfo();
     for(var i = 0; i<restocks.length; i++){
@@ -302,10 +307,48 @@
         row.append('<td>'+safe+'</td>');
         row.append('<td>'+restock.balance+'</td>');
         row.append('<td>'+restock.delivering + '</td>');
-        row.append('<td><input class="amount form-control" name="'+restock.id+'" type="number" min="0" data-parsley-type="integer" data-parsley-min="0" value="'+qty +'" /></td>');
+        row.append('<td><input class="amount form-control" name="'+restock.id+'" data-content="'+restock.code+'" type="number" min="0" data-toggle="tooltip" value="'+qty +'" /></td>');
+        if(COUNT.hasOwnProperty(restock.code)){
+            COUNT[restock.code] += qty;
+        }else{
+            COUNT[restock.code] = qty;
+        }
         $('#tbl-restock').append(row);
     }
 
+
+    $('input').on('focusin', function(){
+        $(this).data('val', $(this).val());
+    });
+
+    $('input').on('change', function(){
+        var prev = $(this).data('val');
+        var current = $(this).val();
+        var item = $(this).attr('data-content').toString();
+        var qty = parseInt(current-prev);
+        COUNT[item] += qty;
+    });
+    $('input').on('focus',function(){
+        var item = $(this).attr('data-content').toString();
+        var ava = AVAILABLE[item]-COUNT[item];
+        if(ava<0){
+            $(this).attr('data-original-title', 'The stock is NOT ENOUGH')
+                    .tooltip('fixTitle')
+                    .tooltip('show');
+        }else{
+            $(this).attr('data-original-title', 'Stock left: ' + ava )
+                    .tooltip('fixTitle')
+                    .tooltip('show');
+        }
+
+    });
+
+    function checkStock(){
+        for(var item in COUNT){
+            if(AVAILABLE[item]<COUNT[item]) return false;
+        }
+        return true;
+    }
     function getRestockAmounts() {
         $('.dt-button').click();
         var amounts = table.$('input').serializeArray();
@@ -327,16 +370,22 @@
     }
 
     function getSummary(){
-        var rSummary = getRestockAmounts();
-        for(var i=0; i<rSummary.length; i++){
-            var record = rSummary[i];
-            var row = $('<tr></tr>');
-            row.append('<td class="retail">'+record.retail+'</td>');
-            row.append('<td class="item">'+record.item+'</td>');
-            row.append('<td class="amount">'+record.amount+'</td>');
-            $('#tbl-summary').append(row);
+
+        if(checkStock()){
+            var rSummary = getRestockAmounts();
+            for(var i=0; i<rSummary.length; i++){
+                var record = rSummary[i];
+                var row = $('<tr></tr>');
+                row.append('<td class="retail">'+record.retail+'</td>');
+                row.append('<td class="item">'+record.item+'</td>');
+                row.append('<td class="amount">'+record.amount+'</td>');
+                $('#tbl-summary').append(row);
+            }
+            $("#wizard").bwizard('next');
+        }else{
+            alert('Please adjust the restocking amount!');
         }
-        $("#wizard").bwizard('next');
+
     }
 
     function sendRestock(){

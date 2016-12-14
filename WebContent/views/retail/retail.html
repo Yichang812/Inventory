@@ -168,7 +168,7 @@
                             <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
                             <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
                         </div>
-                        <h4 class="panel-title">Send Restocking Request</h4>
+                        <h4 class="panel-title">Restocking Calendar</h4>
                     </div>
                     <div class="panel-body">
                         <a class="btn btn-warning pull-right" style="margin:20px 0 20px 0;" onclick="showRequestModal()">Request Restocking</a>
@@ -434,9 +434,11 @@
         fillModal();
         $('#requestModal').modal('show');
     }
+    var r_Products = DB.getStocksOfRetail(id);
     function fillModal(){
-        for(var i = 0; i<products.length; i++){
-            var product = products[i];
+        $('#tbl-request').empty();
+        for(var i = 0; i<r_Products.length; i++){
+            var product = r_Products[i];
             var row = $('<tr id="'+product.id+'"></tr>');
             row.append('<td class="item-name">'+product.name+'</td>');
             row.append('<td><input type="number" min="0" value="0"/></td>');
