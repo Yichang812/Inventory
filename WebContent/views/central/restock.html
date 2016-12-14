@@ -179,6 +179,7 @@
                                             <th>Product</th>
                                             <th>Safe Stock</th>
                                             <th>Current Stock</th>
+                                            <th>Delivering Amount</th>
                                             <th>Restocking Amount</th>
                                         </tr>
                                         </thead>
@@ -293,12 +294,14 @@
     for(var i = 0; i<restocks.length; i++){
         var restock = restocks[i];
         var safe = Math.ceil(restock.safe);
-        var qty = safe>restock.balance?(safe-restock.balance):0;
+        var total = restock.balance + restock.delivering;
+        var qty = safe>total?(safe-total):0;
         var row = $('<tr class="stock-records"></tr>');
         row.append('<td class="retail">'+restock.retail+'</td>');
         row.append('<td class="item">'+restock.item+'</td>');
         row.append('<td>'+safe+'</td>');
         row.append('<td>'+restock.balance+'</td>');
+        row.append('<td>'+restock.delivering + '</td>');
         row.append('<td><input class="amount form-control" name="'+restock.id+'" type="number" min="0" data-parsley-type="integer" data-parsley-min="0" value="'+qty +'" /></td>');
         $('#tbl-restock').append(row);
     }

@@ -21,6 +21,7 @@
 - [ ] out of stock
 - [ ] delivery on same day
 - [x] safe stock 
+- [ ] restock when something is out of stock //handle in front end
 
 ### To be done after work:
 

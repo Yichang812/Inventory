@@ -149,77 +149,25 @@
             </div>
             <div class="panel-body" style="min-height:500px;">
                 <div class="row">
-                    <div class="col-md-1 pull-right">
-                        <a data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample" onclick="toggleArrow()">Filter
-                            <i id="icon-arrow" class="fa fa-chevron-down"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="collapse" id="collapseExample">
-                        <form class="form-inline">
-                            <!--<div class="form-group col-md-1"></div>-->
-                            <div class="form-group m-r-10 col-md-3">
-                                <label for="cat">Categories</label>
-                                <select class="select" id="cat" multiple="multiple">
-                                </select>
+                    <div class="panel-group" id="accordion">
+                        <div class="panel panel-inverse overflow-hidden">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">
+                                    <a class="accordion-toggle accordion-toggle-styled" data-toggle="collapse" data-parent="#accordion" href="ui_tabs_accordions.html#collapseOne">
+                                        <i class="fa fa-plus-circle pull-right"></i>
+                                        Collapsible Group Item #1
+                                    </a>
+                                </h3>
                             </div>
-                            <!--<div class="form-group col-md-1"></div>-->
-                            <div class="form-group m-r-10 col-md-3">
-                                <label for="store">Stores</label>
-                                <select class="select" id="store" multiple="multiple">
-                                </select>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="slider-wrapper">
-                                    <div style="margin-bottom: 10px;">
-                                        Period : <span id="slider-value"></span> days
-                                    </div>
-                                    <input type="text" data-render="powerange-slider" id="month-slider" />
+                            <div id="collapseOne" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
                                 </div>
                             </div>
-                            <div class="col-md-1">
-                                <a class="btn btn-sm btn-success" style="margin-top:12px;" onclick="applyRule()">Apply</a>
-                            </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
                 <!--end row-->
-                <div class="row">
-                    <div class="col-md-5 m-l-40 m-t-30">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr class="success">
-                                    <th colspan="3">Top Selling Products</th>
-                                </tr>
-                                <tr>
-                                    <th>Product</th><th>Sold Qty</th><th>Details</th>
-                                </tr>
-                            </thead>
-
-                            <tbody id="tbl-top-selling">
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="col-md-5 col-md-offset-1 m-t-30">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr class="info">
-                                    <th colspan="3">Top Grossing Products</th>
-                                </tr>
-                                <tr>
-                                    <th>Product</th><th>Sold Qty</th><th>Details</th></thead>
-                                </tr>
-                            </thead>
-
-                            <tbody id="">
-                            </tbody>
-                        </table>
-                    </div>
-
-                </div>
-
-
             </div>
         </div>
     </div>

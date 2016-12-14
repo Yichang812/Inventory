@@ -64,12 +64,12 @@ DB.load = function() {
 
 	// Stock
 	alasql('DROP TABLE IF EXISTS stock;');
-	alasql('CREATE TABLE stock(id INT IDENTITY, item INT, retail INT, safe INT, balance INT, expire DATE, restock STRING, r_qty INT);');
+	alasql('CREATE TABLE stock(id INT IDENTITY, item INT, retail INT, safe INT, balance INT, expire DATE, restock STRING);');
 	var pstock = alasql.promise('SELECT MATRIX * FROM CSV("../data/STOCK-STOCK.csv", {headers: true})').then(
 			function(stocks) {
 				for (var i = 0; i < stocks.length; i++) {
 					var stock = stocks[i];
-					alasql('INSERT INTO stock VALUES(?,?,?,?,?,?,?,?);', stock);
+					alasql('INSERT INTO stock VALUES(?,?,?,?,?,?,?);', stock);
 				}
 			});
 
@@ -149,8 +149,19 @@ DB.load = function() {
 			}
 		});
 
+    //Delivery
+    alasql('DROP TABLE IF EXISTS delivery;');
+    alasql('CREATE TABLE delivery(id INT IDENTITY, restock INT, stock INT, qty INT);');
+    var pdelivery = alasql.promise('SELECT MATRIX * FROM CSV("../data/DELIVERY-DELIVERY.csv", {headers: true})').then(
+        function(deliveries) {
+            for (var i = 0; i < deliveries.length; i++) {
+                var delivery = deliveries[i];
+                alasql('INSERT INTO delivery VALUES(?,?,?,?);', delivery);
+            }
+        });
+
 	// Reload page
-	Promise.all([puser, pkind, ppkind, pitem, pretail, pstock, ptrans, pexpire, prestock, preceipt, pdead, prequest, psetting]).then(function() {
+	Promise.all([puser, pkind, ppkind, pitem, pretail, pstock, ptrans, pexpire, prestock, preceipt, pdead, prequest, psetting, pdelivery]).then(function() {
 		window.location.reload(true);
 	});
 };
@@ -298,24 +309,28 @@ DB.newRestock = function (restocks) {
 	var today = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();
     var refs = alasql('COLUMN OF SELECT ref FROM restock');
 	var receipt = DB.newReceipt('Restock','Alice',today);
+    var res;
     for(var i = 0; i<restocks.length; i++){
-
-        var restock = restocks[i];
+        var record = restocks[i];
         var r = alasql('COLUMN OF SELECT id FROM retail WHERE name =?',[restock.retail])[0];
-        var ref = d + r;
-        //if the ref does not exist, create a new restock ref
+        var ref = d + r + '0';
         if(refs.indexOf(ref)===-1){
             var restock_id = DB.getNextID('restock');
-            alasql('INSERT INTO restock VALUES (?,?,?,?,?)',[restock_id,ref,today,0,null]);
+            res = alasql('INSERT INTO restock VALUES (?,?,?,?,?)',[restock_id,ref,today,0,null]);
             refs.push(ref);
+            var delivery_id = DB.getNextID('delivery');
+            res = alasql('INSERT INTO delivery VALUES (?,?,?,?)',[delivery_id,restock_id,record.id,record.amount]);
+        }else{
+            var temp = alasql('COLUMN OF SELECT id, qty FROM delivery WHERE stock = ?',[parseInt(record.id)]);
+            if(temp.length===0){
+                var delivery_id = DB.getNextID('delivery');
+                var restock_id = alasql('SELECT id FROM restock WHERE ref = ?',[ref])[0].id;
+                alasql('INSERT INTO delivery VALUES (?,?,?,?)',[delivery_id,restock_id,record.id,record.amount]);
+            }else{
+                var q = parseInt(temp[0].qty)+parseInt(record.amount);
+                alasql('UPDATE delivery SET qty = ? WHERE id = ?',[q,temp[0].id]);
+            }
         }
-
-        //update stock of the retail
-        //the balance does NOT change, r_qty changes
-        var record_r = {
-            r_qty : restock.amount,
-            restock : ref
-        };
 
 
         //update the stock of the central warehouse
@@ -326,14 +341,7 @@ DB.newRestock = function (restocks) {
             stock : central,
 			receipt : receipt
         };
-        if(DB.newTrans(record_c,restock.id)){
-            DB.updateStock(record_r,restock.id);
-        }else{
-            alasql('DELETE FROM receipt WHERE id = ?',[receipt]);
-            alasql('DELETE FROM restock WHERE id = ?',[restock_id]);
-        }
-
-
+        DB.newTrans(record_c,restock.id);
     }
 
 };
@@ -374,7 +382,7 @@ DB.newRetailUser = function(){
 };
 
 
-
+//used by calendars in retailer page
 DB.getRestockDates = function(n){
 	var setting = alasql('SELECT start, duration FROM setting')[0];
 	var result = [];
@@ -385,7 +393,6 @@ DB.getRestockDates = function(n){
 		start = date;
 	}
 	return(result);
-	// return([["29/01/2017","Restocking day","#","#00acac",""]]);
 };
 
 DB.getNextID = function(table){
@@ -430,7 +437,6 @@ DB.getSafeStock = function(retail){
 	for(var i = 0; i<stocks.length; i++){
 		var stock = stocks[i];
 		var first_day = alasql('COLUMN OF SELECT TOP 1 date FROM receipt ORDER BY date ASC')[0];
-        console.log(first_day);
 		var diff = moment(first_day,'YYYY-MM-DD').diff(today,'days');
 
 		var safe_stock = Math.ceil((stock.total/diff)*setting.duration* setting.factor);
@@ -441,10 +447,11 @@ DB.getSafeStock = function(retail){
 
 DB.getRestockInfo = function(retail){
 	var safeStocks = DB.getSafeStock(retail);
-    var sql = 'SELECT stock.id, item.name AS item, retail.name AS retail, stock.balance ' +
+    var sql = 'SELECT stock.id, item.name AS item, retail.name AS retail, stock.balance, delivery.qty as delivering ' +
         'FROM stock ' +
 		'JOIN item ON stock.item = item.id ' +
         'JOIN retail ON stock.retail = retail.id ' +
+        'LEFT JOIN delivery ON stock.id = delivery.stock ' +
         'WHERE stock.retail <> 1';
     if(retail){
 		sql += ' AND stock.retail = '+retail;
@@ -452,6 +459,9 @@ DB.getRestockInfo = function(retail){
     var stocks = alasql(sql);
 	for(var i = 0; i<stocks.length; i ++){
 		var stock = stocks[i];
+        if(!stock.delivering){
+            stock.delivering = 0;
+        }
 		if(safeStocks[stock.id]){
 			stock.safe = safeStocks[stock.id];
 		}else{
@@ -507,21 +517,23 @@ DB.getAllKinds = function () {
 	return alasql('SELECT name, id FROM kind');
 };
 
+
+//used to track restocking info
 DB.getAllRestock = function(retail){
-    var sql = 'SELECT restock.*, item.name as item, item.code as code, retail.name as retail, stock.r_qty as qty ' +
+    var sql = 'SELECT restock.*, item.name as item, item.code as code, retail.name as retail, delivery.qty as qty ' +
         'FROM restock ' +
-        'JOIN stock ON restock.ref = stock.restock ' +
-        'JOIN retail ON stock.retail = retail.id ' +
-        'JOIN item ON stock.item = item.id ';
+        'JOIN delivery ON delivery.restock = restock.id ' +
+        'JOIN stock ON delivery.stock = stock.id ' +
+        'JOIN item ON stock.item = item.id ' +
+        'JOIN retail ON stock.retail = retail.id';
     var condition = '';
     if(retail){
-        condition = 'WHERE stock.retail = '+retail;
-        sql = sql + condition;
+        condition = ' WHERE stock.retail = '+retail;
 
     }else if(retail === 0){
-        condition = 'WHERE restock.status = 0 ';
-        sql = sql + condition;
+        condition = ' WHERE restock.status = 0 ';
     }
+    sql += condition;
     return alasql(sql);
 };
 
@@ -850,29 +862,32 @@ DB.updateStock = function(record,stock){
 DB.dispatchRestock = function(ref,days){
     var today = alasql('SELECT date FROM restock WHERE ref = ?',[ref])[0].date;
     var expect = moment(today,'YYYY-MM-DD').add(parseInt(days),'day').format('YYYY-MM-DD');
-    alasql('UPDATE restock SET status = 1, expect = ? WHERE ref = ?',[expect,ref]);
+    alasql('UPDATE restock SET status = 1, expect = ?, ref = ? WHERE ref = ?',[expect,ref.replace(/\w$/,'1'),ref]);
 };
 
 DB.receiveRestock = function(retail){
-    var stocks = alasql('SELECT id, restock, r_qty, balance FROM stock WHERE retail = ? AND restock<>0',[retail]);
+    var sql ='SELECT stock.id as stock, stock.balance, delivery.qty, delivery.restock as restock, delivery.id as delivery ' +
+        'FROM delivery ' +
+        'JOIN stock ON delivery.stock = stock.id ' +
+        'WHERE stock.retail = ?';
+    var stocks = alasql(sql,[retail]);
     var date  = new Date();
     var today = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();
 
 
     for(var i = 0 ; i< stocks.length; i++){
         var record = stocks[i];
-        alasql('UPDATE stock SET restock = 0, r_qty = 0 WHERE id = ?',[record.id]);
-        alasql('UPDATE restock SET status = 2 WHERE ref = ?',[record.restock]);
-        alasql('UPDATE expire SET received = true WHERE stock = ?',[record.id]);
+
+        alasql('DELETE FROM delivery WHERE id = ?',[record.delivery]);
+        alasql('DELETE FROM restock WHERE id = ?',[record.restock]);
+        alasql('UPDATE expire SET received = true WHERE stock = ?',[record.stock]);
 
         var receipt = DB.newReceipt('Received','Bob',today);
         var trans = {
-            amount : record.r_qty,
-            stock : record.id,
+            amount : record.qty,
+            stock : record.stock,
             receipt : receipt
         };
-        console.log(trans);
-
         DB.newTrans(trans);
     }
 };
