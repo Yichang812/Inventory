@@ -171,7 +171,7 @@
                         <h4 class="panel-title">Restocking Calendar</h4>
                     </div>
                     <div class="panel-body">
-                        <a class="btn btn-warning pull-right" style="margin:20px 0 20px 0;" onclick="showRequestModal()">Request Restocking</a>
+                        <a class="btn btn-success pull-right" style="margin:20px 0 20px 0;" onclick="showRequestModal()">Request Restocking</a>
                         <div id="schedule-calendar" class="bootstrap-calendar"></div>
                         <div id="toggle-track">
                             <h5>
@@ -357,7 +357,7 @@
                     '<a class="accordion-toggle accordion-toggle-styled" data-toggle="collapse" onclick="updateTrack('+record+')" data-parent="#accordion" href="#restock'+ record +'">' +
                     '<i class="fa fa-plus-circle pull-right"></i>' +
                     'Restock #'+COUNT+
-                    '</a></h3></div>');
+                    ' (Expected Date: '+restock[0].expect+')</a></h3></div>');
             accordion.append(head);
             panel = $('<div id="restock'+record+'" class="panel-collapse collapse"></div>');
         }
@@ -463,7 +463,7 @@
     }
     function handleScheduleCalendar(){
         var today=new Date,d = today.getDate(),m=today.getMonth()+1,y=today.getFullYear();
-        var s = DB.getRestockDates(10);
+        var s = DB.getRestockDates(100);
         s.push([d+"/"+m+"/"+y,"Today","#","#b6c832",""]);
         var o=$("#schedule-calendar");
         $(o).calendar({events:s,tooltip_options:{placement:"top",html:true}});

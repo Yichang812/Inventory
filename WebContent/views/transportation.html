@@ -53,7 +53,7 @@
                     <input type="number" min="0" class="form-control" id="expect" placeholder="Expected days to delivery the products" />
                 </div>
                 <div>
-                    <a class="btn btn-success btn-block" onclick="dispatch()">Dispatched</a>
+                    <a class="btn btn-success btn-block text-white" onclick="dispatch()">Dispatched</a>
                 </div>
 
             </form>
@@ -104,7 +104,7 @@
         var ref = $('#restock-ref').val();
         var days = $('#expect').val();
         DB.dispatchRestock(ref,days);
-//        location.reload();//refresh page
+        location.reload();//refresh page
     }
 
 

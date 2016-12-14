@@ -385,10 +385,11 @@ DB.newRetailUser = function(){
 //used by calendars in retailer page
 DB.getRestockDates = function(n){
 	var setting = alasql('SELECT start, duration FROM setting')[0];
-	var result = [];
+
 	var start = moment(setting.start,'YYYY-MM-DD').format('D/M/YYYY');
+	result = [[start,"Start Date","#","#5da5e8",""]];
 	for(var i = 0; i<n; i++){
-		var date = moment(start,'D/M/YYYY').add(setting.duration,'days').format('D/M/YYYY');
+		var date = moment(start,'D/M/YYYY').add(parseInt(setting.duration),'days').format('D/M/YYYY');
 		result.push([date,"Restocking day","#","#00acac",""]);
 		start = date;
 	}
