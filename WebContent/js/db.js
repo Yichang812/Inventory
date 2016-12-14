@@ -892,28 +892,27 @@ DB.receiveRestock = function(retail){
     }
 };
 
-DB.returnProduct = function(items){
+DB.returnProduct = function(retail){
+    var items = DB.getReturnProducts(retail);
     var date  = new Date();
     var today = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();
     var receipt = DB.newReceipt('Return expiring products','Bob',today);
     for(var i = 0; i<items.length; i++){
-        var item = items[i];//item.id should be stock id
-        //update balance of the retail
-        var id = DB.getNextID('trans');
-        //insert a new transaction record
-        alasql('INSERT INTO trans VALUES (?,?,?,?)',[id,item.id,(-item.qty),receipt]);
+        var item = items[i];
+        if(item.returnable>0){
+            var id = DB.getNextID('trans');
+            alasql('INSERT INTO trans VALUES (?,?,?,?)',[id,item.id,(-item.returnable),receipt]);
 
-        //update the balance in stock table
-        var sql = 'UPDATE stock SET balance = balance - '+item.qty+' WHERE id = '+item.id;
-        alasql(sql);
+            var sql = 'UPDATE stock SET balance = balance - '+item.returnable+' WHERE id = '+item.id;
+            alasql(sql);
 
-        //update expire
-        sql = 'DELETE FROM expire WHERE stock =' + item.id + ' AND expiration <= "' + item.expire + '"';
-        alasql(sql);
+            sql = 'DELETE FROM expire WHERE stock =' + item.id + ' AND expiration <= "' + item.expire + '"';
+            alasql(sql);
 
-        //update dead stock
-        id = DB.getNextID('dead');
-        alasql('INSERT INTO dead VALUES (?,?,?,?)',[id,item.id,item.qty,false]);
+            id = DB.getNextID('dead');
+            alasql('INSERT INTO dead VALUES (?,?,?,?)',[id,item.id,item.returnable,false]);
+        }
+
     }
 };
 
