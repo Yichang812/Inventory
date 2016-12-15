@@ -6531,3 +6531,7 @@ svg{
   border-top: 1px solid #e2e7eb;
   background:#ffffff !important;
 }
+
+.collapse:focus, .collapse:hover{
+  text-decoration: none !important;
+}

@@ -866,31 +866,32 @@ DB.dispatchRestock = function(ref,days){
     alasql('UPDATE restock SET status = 1, expect = ?, ref = ? WHERE ref = ?',[expect,ref.replace(/\w$/,'1'),ref]);
 };
 
-DB.receiveRestock = function(retail){
-    var sql ='SELECT stock.id as stock, stock.balance, delivery.qty, delivery.restock as restock, delivery.id as delivery ' +
-        'FROM delivery ' +
-        'JOIN stock ON delivery.stock = stock.id ' +
-        'WHERE stock.retail = ?';
-    var stocks = alasql(sql,[retail]);
-    var date  = new Date();
-    var today = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();
+DB.receiveRestock = function(restock){
+	var sql ='SELECT stock.id as stock, stock.balance, delivery.qty, delivery.restock as restock, delivery.id as delivery ' +
+		'FROM delivery ' +
+		'JOIN stock ON delivery.stock = stock.id ' +
+		'JOIN restock ON delivery.restock = restock.id ' +
+		'WHERE delivery.restock = ?';
+	var stocks = alasql(sql,[restock]);
+	var date  = new Date();
+	var today = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();
 
 
-    for(var i = 0 ; i< stocks.length; i++){
-        var record = stocks[i];
+	for(var i = 0 ; i< stocks.length; i++){
+		var record = stocks[i];
 
-        alasql('DELETE FROM delivery WHERE id = ?',[record.delivery]);
-        alasql('DELETE FROM restock WHERE id = ?',[record.restock]);
-        alasql('UPDATE expire SET received = true WHERE stock = ?',[record.stock]);
+		alasql('DELETE FROM delivery WHERE id = ?',[record.delivery]);
+		alasql('DELETE FROM restock WHERE id = ?',[record.restock]);
+		alasql('UPDATE expire SET received = true WHERE stock = ?',[record.stock]);
 
-        var receipt = DB.newReceipt('Received','Bob',today);
-        var trans = {
-            amount : record.qty,
-            stock : record.stock,
-            receipt : receipt
-        };
-        DB.newTrans(trans);
-    }
+		var receipt = DB.newReceipt('Received','Bob',today);
+		var trans = {
+			amount : record.qty,
+			stock : record.stock,
+			receipt : receipt
+		};
+		DB.newTrans(trans);
+	}
 };
 
 DB.returnProduct = function(retail){
