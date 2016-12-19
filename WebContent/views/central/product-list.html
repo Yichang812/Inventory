@@ -151,16 +151,17 @@
 				<div class="panel-body">
 					<div class="table-responsive">
                         <!--<div class="tbl-print"><a class="btn btn-default" onclick="window.print()">Print</a> </div>-->
-						<table id="data-table" class="table table-hover display print" cellspacing="0" width="100%">
+						<table id="data-table" class="table display print" cellspacing="0" width="100%">
 							<thead>
 							<tr>
 								<!--<th></th> &lt;!&ndash; product image &ndash;&gt;-->
 								<th>Code</th>
+								<th></th>
 								<th>Product</th>
 								<th>Category</th>
 								<th>Price ($)</th>
-								<th>Available</th>
-								<th>Expired Stock (Expiration)</th>
+								<th>Low Stock Threshold</th>
+								<th>Available Stock</th>
 							</tr>
 							</thead>
 							<tbody id="tbl-products">
@@ -189,6 +190,7 @@
 <script src="../../plugins/bootstrap/js/bootstrap.min.js"></script>
 <script src="../../plugins/slimscroll/jquery.slimscroll.min.js"></script>
 <script src="../../plugins/jquery-cookie/jquery.cookie.js"></script>
+<script src="../../plugins/moment/moment.min.js"></script>
 
 <script src="../../lib/alasql.js"></script>
 <script src="../../lib/purl.js"></script>
@@ -200,7 +202,6 @@
 <script src="../../plugins/DataTables/js/dataTables.buttons.js"></script>
 <script src="../../plugins/DataTables/js/buttons.print.js"></script>
 
-<script src="../../plugins/moment/moment.min.js"></script>
 
 <script src="../../js/apps.min.js"></script>
 <!-- ================== END PAGE LEVEL JS ================== -->
@@ -209,31 +210,34 @@
 
 	$(document).ready(function() {
 		App.init();
-		$('#data-table').DataTable();
+		$('#data-table').DataTable({
+			"order":[[4,"asc"]]
+		});
 	});
 
 	// send query
-	var products = DB.getReturnProducts(1);
+	var products = DB.getStocksOfRetail(1);
 	var tbody = $('#tbl-products');
 	for (var i = 0; i < products.length; i++) {
 		var product = products[i];
-		var tr = $('<tr data-href="product.html?id=' + product.id + '" id='+product.id+'></tr>');
-		console.log(product);
-		tr.append('<td>' + product.code + '</td>');
+		var tr = $('<tr id='+product.id+'></tr>');
+		tr.append('<td><a data-href="product.html?id=' + product.id + '">' + product.code + '</a></td>');
+		tr.append('<td class="hidden-sm"><img src="../../img/'+product.id+'.jpg" style="width:64px; height: 64px;"/></td>');
 		tr.append('<td>' + product.name + ' ('+product.size+' '+product.unit+')</td>');
 		tr.append('<td>' + product.kind + '</td>');
 		tr.append('<td>' + product.price + '</td>');
-        tr.append('<td><strong>' + (product.balance - product.returnable) +'</strong></td>');
-		if(product.balance===0){
-			tr.append('<td> - </td>');
+		tr.append('<td>' + product.threshold + '</td>');
+		if(product.threshold>product.balance){
+			tr.append('<td><strong>' + product.balance +'</strong> <span class="label label-danger pull-right">Stock Low</span></td>');
 		}else{
-			tr.append('<td><strong>' + product.returnable + '</strong> ( '+product.expiration + ')</td>');
+			tr.append('<td><strong>' + product.balance +'</strong></td>');
 		}
+
 
 		tr.appendTo(tbody);
 	}
 
-	$('tbody > tr').on('click', function() {
+	$('tbody > tr a').on('click', function() {
 		window.open($(this).attr('data-href'));
 	});
 

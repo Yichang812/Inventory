@@ -19,6 +19,7 @@
     <link href="../css/style-responsive.min.css" rel="stylesheet" />
     <link href="../css/default.css" rel="stylesheet" id="theme" />
     <link href="../plugins/select2/css/select2.css" rel="stylesheet" />
+    <link href="../plugins/sweet-alert/sweetalert.css" rel="stylesheet"/>
 
     <!-- ================== END BASE CSS STYLE ================== -->
 </head>
@@ -72,6 +73,8 @@
 <script src="../plugins/moment/moment.min.js"></script>
 <script src="../plugins/slimscroll/jquery.slimscroll.min.js"></script>
 <script src="../plugins/jquery-cookie/jquery.cookie.js"></script>
+<script src="../plugins/moment/moment.min.js"></script>
+
 <script src="../lib/alasql.js"></script>
 <script src="../lib/purl.js"></script>
 <script src="../js/db.js"></script>
@@ -79,6 +82,7 @@
 
 <!-- ================== BEGIN PAGE LEVEL JS ================== -->
 <script src="../plugins/select2/js/select2.js"></script>
+<script src="../plugins/sweet-alert/sweetalert-dev.js"></script>
 
 <script src="../js/apps.min.js"></script>
 <!-- ================== END PAGE LEVEL JS ================== -->
@@ -92,14 +96,30 @@
 
     var restockings = DB.getAllRestock(0);
     var refs = [];
-    for(var i = 0; i<restockings.length; i++){
-        var ref = restockings[i].ref;
-        if(refs.indexOf(ref)===-1){
-            var op = $('<option>'+ref+'</option>');
-            $('#restock-ref').append(op);
-            refs.push(ref);
+    if(restockings.length===0){
+        swal({
+                    title: "All the products have been dispatched",
+                    text: "",
+                    type: "warning",
+                    showCancelButton: false,
+                    confirmButtonColor: "#cc4946",
+                    confirmButtonText: "OK",
+                    closeOnConfirm: false
+                },
+                function(){
+                    window.location = "index.html";
+                });
+    }else{
+        for(var i = 0; i<restockings.length; i++){
+            var ref = restockings[i].ref;
+            if(refs.indexOf(ref)===-1){
+                var op = $('<option>'+ref+'</option>');
+                $('#restock-ref').append(op);
+                refs.push(ref);
+            }
         }
     }
+
     function dispatch(){
         var ref = $('#restock-ref').val();
         var days = $('#expect').val();

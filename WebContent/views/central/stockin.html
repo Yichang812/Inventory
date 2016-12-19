@@ -20,6 +20,8 @@
     <!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
     <link href="../../plugins/select2/css/select2.css" rel="stylesheet" />
     <link href="../../plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
+    <link href="../../plugins/sweet-alert/sweetalert.css" rel="stylesheet"/>
+
     <!-- ================== END PAGE LEVEL STYLE ================== -->
 
     <!-- ================== BEGIN BASE JS ================== -->
@@ -165,7 +167,7 @@
                     <div class="form-group">
                         <label for="inputExpire" class="col-sm-2 control-label">Expiration Date:</label>
                         <div class="col-sm-10">
-                            <div class="input-group date" id="inputExpire" data-date-format="yyyy-mm-dd" data-date-start-date="0d">
+                            <div class="input-group date" id="inputExpire" data-date-format="yyyy-mm-dd" data-date-start-date="-7d">
                                 <input type="text" class="form-control" placeholder="Select Date" />
                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                             </div>
@@ -204,6 +206,8 @@
 <!-- ================== BEGIN PAGE LEVEL JS ================== -->
 <script src="../../plugins/select2/js/select2.js"></script>
 <script src="../../plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script src="../../plugins/sweet-alert/sweetalert-dev.js"></script>
+
 <script src="../../js/apps.min.js"></script>
 <!-- ================== END PAGE LEVEL JS ================== -->
 
@@ -229,7 +233,14 @@
         };
         DB.newStockIn(record);
 
-
+        swal({
+            title:"The product stock has been updated!",
+            text:"",
+            type: "success",
+            confirmButtonColor: "00acac"
+        }, function(){
+            location.reload();
+        });
     }
 
 </script>

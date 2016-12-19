@@ -1,6 +1,6 @@
-ID,CODE,KIND,NAME,DETAIL,PRICE,SIZE,UNIT,RETURN
-1,116092411,1,GNC Mega Men Sport,Clinically Studied Multivitamin,39.99,180,Caplets,60
-2,116092412,1,GNC Women's Ultra Mega 50 Plus One Daily,Ultra Concentrated with 39 important nutrients,19.99,60,Caplets,30
-3,116092413,1,GNC Mega Men 50 Plus,Vitapak program with clinically studied multivitamins,49.99,30,Packs,15
-4,116092491,9,GNC Beyond RAW Re-Built Mass,Super-anabolic mass gainer,87.99,6,lbs,60
-5,116092492,9,Jym Pro Jym Protein,The only protein powder blend formulated and used by Dr. Jim Stoppani,57.99,4,lbs,40
+ID,CODE,KIND,NAME,DETAIL,PRICE,SIZE,UNIT,RETURN,THRESHOLD
+1,116092411,1,GNC Mega Men Sport,Clinically Studied Multivitamin,39.99,180,Caplets,60,100
+2,116092412,1,GNC Women's Ultra Mega 50 Plus One Daily,Ultra Concentrated with 39 important nutrients,19.99,60,Caplets,30,100
+3,116092413,1,GNC Mega Men 50 Plus,Vitapak program with clinically studied multivitamins,49.99,30,Packs,15,100
+4,116092491,9,GNC Beyond RAW Re-Built Mass,Super-anabolic mass gainer,87.99,6,lbs,60,100
+5,116092492,9,Jym Pro Jym Protein,The only protein powder blend formulated and used by Dr. Jim Stoppani,57.99,4,lbs,40,100

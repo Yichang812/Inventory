@@ -84,67 +84,83 @@
 
         <!-- end page-header -->
 
-        <div class="row">
-            <div class="panel panel-inverse">
-                <div class="panel-heading">
-                    <div class="panel-heading-btn">
-                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+        <div class="row m-t-20">
+            <div class="col-md-12">
+                <div class="panel panel-inverse">
+                    <div class="panel-heading">
+                        <div class="panel-heading-btn">
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                        </div>
+                        <h4 class="panel-title" id="product-name"></h4>
                     </div>
-                    <h4 class="panel-title" id="product-name"></h4>
-                </div>
-                <div class="panel-body">
-                    <img id="image" style="width:80px;height:80px;margin-bottom: 10px;"/>
-                    <table class="table">
-                        <tbody>
-                        <tr>
-                            <th>Product Name</th>
-                            <td id="name"></td>
-                        </tr>
-                        <tr>
-                            <th>Product Code</th>
-                            <td id="code"></td>
-                        </tr>
-                        <tr>
-                            <th>Product Category</th>
-                            <td id="cat"></td>
-                        </tr>
-                        <tr>
-                            <th>Description</th>
-                            <td id="detail"></td>
-                        </tr>
-                        <tr>
-                            <th>Size</th>
-                            <td id="size"></td>
-                        </tr>
-                        <tr>
-                            <th>Price ($)</th>
-                            <td id="price"></td>
-                        </tr>
-                        <tr>
-                            <th>
-                                <a data-toggle="collapse" href="#stock-detail-panel" aria-expanded="false" style="color:#707478;">Central Warehouse Stock
-                                    <i class="fa fa-chevron-down"></i>
-                                </a>
-                            </th>
-                            <td id="central-stock"></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <div class="row">
-
-                        <div class="collapse" id="stock-detail-panel">
-                            <div class="col-md-8">
-                                <table class="table">
-                                    <thead><th>Quantity</th><th>Expiration Date</th></thead>
-                                    <tbody id="stock-detail"></tbody>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <img id="image" style="width:150px;height:150px;margin: 0 0 10px 30px; border:1px solid #aaa"/>
+                                <br>
+                                <img style="width:80px;height:80px;margin: 0 0 10px 60px;" src="../../img/qr_code.jpg"/>
+                            </div>
+                            <div class="col-md-10">
+                                <h4 style="display:inline-block" id="name"></h4><a onclick="editProduct()" class="text-primary m-l-20" data-toggle="tooltip" title="Edit product information" data-placement="right"><i class="fa fa-pencil"></i></a>
+                                <table class="table m-t-30">
+                                    <tbody id="product-info">
+                                    <tr>
+                                        <th style="width: 250px;">Product Code</th>
+                                        <td id="code"></td>
+                                    </tr>
+                                    <tr>
+                                        <th style="width: 250px;">Product Category</th>
+                                        <td id="cat"></td>
+                                    </tr>
+                                    <tr>
+                                        <th style="width: 250px;">Size</th>
+                                        <td id="size"></td>
+                                    </tr>
+                                    <tr>
+                                        <th style="width: 250px;">Price ($)</th>
+                                        <td id="price"></td>
+                                    </tr>
+                                    <tr>
+                                        <th style="width:250px;">Low Stock Threshold</th>
+                                        <td id="threshold"></td>
+                                    </tr>
+                                    <tr>
+                                        <th style="width:250px;">Returning Period</th>
+                                        <td id="returning"></td>
+                                    </tr>
+                                    <tr>
+                                        <th style="width: 250px;">Description</th>
+                                        <td id="detail"></td>
+                                    </tr>
+                                    <tr>
+                                        <th style="width: 250px;">
+                                            <a data-toggle="collapse" href="#stock-detail-panel" aria-expanded="false" style="color:#707478;">Central Warehouse Stock
+                                                <i class="fa fa-chevron-down"></i>
+                                            </a>
+                                        </th>
+                                        <td id="central-stock"></td>
+                                    </tr>
+                                    </tbody>
                                 </table>
+                                <div class="row">
+
+                                    <div class="collapse" id="stock-detail-panel">
+                                        <div class="col-md-12">
+                                            <table class="table">
+                                                <thead><th>Quantity</th><th>Expiration Date</th></thead>
+                                                <tbody id="stock-detail"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
+
+
         </div>
         <div class="row">
             <div class="col-md-7">
@@ -200,6 +216,70 @@
 </div>
 <!-- end page container -->
 
+<div class="modal fade" tabindex="-1" role="dialog" id="eidtProductModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Edit Product Information</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="new-name">Name</label>
+                        <input name="name" id="new-name" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-cat">Category</label>
+                        <select name="cat" id="new-cat" class="form-control">
+                        </select>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label for="new-size">Size</label>
+                                <input type="number" min="0" name="size" id="new-size" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="new-unit">Unit</label>
+                                <select name="unit" id="new-unit" class="form-control">
+                                    <option>Caplets</option>
+                                    <option>Packs</option>
+                                    <option>Lbs</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="new-price">Price</label>
+                        <input type="number" min="0" name="price" id="new-price" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-threshold">Low stock threshold</label>
+                        <input type="number" min="0" name="threshold" id="new-threshold" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-returning">Low stock threshold</label>
+                        <input type="number" min="0" name="returning" id="new-returning" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-detail">Low stock threshold</label>
+                        <textarea name="detail" id="new-detail" class="form-control"></textarea>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="updateProductInfo()" >Save Changes</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <!-- ================== BEGIN BASE JS ================== -->
 <script src="../../plugins/jquery/jquery-1.9.1.min.js"></script>
 <script src="../../plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
@@ -207,6 +287,7 @@
 <script src="../../plugins/bootstrap/js/bootstrap.min.js"></script>
 <script src="../../plugins/slimscroll/jquery.slimscroll.min.js"></script>
 <script src="../../plugins/jquery-cookie/jquery.cookie.js"></script>
+<script src="../../plugins/moment/moment.min.js"></script>
 
 <script src="../../lib/alasql.js"></script>
 <script src="../../lib/purl.js"></script>
@@ -215,6 +296,7 @@
 
 <!-- ================== BEGIN PAGE LEVEL JS ================== -->
 <script src="../../plugins/DataTables/js/jquery.dataTables.js"></script>
+
 
 <script src="../../plugins/morris/raphael.min.js"></script>
 <script src="../../plugins/morris/morris.js"></script>
@@ -253,18 +335,36 @@
         row.append('<td>'+record.expiration+'</td>');
         $('#stock-detail').append(row);
     }
-//    $("input[name=id]").val(id);
     $('#image').attr('src', '../../img/' + id + '.jpg');
-    var product = DB.getProductInfo(id,1);
+    var product = DB.getProductInfo(id);
     $('#name').text(product.name);
     $('#product-name').text(product.name);
     $('#code').text(product.code);
-    $('#cat').text(product.kind);
+    $('#cat').text(product.cat);
     $('#detail').text(product.detail);
+    $('#returning').text(product.returning+' days');
     $('#size').text(product.size+' ('+product.unit+')');
     $('#price').text(product.price);
     $('#central-stock').text(product.balance);
+    $('#threshold').text(product.threshold);
 
+
+    var nameInput = $('#new-name');
+    nameInput.val(product.name);
+    var catInput = $('#new-cat');
+    catInput.val(product.cat);
+    var priceInput = $('#new-price');
+    priceInput.val(product.price);
+    var sizeInput = $('#new-size');
+    sizeInput.val(product.size);
+    var unitInput = $('#new-unit');
+    unitInput.val(product.unit);
+    var returnInput = $('#new-returning');
+    returnInput.val(product.returning);
+    var thresholdInput = $('#new-threshold');
+    thresholdInput.val(product.threshold);
+    var detailInput = $('#new-detail');
+    detailInput.val(product.detail);
 
     var stocks = DB.getStocksOfProduct(id);
     for(var i = 1; i<stocks.length; i++){
@@ -272,6 +372,26 @@
         var row = $('<tr><td>'+stock.retail+'</td><td>'+stock.balance+'</td></tr>');
         $('#store-stock-records').append(row);
     }
+
+
+    var cats = DB.getAllKinds();
+    for (var i = 0; i < cats.length; i++) {
+        var cat = cats[i];
+        var op = $('<option></option>');
+        op.attr('value', cat.id);
+        op.text(cat.name);
+        $('select[name="cat"]').append(op);
+    }
+    function editProduct(){
+        $('#eidtProductModal').modal('show');
+    }
+
+    function updateProductInfo(){
+        var res = alasql('UPDATE item SET kind = ? ,name = ? ,detail = ? ,price = ? ,size = ? ,unit = ? ,returning = ? , threshold = ? WHERE id = ?',
+                [catInput.val(),nameInput.val(),detailInput.val(),priceInput.val(),sizeInput.val(),unitInput.val(),returnInput.val(),thresholdInput.val(),id]);
+        if(res==1)location.reload();
+    }
+
 </script>
 </body>
 </html>

@@ -13,7 +13,11 @@
 - [x] deal with the dead stock in central warehouse
 - [x] restock setting
 - [x] retail store calendar
-- [ ] marketing page, sales by category, a table contains sales report, add filter too
+- [x] marketing page, sales by category, a table contains sales report, add filter too
+- [x] new layout for product info page
+- [ ] edit product low stock threshold
+- [ ] put more reminders in central dashboard
+- [ ] separate dispatching date and restock order placed date 
 
 
 ### ISSUES
@@ -24,9 +28,10 @@
 
 ### To be done after work:
 
-- [ ] more data
-- [ ] add confirm dialog when there is changes to db 
-- [ ] alert warehouse staff if the stock is not enough for restocking
+- [x] more data
+- [x] download product img
+- [x] add confirm dialog when there is changes to db 
+- [x] alert warehouse staff if the stock is not enough for restocking
 
 
 ### Optional Functions

@@ -189,6 +189,8 @@
 <script src="../../plugins/bootstrap/js/bootstrap.min.js"></script>
 <script src="../../plugins/slimscroll/jquery.slimscroll.min.js"></script>
 <script src="../../plugins/jquery-cookie/jquery.cookie.js"></script>
+<script src="../../plugins/moment/moment.min.js"></script>
+
 <script src="../../lib/alasql.js"></script>
 <script src="../../lib/purl.js"></script>
 <script src="../../js/db.js"></script>
@@ -219,7 +221,12 @@
             row.append('<td>'+record.retail+'</td>');
             row.append('<td>'+record.item+'</td>');
             row.append('<td>'+ steps[parseInt(record.status)] +'</td>');
-            row.append('<td>'+ record.expect +'</td>');
+            if(record.expect){
+                row.append('<td>'+ record.expect +'</td>');
+            }else{
+                row.append('<td> - </td>');
+            }
+
             $('#restock-records').append(row);
         }
     }

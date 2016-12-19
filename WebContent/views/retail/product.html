@@ -18,6 +18,7 @@
     <!-- ================== END BASE CSS STYLE ================== -->
 
     <!-- ================== BEGIN PAGE CSS STYLE ================== -->
+    <link href="../../plugins/DataTables/css/data-table.css" rel="stylesheet" />
     <link href="../../plugins/morris/morris.css" rel="stylesheet" />
     <!-- ================== END PAGE CSS STYLE ================== -->
 
@@ -81,68 +82,77 @@
         <!-- end page-header -->
 
         <div class="row">
-            <div class="panel panel-inverse">
-                <div class="panel-heading">
-                    <div class="panel-heading-btn">
-                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
-                        <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+            <div class="col-md-12">
+                <div class="panel panel-inverse">
+                    <div class="panel-heading">
+                        <div class="panel-heading-btn">
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                        </div>
+                        <h4 class="panel-title">Product Information</h4>
                     </div>
-                    <h4 class="panel-title name"></h4>
-                </div>
-                <div class="panel-body">
-                    <img id="image" style="width:80px;height:80px;margin-bottom: 10px;"/>
-                    <table class="table">
-                        <tbody>
-                        <tr>
-                            <th>Product Name</th>
-                            <td class="name"></td>
-                        </tr>
-                        <tr>
-                            <th>Product Code</th>
-                            <td id="code"></td>
-                        </tr>
-                        <tr>
-                            <th>Product Category</th>
-                            <td id="cat"></td>
-                        </tr>
-                        <tr>
-                            <th>Description</th>
-                            <td id="detail"></td>
-                        </tr>
-                        <tr>
-                            <th>Size</th>
-                            <td id="size"></td>
-                        </tr>
-                        <tr>
-                            <th>Price ($)</th>
-                            <td id="price"></td>
-                        </tr>
-                        <tr>
-                            <th>
-                                <a data-toggle="collapse" href="#stock-detail-panel" aria-expanded="false" aria-controls="collapseExample" style="color:#707478;">Current Stock
-                                    <i class="fa fa-chevron-down"></i>
-                            </a>
-                            </th>
-                            <td id="cur-stock"></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <div class="row">
-
-                        <div class="collapse" id="stock-detail-panel">
-                            <div class="col-md-8">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <img id="image" style="width:150px;height:150px;margin: 0 0 10px 30px; border:1px solid #aaa"/>
+                                <br>
+                                <img style="width:80px;height:80px;margin: 0 0 10px 60px;" src="../../img/qr_code.jpg"/>
+                            </div>
+                            <div class="col-md-10">
+                                <h4 class="m-b-30" id="name"></h4>
                                 <table class="table">
-                                    <thead>
-                                    <tr><th>Quantity</th><th>Expiration Date</th></tr>
-                                    </thead>
-                                    <tbody id="store-stock-records">
+                                    <tbody>
+
+                                    <tr>
+                                        <th style="width: 250px;">Product Code</th>
+                                        <td id="code"></td>
+                                    </tr>
+                                    <tr>
+                                        <th style="width: 250px;">Product Category</th>
+                                        <td id="cat"></td>
+                                    </tr>
+                                    <tr>
+                                        <th style="width: 250px;">Description</th>
+                                        <td id="detail"></td>
+                                    </tr>
+                                    <tr>
+                                        <th style="width: 250px;">Size</th>
+                                        <td id="size"></td>
+                                    </tr>
+                                    <tr>
+                                        <th style="width: 250px;">Price ($)</th>
+                                        <td id="price"></td>
+                                    </tr>
+                                    <tr>
+                                        <th style="width: 250px;">
+                                            <a data-toggle="collapse" href="#stock-detail-panel" aria-expanded="false" aria-controls="collapseExample" style="color:#707478;">Current Stock
+                                                <i class="fa fa-chevron-down"></i>
+                                            </a>
+                                        </th>
+                                        <td id="cur-stock"></td>
+                                    </tr>
                                     </tbody>
                                 </table>
+                                <div class="row">
+                                    <div class="collapse" id="stock-detail-panel">
+                                        <div class="col-md-12">
+                                            <table class="table">
+                                                <thead>
+                                                <tr><th>Quantity</th><th>Expiration Date</th></tr>
+                                                </thead>
+                                                <tbody id="store-stock-records">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                    </div>
                 </div>
             </div>
         </div>
+
         <div class="row">
             <div class="col-md-7">
                 <div class="panel panel-inverse">
@@ -158,6 +168,23 @@
                         <div id="central-inventory-chart" class="height-sm"></div>
                     </div>
 
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="panel panel-inverse">
+                    <div class="panel-heading">
+                        <div class="panel-heading-btn">
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                        </div>
+                        <h4 class="panel-title">Inventory History</h4>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table" id="data-table">
+                            <thead><th>#</th><th>Type</th><th>Amount</th><th>Date</th></thead>
+                            <tbody id="tbl-history"></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -188,6 +215,7 @@
 <!-- ================== END BASE JS ================== -->
 
 <!-- ================== BEGIN PAGE LEVEL JS ================== -->
+<script src="../../plugins/DataTables/js/jquery.dataTables.js"></script>
 
 <script src="../../plugins/morris/raphael.min.js"></script>
 <script src="../../plugins/morris/morris.js"></script>
@@ -200,6 +228,7 @@
     $(document).ready(function() {
         App.init();
         DB.getProductHistory(id,1);
+        $('#data-table').DataTable();
         var handleChart =function(){
             var history = DB.getProductHistory(id);
             Morris.Line(
@@ -217,7 +246,7 @@
 
 
     var product = DB.getProductInfo(id);
-    $('.name').text(product.name);
+    $('#name').text(product.name);
     $('#code').text(product.code);
     $('#cat').text(product.kind);
     $('#detail').text(product.detail);
@@ -225,17 +254,36 @@
     $('#price').text(product.price);
     $('#cur-stock').text(product.balance);
 
-
+    $('#image').attr('src', '../../img/1.jpg');
     var stocks = DB.getProductExpiration(id);
+    var temp = {};
     for(var i = 0; i<stocks.length; i++){
         var stock = stocks[i];
-        var row = $('<tr><td>'+stock.qty+'</td><td>'+stock.expiration+'</td></tr>');
+       if(temp.hasOwnProperty(stock.expiration)){
+           temp[stock.expiration] += stock.qty;
+       }else{
+           temp[stock.expiration] = stock.qty;
+       }
+    }
+    for(var t in temp){
+        var row = $('<tr><td>'+ temp[t] +'</td><td>'+ t +'</td></tr>');
         $('#store-stock-records').append(row);
     }
 
     function backHome() {
         window.location = "retail.html?id="+retail;
     }
+    var temp = alasql('SELECT receipt.date, receipt.type, trans.qty FROM trans JOIN receipt ON trans.receipt = receipt.id JOIN stock ON trans.stock = stock.id WHERE stock.id = ?',[id]);
+    for(var i = 0; i<temp.length; i++){
+        var t = temp[i];
+        var row = $('<tr></tr>');
+        row.append('<td>' + (i+1) + '</td>');
+        row.append('<td>' + t.type + '</td>');
+        row.append('<td>' + t.qty + '</td>');
+        row.append('<td>' + t.date + '</td>');
+        $('#tbl-history').append(row);
+    }
+
 </script>
 </body>
 </html>

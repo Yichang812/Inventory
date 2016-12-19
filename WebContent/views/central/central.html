@@ -19,6 +19,7 @@
 
     <!-- ================== BEGIN BASE JS ================== -->
     <link href="../../plugins/bootstrap-calendar/css/bootstrap_calendar.css" rel="stylesheet" />
+    <link href="../../plugins/sweet-alert/sweetalert.css" rel="stylesheet"/>
 
     <script src="../../plugins/pace/pace.min.js"></script>
     <!-- ================== END BASE JS ================== -->
@@ -140,7 +141,7 @@
         <h1 class="page-header">Inventory Overview</h1>
         <!-- end page-header -->
         <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-8">
                 <div class="panel panel-inverse">
                     <div class="panel-heading">
                         <div class="panel-heading-btn">
@@ -181,7 +182,7 @@
                         </div>
 
                         <div class="row col-md-11">
-                            <a class="btn btn-success pull-right" onclick="DB.handleDeadProduct()">Handled</a>
+                            <a class="btn btn-success pull-right" onclick="handled()">Handled</a>
                         </div>
                     </div>
                 </div>
@@ -245,6 +246,7 @@
 <script src="../../plugins/bootstrap/js/bootstrap.min.js"></script>
 <script src="../../plugins/slimscroll/jquery.slimscroll.min.js"></script>
 <script src="../../plugins/jquery-cookie/jquery.cookie.js"></script>
+<script src="../../plugins/moment/moment.min.js"></script>
 
 <script src="../../lib/alasql.js"></script>
 <script src="../../lib/purl.js"></script>
@@ -253,8 +255,8 @@
 
 <!-- ================== BEGIN PAGE LEVEL JS ================== -->
 <script src="../../plugins/bootstrap-calendar/js/bootstrap_calendar.min.js"></script>
+<script src="../../plugins/sweet-alert/sweetalert-dev.js"></script>
 
-<script src="../../plugins/moment/moment.min.js"></script>
 <script src="../../js/apps.min.js"></script>
 <!-- ================== END PAGE LEVEL JS ================== -->
 
@@ -339,15 +341,29 @@
         });
         DB.newRestock(restocks);
         alasql('UPDATE request SET status = "Approved" WHERE id = ?',[parseInt(r_id)]);
-        location.reload();
+        swal({
+            title:"Done!",
+            text:"The system has informed the transportation team to collect the restocking products",
+            type: "success",
+            confirmButtonColor: "00acac"
+        }, function(){
+            location.reload();
+        });
     }
 
 
     function rejectRequest() {
         var msg = $('textarea[name="msg"]').val();
         var sql = 'UPDATE request SET status = "Rejected", msg = "'+msg+'" WHERE id = ' + request_id;
-        console.log(sql);
         alasql(sql);
+        swal({
+            title:"Your feedback has been sent to the retail store!",
+            text:"",
+            type: "success",
+            confirmButtonColor: "00acac"
+        }, function(){
+            location.reload();
+        });
     }
     var request_id = 0;
     function showModal(ele){
@@ -367,6 +383,18 @@
                     $(this).find("a").css("background-color",e)
                 });
         $(o).find(".icon-arrow-left, .icon-arrow-right").parent().on("click",function(){$(o).find("td.event").each(function(){var e=$(this).css("background-color");$(this).removeAttr("style");$(this).find("a").css("background-color",e)})})
+    }
+
+    function handled(){
+        DB.handleDeadProduct();
+        swal({
+            title:"Good Job!",
+            text:"",
+            type: "success",
+            confirmButtonColor: "00acac"
+        }, function(){
+            location.reload();
+        });
     }
 
 

@@ -24,6 +24,7 @@
     <link href="../../plugins/bootstrap-calendar/css/bootstrap_calendar.css" rel="stylesheet" />
     <link href="../../plugins/gritter/css/jquery.gritter.css" rel="stylesheet">
     <link href="../../css/progress.css" rel="stylesheet" />
+    <link href="../../plugins/sweet-alert/sweetalert.css" rel="stylesheet"/>
 
     <!-- ================== END PAGE LEVEL STYLE ================== -->
 
@@ -234,7 +235,6 @@
         </span>
     </a>
 
-
     <!-- end #content -->
 
     <!-- begin scroll to top btn -->
@@ -261,6 +261,7 @@
 <script src="../../plugins/powerange/powerange.min.js"></script>
 <script src="../../plugins/bootstrap-calendar/js/bootstrap_calendar.min.js"></script>
 <script src="../../plugins/gritter/js/jquery.gritter.js"></script>
+<script src="../../plugins/sweet-alert/sweetalert-dev.js"></script>
 <script src="../../js/apps.min.js"></script>
 <!-- ================== END PAGE LEVEL JS ================== -->
 
@@ -275,7 +276,7 @@
             "info":false
         });
         handleScheduleCalendar();
-        updateTrack(1);
+
 
     });
 
@@ -343,21 +344,22 @@
         var accordion = $('<div class="panel panel-default overflow-hidden" style="margin-top:0;"></div>');
         var head;
         var panel;
+        var expected = restock[0].expect?restock[0].expect:' - ';
         if(COUNT === 1){
             head = $('<div class="panel-heading" id="accordion-heading"><h3 class="panel-title">' +
                     '<a class="accordion-toggle accordion-toggle-styled" data-toggle="collapse" onclick="updateTrack('+record+')" data-parent="#accordion" href="#restock'+ record +'">' +
                     '<i class="fa fa-minus-circle pull-right"></i>' +
                     'Restock #'+COUNT+
-                    ' (Expected Date: '+restock[0].expect+')</a></h3></div>');
+                    ' (Expected Date: '+ expected +')</a></h3></div>');
             accordion.append(head);
             panel = $('<div id="restock'+record+'" class="panel-collapse collapse in"></div>');
-
+            updateTrack(record);
         }else{
             head = $('<div class="panel-heading" id="accordion-heading"><h3 class="panel-title">' +
                     '<a class="accordion-toggle accordion-toggle-styled" data-toggle="collapse" onclick="updateTrack('+record+')" data-parent="#accordion" href="#restock'+ record +'">' +
                     '<i class="fa fa-plus-circle pull-right"></i>' +
                     'Restock #'+COUNT+
-                    ' (Expected Date: '+restock[0].expect+')</a></h3></div>');
+                    ' (Expected Date: '+ expected +')</a></h3></div>');
             accordion.append(head);
             panel = $('<div id="restock'+record+'" class="panel-collapse collapse"></div>');
         }
@@ -427,7 +429,16 @@
 
     function returnProduct(){
         DB.returnProduct(id);
-        location.reload();
+        swal({
+            title:"Roger!",
+            text:"The system will remind central warehouse staff for these returning products",
+            type: "success",
+            confirmButtonColor: "00acac"
+        }, function(){
+            location.reload();
+        });
+
+//
     }
 
     function showRequestModal(){
@@ -450,16 +461,27 @@
         var requests = [];
         $('#tbl-request').find('tr').each(function(){
             var row = $(this);
-            var qty = row.find('input').val();
+            var input = row.find('input');
+            var qty = input.val();
             if(qty>0){
                 var item = row.find('.item-name').text();
                 var stock = row.attr('id');
                 requests.push({stock:stock, item:item, qty:qty});
+                input.val('0');
            }
 
         });
         var msg = $('#message').val();
         DB.newRequest(requests,msg,id);
+        $('#message').val('');
+        swal({
+            title:"The message has been sent out!",
+            text:"",
+            type: "success",
+            confirmButtonColor: "00acac"
+        }, function(){
+            $('#requestModal').modal('hide');
+        });
     }
     function handleScheduleCalendar(){
         var today=new Date,d = today.getDate(),m=today.getMonth()+1,y=today.getFullYear();

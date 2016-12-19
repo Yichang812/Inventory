@@ -7,7 +7,6 @@
     <meta content="" name="author" />
 
     <!-- ================== BEGIN BASE CSS STYLE ================== -->
-    <!--<link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">-->
     <link href="../../plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
     <link href="../../plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <link href="../../plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
@@ -218,6 +217,7 @@
                                                 <label>Unit</label>
                                                 <select name="unit" class="form-control" data-parsley-group="wizard-step-1" required>
                                                     <option>Caplets</option>
+                                                    <option>Packs</option>
                                                     <option>Lbs</option>
                                                 </select>
                                             </div>
@@ -234,10 +234,14 @@
                                         <div class="row">
                                             <div class="col-md-10">
                                                 <div class="form-group">
-                                                    <label>Safe Stock</label>
-                                                    <input type="number" name="safe" placeholder="The safe stock for this product" class="form-control"
+                                                    <label>Low Inventory Threshold
+                                                        <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="What's low inventory threshold?"
+                                                           data-content="The system will alert user when the stock of this product gets this level.">
+                                                            <i class="fa fa-question-circle"></i>
+                                                        </a>
+                                                    </label>
+                                                    <input type="number" name="threshold" placeholder="100" class="form-control"
                                                               data-parsley-group="wizard-step-1" data-parsley-type="number" data-parsley-trigger="keyup" required />
-                                                    <!--You can update this safe stock for different retail store later on "Stores" views.-->
                                                 </div>
                                             </div>
                                         </div>
@@ -292,8 +296,8 @@
                                                 <td id="price"></td>
                                             </tr>
                                             <tr>
-                                                <th>Safe Stock</th>
-                                                <td id="safe"></td>
+                                                <th>Low Inventory Threshold</th>
+                                                <td id="threshold"></td>
                                             </tr>
                                             <tr>
                                                 <th>Product Returning Days</th>
@@ -314,8 +318,7 @@
                                     <div class="jumbotron m-b-0 text-center">
                                         <h2>The product is create successfully!</h2>
                                         <p>The product code is: <strong id="code"></strong></p>
-                                        <p> You can always retrieve the information of this product by scanning the following QR code.</p>
-                                        <p><img src="../../img/failed.jpg"/></p>
+                                        <p>The page will be redirected to the product page in <span id="timer" style="font-weight:bold"></span> S.</p>
                                     </div>
                                 </div>
                                 <!-- end wizard step-3 -->
@@ -344,6 +347,7 @@
 <script src="../../plugins/bootstrap/js/bootstrap.min.js"></script>
 <script src="../../plugins/slimscroll/jquery.slimscroll.min.js"></script>
 <script src="../../plugins/jquery-cookie/jquery.cookie.js"></script>
+<script src="../../plugins/moment/moment.min.js"></script>
 
 <script src="../../lib/alasql.js"></script>
 <script src="../../lib/purl.js"></script>
@@ -365,7 +369,7 @@
     var sizeInput = $('input[name="size"]');
     var unitInput = $('select[name="unit"]');
     var priceInput = $('input[name="price"]');
-    var safeInput = $('input[name="safe"]');
+    var threInput = $('input[name="threshold"]');
     var returnInput = $('input[name="return"]');
 
     $(document).ready(function() {
@@ -399,7 +403,7 @@
         record.size = sizeInput.val();
         record.unit = unitInput.val();
         record.price = priceInput.val();
-        record.safe = safeInput.val();
+        record.threshold = threInput.val();
         record.return = returnInput.val();
 
         $('#name').text(record.name);
@@ -407,15 +411,29 @@
         $('#detail').text(record.detail);
         $('#size').text(record.size+' ('+record.unit+')');
         $('#price').text(record.price);
-        $('#safe').text(record.safe);
+        $('#threshold').text(record.threshold);
         $('#return').text(record.return);
     }
 
-    function createProduct(){
+    var INTERVAL;
+    var TIMER = 5;
 
+    function createProduct(){
         var code = DB.newProduct(record);
         $('#code').text(code);
         $('#wizard').bwizard("next");
+        INTERVAL = setInterval(showElapsedTime, 1000);
+
+    }
+
+    function showElapsedTime(){
+        if(TIMER>0){
+            $('#timer').text(TIMER);
+            TIMER--;
+        }else{
+            clearInterval(INTERVAL);
+            window.location = "stockin.html";
+        }
     }
 </script>
 </body>

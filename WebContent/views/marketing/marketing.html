@@ -15,13 +15,14 @@
     <!-- ================== END BASE CSS STYLE ================== -->
 
     <!-- ================== BEGIN PAGE CSS STYLE ================== -->
+    <link href="../../plugins/datepicker/daterangepicker.css" rel="stylesheet"/>
     <link href="../../plugins/morris/morris.css" rel="stylesheet" />
     <!-- ================== END PAGE CSS STYLE ================== -->
 
     <!-- ================== BEGIN PAGE LEVEL STYLE ================== -->
     <link href="../../plugins/DataTables/css/data-table.css" rel="stylesheet" />
     <link href="../../plugins/multiple-select/multiple-select.css" rel="stylesheet" />
-    <link href="../../plugins/powerange/powerange.min.css" rel="stylesheet" />
+    <!--<link href="../../plugins/powerange/powerange.min.css" rel="stylesheet" />-->
 
 
     <!-- ================== END PAGE LEVEL STYLE ================== -->
@@ -83,16 +84,8 @@
             <div class="row">
                 <!-- begin col-2 -->
                 <div class="col-md-2">
-                    <form>
-                        <div class="input-group m-b-15">
-                            <input type="text" class="form-control input-sm input-white" placeholder="Search Mail" />
-                            <span class="input-group-btn">
-                                <button class="btn btn-sm btn-inverse" type="button"><i class="fa fa-search"></i></button>
-                            </span>
-                        </div>
-                    </form>
                     <div class="hidden-sm hidden-xs">
-                        <h5 class="m-t-20">Email</h5>
+                        <h5 class="m-t-20">Sales Reports</h5>
                         <ul class="nav nav-pills nav-stacked nav-inbox">
                             <li class="active"><a href="marketing.html#growth" data-toggle="tab"><i class="fa fa-arrow-circle-up fa-fw m-r-5"></i>Sales Summary</a></li>
                             <li><a href="marketing.html#topproduct" data-toggle="tab"><i class="fa fa-usd fa-fw m-r-5"></i> Top Selling Product</a></li>
@@ -104,6 +97,39 @@
                 <!-- begin col-10 -->
                 <div class="col-md-10">
                     <div class="tab-content email-content">
+
+                        <div class="tab-pane fade active in" id="growth">
+                            <div class="row">
+                                <div class="col-md-6" style="border-right: 1px solid #e2e7eb">
+                                    <h4 style="text-align: center">Sales By Categories</h4>
+                                    <div class="col-sm-7">
+                                        <div id="donut-chart"></div>
+                                    </div>
+                                    <div class="col-sm-5 p-t-30">
+                                        <table class="table" id="tbl-cat">
+
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <h4 style="text-align: center">Sales Total By Period</h4>
+                                    <div class="col-sm-7">
+                                        <div id="area-chart"></div>
+                                    </div>
+
+                                    <div class="col-sm-5 p-t-30">
+                                        <table class="table">
+                                            <tr><th style="border-bottom: 1px solid #ddd;">Total Sales:</th><td id="total-sale" style="border-bottom: 1px solid #ddd;"></td></tr>
+                                            <tr><th style="border-bottom: 1px solid #ddd;">Average Month total:</th><td id="avg-total" style="border-bottom: 1px solid #ddd;"></td></tr>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+
                         <div class="tab-pane fade" id="topproduct">
                             <div class="row m-top-30">
                                 <div class="collapse in" id="collapseExample">
@@ -113,24 +139,86 @@
                                             <div class="form-group m-r-10 col-md-3">
                                                 <label for="cat">Categories</label>
                                                 <select class="select" id="cat" multiple="multiple">
+                                                    <optgroup label="Vitamins & Supplements">
+                                                        <option selected="selected">Multivitamins</option>
+                                                        <option selected="selected">Vitamins A-Z</option>
+                                                        <option selected="selected">Fish Oil & Omegas</option>
+                                                        <option selected="selected">Minerals</option>
+                                                        <option selected="selected">Joint Support</option>
+                                                        <option selected="selected">Antioxidants</option>
+                                                        <option selected="selected">Specialty Supplements</option>
+                                                        <option selected="selected">Sexual Health</option>
+                                                    </optgroup>
+                                                    <optgroup label="Protein & Fitness">
+                                                        <option selected="selected">Protein</option>
+                                                        <option selected="selected">Energy & Endurance</option>
+                                                        <option selected="selected">Muscle Builders</option>
+                                                        <option selected="selected">Equipment & Accessories</option>
+                                                        <option selected="selected">Performance Formulas</option>
+
+                                                    </optgroup>
+                                                    <optgroup label="Herb & Natural Remedies">
+
+                                                        <option selected="selected">Herbs A-E</option>
+                                                        <option selected="selected">Herbs T-Z</option>
+                                                        <option selected="selected">Herbs F-N</option>
+                                                        <option selected="selected">Antioxidants</option>
+                                                        <option selected="selected">Herbs O-S</option>
+                                                        <option selected="selected">Natural Remedies</option>
+
+                                                    </optgroup>
+                                                    <optgroup label="Digestion & Super Foods">
+
+                                                        <option selected="selected">Digestive Support</option>
+                                                        <option selected="selected">Cleansing & Detox</option>
+                                                        <option selected="selected">Greens & Superfoods</option>
+                                                        <option selected="selected">Superfruit & Botanicals</option>
+                                                    </optgroup>
+                                                    <optgroup label="Weight Management">
+                                                        <option selected="selected">Fat & Calorie Burners</option>
+                                                        <option selected="selected">Meal Replacements</option>
+                                                        <option selected="selected">Appetite Control & Diet</option>
+
+                                                    </optgroup>
+                                                    <optgroup label="Persona Care">
+                                                        <option selected="selected">Skin & Body Care</option>
+                                                        <option selected="selected">Aromatherapy</option>
+                                                        <option selected="selected">Hair Case, Styling & Treatment</option>
+                                                        <option selected="selected">Natural Home</option>
+                                                        <option selected="selected">Bath & Soaps</option>
+
+                                                    </optgroup>
+                                                    <optgroup label="Food & Drink">
+                                                        <option selected="selected">Protein Bars</option>
+                                                        <option selected="selected">Healthy Food & Snacks</option>
+                                                        <option selected="selected">Drinks</option>
+                                                    </optgroup>
                                                 </select>
                                             </div>
                                             <!--<div class="form-group col-md-1"></div>-->
                                             <div class="form-group m-r-10 col-md-3">
                                                 <label for="store">Stores</label>
                                                 <select class="select" id="store" multiple="multiple">
+                                                    <optgroup label="Los Angeles">
+                                                        <option selected="selected">Heron Building</option>
+                                                        <option selected="selected">Arco Plaza</option>
+                                                        <option selected="selected">The Bloc</option>
+                                                    </optgroup>
+                                                    <optgroup label="San Francisco">
+                                                        <option selected="selected">Safeway Center</option>
+                                                        <option selected="selected">Westfield San Francisco Centre</option>
+                                                    </optgroup>
+                                                    <optgroup label="San Diego">
+                                                        <option selected="selected">Horton Plaza</option>
+                                                    </optgroup>
                                                 </select>
                                             </div>
-                                            <div class="col-md-3">
-                                                <div class="slider-wrapper">
-                                                    <div style="margin-bottom: 10px;">
-                                                        Period : <span id="slider-value-1"></span> months
-                                                    </div>
-                                                    <input type="text" data-render="powerange-slider" id="topproduct-slider" />
-                                                </div>
+                                            <div class="form-group m-r-10 col-md-3">
+                                                <label for="period2">Time Period</label>
+                                                <input type="text" class="date-picker-input" id="period2" name="datefilter2" value="" />
                                             </div>
                                             <div class="col-md-1">
-                                                <a class="btn btn-sm btn-success" style="margin-top:12px;" onclick="applyRule1()">Apply</a>
+                                                <a class="btn btn-sm btn-success" style="margin-top:12px;" onclick="applyRule2()">Apply</a>
                                             </div>
                                         </form>
                                     </div>
@@ -151,7 +239,6 @@
                                     <th class="email-select"><a href="marketing.html#" data-click="email-select-all"><i class="fa fa-square-o fa-fw"></i></a></th>
                                     <th> Product</th>
                                     <th> Total Sold</th>
-                                    <!--<th> Details</th>-->
                                 </tr>
                                 </thead>
                                 <tbody id="tbl-top-selling">
@@ -161,15 +248,15 @@
 
                             <div class="email-footer clearfix">
                                 <div class="col-md-6 col-md-offset-3">
-                                    <h4 style="text-align: center;" id="top-product-name"></h4>
-                                    <div id="top-product-chart" class="height-sm well"></div>
+                                    <div id="chart-2-container">
+                                        <h4 style="text-align: center;" id="top-product-name"></h4>
+                                        <div id="top-product-chart" class="height-sm well"></div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade active in" id="growth">
-                            <h4 style="text-align: center">Sales By Categories</h4>
-                            <div id="donut-chart"></div>
-                        </div>
+
                         <div class="tab-pane fade" id="topshop">
 
                             <div class="row m-top-30">
@@ -178,23 +265,20 @@
                                         <form class="form-inline m-l-20">
                                             <!--<div class="form-group col-md-1"></div>-->
                                             <div class="form-group m-r-10 col-md-3">
-                                                <label for="cat">Cities</label>
+                                                <label for="city">Cities</label>
                                                 <select class="select" id="city" multiple="multiple">
+                                                    <option selected="selected"></option>
                                                 </select>
                                             </div>
                                             <!--<div class="form-group col-md-1"></div>-->
                                             <div class="form-group m-r-10 col-md-3">
-                                                <label for="store">Products</label>
+                                                <label for="item">Products</label>
                                                 <select class="select" id="item" multiple="multiple">
                                                 </select>
                                             </div>
-                                            <div class="col-md-3">
-                                                <div class="slider-wrapper">
-                                                    <div style="margin-bottom: 10px;">
-                                                        Period : <span id="slider-value-3"></span> months
-                                                    </div>
-                                                    <input type="text" data-render="powerange-slider" id="topshop-slider" />
-                                                </div>
+                                            <div class="form-group m-r-10 col-md-3">
+                                                <label for="period3">Time Period</label>
+                                                <input type="text" class="date-picker-input" id="period3" name="datefilter3" value="" />
                                             </div>
                                             <div class="col-md-1">
                                                 <a class="btn btn-sm btn-success" style="margin-top:12px;" onclick="applyRule3()">Apply</a>
@@ -215,7 +299,7 @@
                             <table class="table table-email">
                                 <thead>
                                 <tr>
-                                    <th class="email-select"><a href="test.html#" data-click="email-select-all"><i class="fa fa-square-o fa-fw"></i></a></th>
+                                    <th class="email-select"><a href="marketing.html#" data-click="email-select-all"><i class="fa fa-square-o fa-fw"></i></a></th>
                                     <th> Product</th>
                                     <th> Total Sold</th>
                                     <!--<th> Details</th>-->
@@ -225,10 +309,17 @@
 
                                 </tbody>
                             </table>
+
+
+
+
                             <div class="email-footer clearfix">
                                 <div class="col-md-6 col-md-offset-3">
-                                    <h4 style="text-align: center;" id="top-shop-name"></h4>
-                                    <div id="top-shop-chart" class="height-sm"></div>
+                                    <div id="chart-3-container">
+                                        <h4 style="text-align: center;" id="top-shop-name"></h4>
+                                        <div id="top-shop-chart" class="height-sm"></div>
+                                    </div>
+
                                 </div>
 
                             </div>
@@ -272,8 +363,9 @@
 <script src="../../plugins/DataTables/js/buttons.print.js"></script>
 
 <script src="../../plugins/multiple-select/multiple-select.js"></script>
+<script src="../../plugins/datepicker/daterangepicker.js"></script>
 
-<script src="../../plugins/powerange/powerange.min.js"></script>
+<!--<script src="../../plugins/powerange/powerange.min.js"></script>-->
 
 <script src="../../plugins/morris/raphael.min.js"></script>
 <script src="../../plugins/morris/morris.js"></script>
@@ -284,14 +376,16 @@
 <script>
     $(document).ready(function() {
         App.init();
-        slider2Init();
-        slider3Init();
         selectInit();
+        datePickerInit();
         $('.select').multipleSelect({
             width:'100%',
             multipleWidth:180,
-            multiple: true
+            multiple: true,
+            filter:true,
+            minimumCountSelected:7
         });
+
         applyRule2();
         applyRule3();
         chartInit1();
@@ -303,57 +397,16 @@
         stores : [],
         cities : [],
         items : [],
-        duration: DB.getMonthPeriod()
+        first:'',
+        last:''
     };
     var CHART3;
     var CHART2;
 
-    function slider2Init (){
-        var maxMonth = DB.getMonthPeriod();
-
-        var elem = document.querySelector('#topproduct-slider');
-        var init = new Powerange(elem, {
-            callback: function(){
-                $('#slider-value-1').text(elem.value);
-            },
-            start: 0,
-            max:maxMonth,
-            hideRange: true
-        });
-    }
-
-    function slider3Init (){
-        var maxMonth = DB.getMonthPeriod();
-
-        var elem = document.querySelector('#topshop-slider');
-        var init = new Powerange(elem, {
-            callback: function(){
-                var month = 0;
-                if(!isNaN(elem.value)){
-                    month = elem.value;
-                }
-                $('#slider-value-3').text(month);
-            },
-            start: 0,
-            max:maxMonth,
-            hideRange: true
-        });
-    }
 
     function selectInit(){
-        var cats = alasql('COLUMN OF SELECT name FROM kind');
-        FILTER.kinds = cats;
-        for(var i = 0; i< cats.length; i++){
-            var op = $('<option selected="selected">'+cats[i]+'</option>');
-            $('#cat').append(op);
-        }
-
-        var stores = alasql('COLUMN OF SELECT name FROM retail WHERE id<>1');
-        FILTER.stores = stores;
-        for(var i = 0; i< stores.length; i++){
-            var op = $('<option selected="selected">'+stores[i]+'</option>');
-            $('#store').append(op);
-        }
+        FILTER.kinds = alasql('COLUMN OF SELECT name FROM kind');
+        FILTER.stores = alasql('COLUMN OF SELECT name FROM retail WHERE id<>1');
 
         var cities = alasql('COLUMN OF SELECT DISTINCT city FROM retail WHERE id<>1');
         FILTER.cities = cities;
@@ -372,7 +425,14 @@
 
     function chartInit1(){
         var temp = DB.getCatReport();
-//        var temp = [{id:1,name:"Multivitamins",parent_id:1,total:-72},{id:2,name:"Test",parent_id:2,total:-21}];
+
+        for(var i = 0; i<temp.length; i++){
+            var row = $('<tr><th style="border-bottom: 1px solid #ddd;">'+temp[i].name+'</th><td style="border-bottom: 1px solid #ddd;">'+Math.abs(temp[i].total)+'</td></tr>');
+            $('#tbl-cat').append(row);
+        }
+
+
+
         var data = [];
         var total = 0;
         for(var i = 0; i<temp.length; i++){
@@ -390,11 +450,34 @@
             resize:true,
             colors:['#b6c832','#008a8a','#348fe2','#c47d15']
         });
+        var temp_t = DB.getTotalReport();
+        var data_t = [];
+        var total_t = 0;
+        var month_count = 0;
+        for(t in temp_t){
+            total_t += Math.abs(temp_t[t]);
+            month_count ++;
+            data_t.push({month:t, total:Math.abs(temp_t[t]),avg:Math.round(total_t/month_count)});
+        }
+        Morris.Line({
+            element:'area-chart',
+            data: data_t,
+            xkey:'month',
+            ykeys:['total','avg'],
+            labels:['Total','Average'],
+            resize:true,
+            lineColors:['#008a8a','#b6c832']
+        });
+
+        $('#total-sale').text(total_t);
+        $('#avg-total').text(total_t/month_count);
+
+
     }
 
     function chartInit2(item){
         $('#top-product-name').text(item);
-        var data = DB.getSoldDetail(item,FILTER.stores,FILTER.duration);
+        var data = DB.getSoldDetail(item,FILTER.stores,FILTER.first,FILTER.last);
         var ykeys = alasql('COLUMN OF SELECT id FROM retail WHERE id<>1');
         var labels = alasql('COLUMN OF SELECT name FROM retail WHERE id<>1');
         $('#top-product-chart').empty();
@@ -410,12 +493,12 @@
             barSizeRatio:0.3,
             resize:true,
             stacked:true,
-            barColors:["#5da5e8","#3a92ab","#727cb6","#348fe2","#00acac","#f59c1a"]})
+            barColors:['#b6c832','#6dc5de','#348fe2','#f7b048','#00acac','#f7b048']})
     }
 
     function chartInit3(retail){
         $('#top-shop-name').text(retail);
-        var data = DB.getRetailSoldDetail(retail,FILTER.items,FILTER.duration);
+        var data = DB.getRetailSoldDetail(retail,FILTER.items,FILTER.first,FILTER.last);
         var ykeys = alasql('COLUMN OF SELECT id FROM item');
         var labels = alasql('COLUMN OF SELECT name FROM item');
         $('#top-shop-chart').empty();
@@ -431,18 +514,23 @@
             barSizeRatio:0.3,
             resize:true,
             stacked:true,
-            barColors:["#5da5e8","#3a92ab","#727cb6","#348fe2","#00acac","#f59c1a"]})
+            barColors:['#b6c832','#6dc5de','#348fe2','#f7b048','#00acac','#f7b048']})
     }
 
     function applyRule2(){
         FILTER.kinds = $('#cat').val();
         FILTER.stores = $('#store').val();
-        FILTER.duration = $('#topproduct-slider').val();
         var table = $('#tbl-top-selling');
-        var data = DB.getProductReport(FILTER.kinds,FILTER.stores,FILTER.duration);
+        var data = DB.getProductReport(FILTER.kinds,FILTER.stores,FILTER.first,FILTER.last);
         table.empty();
         for(var i =0; i<data.length; i++){
             var d = data[i];
+            if(!d.item){
+                $('<tr><td colspan="3">No sales data available</td></tr>').appendTo(table);
+                $('#chart-2-container h4').text('');
+                $('#chart-2-container div').html('');
+                return;
+            }
             var row = $('<tr onclick="showDetails2(this)"></tr>');
             row.append('<td class="email-select"><a data-click="email-select-single"><i class="fa fa-square-o fa-fw"></i></a></td>');
             row.append('<td>'+d.item+'</td>');
@@ -455,12 +543,19 @@
     function applyRule3(){
         FILTER.cities = $('#city').val();
         FILTER.items = $('#item').val();
-        FILTER.duration = $('#topshop-slider').val();
+
         var table = $('#tbl-top-shop');
-        var data = DB.getRetailReport(FILTER.items,FILTER.cities,FILTER.duration);
+        var data = DB.getRetailReport(FILTER.items,FILTER.cities,FILTER.first,FILTER.last);
         table.empty();
+
         for(var i =0; i<data.length; i++){
             var d = data[i];
+            if(!d.retail){
+                $('<tr><td colspan="3">No sales data available</td></tr>').appendTo(table);
+                $('#chart-3-container h4').text('');
+                $('#chart-3-container div').html('');
+                return;
+            }
             var row = $('<tr onclick="showDetails3(this)"></tr>');
             row.append('<td class="email-select"><a data-click="email-select-single"><i class="fa fa-square-o fa-fw"></i></a></td>');
             row.append('<td>'+d.retail+'</td>');
@@ -492,13 +587,68 @@
         chartInit3(retail);
     }
 
-   $('ul.nav a').on('shown.bs.tab',function(e){
-       CHART2.redraw();
-       CHART2.width = 658;
-       CHART3.redraw();
-       CHART3.width = 658;
+    var date_picker_2 = $('input[name="datefilter2"]');
+    var date_picker_3 = $('input[name="datefilter3"]');
+    function datePickerInit(){
+        var dateRage = DB.getDateRange();
+        FILTER.first = moment(dateRage.first,'MM/DD/YYYY').format('YYYY-MM-DD');
+        FILTER.last = moment(dateRage.today,'MM/DD/YYYY').format('YYYY-MM-DD');
+        $('#period2').val(FILTER.first + ' - ' + FILTER.last);
+        $('#period3').val(FILTER.first + ' - ' + FILTER.last);
 
-   })
+        date_picker_2.daterangepicker({
+            autoUpdateInput: false,
+            locale: {
+                cancelLabel: 'Clear'
+            },
+            autoApply:true,
+            startDate:dateRage.first,
+            endDate:dateRage.today,
+            minDate: dateRage.first,
+            maxDate: dateRage.today
+        });
+
+        date_picker_3.daterangepicker({
+            autoUpdateInput: false,
+            locale: {
+                cancelLabel: 'Clear'
+            },
+            autoApply:true,
+            startDate:dateRage.first,
+            endDate:dateRage.today,
+            minDate: dateRage.first,
+            maxDate: dateRage.today
+        });
+    }
+
+
+    date_picker_2.on('apply.daterangepicker', function(ev, picker) {
+        $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
+        FILTER.first = picker.startDate.format('YYYY-MM-DD');
+        FILTER.last = picker.endDate.format('YYYY-MM-DD');
+    });
+
+    date_picker_2.on('cancel.daterangepicker', function(ev, picker) {
+        $(this).val('');
+    });
+
+    date_picker_3.on('apply.daterangepicker', function(ev, picker) {
+        $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
+        FILTER.first = picker.startDate.format('YYYY-MM-DD');
+        FILTER.last = picker.endDate.format('YYYY-MM-DD');
+    });
+
+    date_picker_3.on('cancel.daterangepicker', function(ev, picker) {
+        $(this).val('');
+    });
+
+    $('ul.nav a').on('shown.bs.tab',function(e){
+        CHART2.redraw();
+        CHART2.width = 658;
+        CHART3.redraw();
+        CHART3.width = 658;
+    })
+
 </script>
 </body>
 </html>
