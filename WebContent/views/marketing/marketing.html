@@ -236,7 +236,7 @@
                             <table class="table table-email">
                                 <thead>
                                 <tr>
-                                    <th class="email-select"><a href="marketing.html#" data-click="email-select-all"><i class="fa fa-square-o fa-fw"></i></a></th>
+                                    <th>#</th>
                                     <th> Product</th>
                                     <th> Total Sold</th>
                                 </tr>
@@ -299,10 +299,9 @@
                             <table class="table table-email">
                                 <thead>
                                 <tr>
-                                    <th class="email-select"><a href="marketing.html#" data-click="email-select-all"><i class="fa fa-square-o fa-fw"></i></a></th>
+                                    <th>#</th>
                                     <th> Product</th>
                                     <th> Total Sold</th>
-                                    <!--<th> Details</th>-->
                                 </tr>
                                 </thead>
                                 <tbody id="tbl-top-shop">
@@ -532,9 +531,9 @@
                 return;
             }
             var row = $('<tr onclick="showDetails2(this)"></tr>');
-            row.append('<td class="email-select"><a data-click="email-select-single"><i class="fa fa-square-o fa-fw"></i></a></td>');
-            row.append('<td>'+d.item+'</td>');
-            row.append('<td>'+d.qty+'</td>');
+            row.append('<td>' + (i+1) + '</td>');
+            row.append('<td>' + d.item + '</td>');
+            row.append('<td>' + d.qty + '</td>');
             table.append(row);
         }
         chartInit2(data[0].item);
@@ -557,9 +556,9 @@
                 return;
             }
             var row = $('<tr onclick="showDetails3(this)"></tr>');
-            row.append('<td class="email-select"><a data-click="email-select-single"><i class="fa fa-square-o fa-fw"></i></a></td>');
-            row.append('<td>'+d.retail+'</td>');
-            row.append('<td>'+d.qty+'</td>');
+            row.append('<td>' + (i+1) + '</td>');
+            row.append('<td>' + d.retail + '</td>');
+            row.append('<td>' + d.qty + '</td>');
             table.append(row);
         }
         chartInit3(data[0].retail);
