@@ -831,27 +831,17 @@ DB.getProductReport = function(kinds,retails,first,last){
 		'AND stock.retail <> 1';
 	var stocks = alasql(sql);
 
-	sql = 'SELECT stock.item, SUM(trans.qty) AS total ' +
+	sql = 'SELECT item.*, SUM(trans.qty) AS total ' +
 		'FROM trans ' +
-		'JOIN stock ON trans.stock = stock.id ' +
+		'JOIN stock ON trans.stock = stock.id JOIN item ON stock.item = item.id ' +
 		'JOIN receipt ON trans.receipt = receipt.id ' +
 		'WHERE trans.stock IN ('+stocks.toString()+') ' +
 		'AND receipt.date >=? ' +
 		'AND receipt.date <=? ' +
 		'AND receipt.type = "Sold" GROUP BY stock.item';
 
-	var trans = alasql(sql,[first,last]);
-	var result = [];
-	for(i = 0; i<trans.length;i++){
-		var tran = trans[i];
-		record = {
-			item : alasql('COLUMN OF SELECT name FROM item WHERE id = ?',[tran.item])[0],
-			qty : Math.abs(tran.total)
-		};
-		result.push(record);
-	}
-	return result;
 
+	return alasql(sql,[first,last]);
 };
 
 DB.getSoldDetail = function(item,retails,first,last){

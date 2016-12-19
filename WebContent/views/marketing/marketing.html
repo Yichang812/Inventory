@@ -238,7 +238,8 @@
                                 <tr>
                                     <th>#</th>
                                     <th> Product</th>
-                                    <th> Total Sold</th>
+                                    <th> Total Sold Quantity</th>
+                                    <th> Total Revenue</th>
                                 </tr>
                                 </thead>
                                 <tbody id="tbl-top-selling">
@@ -524,19 +525,22 @@
         table.empty();
         for(var i =0; i<data.length; i++){
             var d = data[i];
-            if(!d.item){
+            if(!d){
                 $('<tr><td colspan="3">No sales data available</td></tr>').appendTo(table);
                 $('#chart-2-container h4').text('');
                 $('#chart-2-container div').html('');
                 return;
             }
             var row = $('<tr onclick="showDetails2(this)"></tr>');
+            var qty = Math.abs(d.total);
+            var revenue = Math.round(qty*d.price*100)/100;
             row.append('<td>' + (i+1) + '</td>');
-            row.append('<td>' + d.item + '</td>');
-            row.append('<td>' + d.qty + '</td>');
+            row.append('<td>' + d.name + '</td>');
+            row.append('<td>' + qty + '</td>');
+            row.append('<td> $' + revenue + '</td>');
             table.append(row);
         }
-        chartInit2(data[0].item);
+        chartInit2(data[0].name);
     }
 
     function applyRule3(){
