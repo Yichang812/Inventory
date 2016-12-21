@@ -142,6 +142,7 @@
                                     <input type="text" data-render="powerange-slider" id="month-slider" />
                                 </div>
                             </div>
+                            <div class="col-md-4 m-t-10"><a class="btn btn-warning btn-sm pull-right" onclick="$('#promoteModal').modal('show');">Promote</a></div>
                         </div>
                         <div class="row">
                             <div class="col-md-10 col-md-offset-1">
@@ -150,7 +151,8 @@
                                     <th></th>
                                     <th>Product</th>
                                     <th>Expiring Quantity</th>
-                                    <th>Expired Before Date</th>
+                                    <th>Expiration Date</th>
+                                    <th>Current Promotion</th>
                                     </thead>
                                     <tbody id="tbl-expiring">
                                     </tbody>
@@ -228,6 +230,29 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="promoteModal">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Promote Expiring products</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <thead><th>Product</th><th>Qty</th><th>Expiration Date</th><th>Discount</th></thead>
+                        <tbody id="tbl-promote"></tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="updatePromotion()" >Promote Products</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
     <a class="btn btn-default btn-icon btn-circle btn-ex-lg btn-fixed" id="btn-cashier">
         <span class="fa-stack">
             <i class="fa fa-square-o fa-stack-2x"></i>
@@ -311,12 +336,27 @@
                 table.empty();
                 for(var i = 0; i<length; i++){
                     var product = exProducts[i];
+                    var promotion = product.promotion * 100;
                     var row = $('<tr></tr>');
-                    row.append('<td>'+(i+1)+'</td>');
-                    row.append('<td>'+ product.item +'</td>');
-                    row.append('<td>'+ product.qty +'</td>');
-                    row.append('<td>'+ product.expiration +'</td>');
+                    var promote_row = $('<tr data-content="'+product.id+'"></tr>');
+                    row.append('<td>' + (i+1) + '</td>');
+                    row.append('<td>' + product.item + '</td>');
+                    promote_row.append('<td>' + product.item + '</td>');
+
+                    row.append('<td>' + product.qty + '</td>');
+                    promote_row.append('<td>' + product.qty + '</td>');
+
+                    row.append('<td>' + product.expiration + '</td>');
+                    promote_row.append('<td>' + product.expiration + '</td>');
+                    promote_row.append('<td><div class="input-group"><input type="number" class="form-control discount" aria-describedby="addon" value="'+promotion+'"><span class="input-group-addon" id="addon">% OFF</span></div></td>');
+                    if(promotion===0){
+                        row.append('<td> - </td>');
+                    } else {
+                        row.append('<td>' + promotion + '% OFF </td>');
+                    }
+
                     table.append(row);
+                    $('#tbl-promote').append(promote_row);
                 }
 
             }
@@ -523,6 +563,27 @@
         }
     }
 
+
+    function updatePromotion(){
+        $('#tbl-promote').find('tr').each(function(){
+            var promote = $(this).find('.discount').val();
+            if(Math.round(promote)===promote && promote>0){
+                var id = $(this).attr('data-content');
+                DB.PromoteProduct(id,promote);
+                location.reload();
+            }else{
+                swal({
+                    title: "Invalid input",
+                    text: "The discount number must be an integer!",
+                    type: "warning",
+                    showCancelButton: false,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "OK"
+                });
+            }
+
+        });
+    }
 </script>
 </body>
 </html>

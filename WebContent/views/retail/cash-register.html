@@ -55,7 +55,8 @@
                                     <thead>
                                     <tr>
                                         <th>Product</th>
-                                        <th>Price ($)</th>
+                                        <th>Price</th>
+                                        <th>Discount</th>
                                         <th>Available Qty</th>
                                         <th>Qty</th>
                                     </tr>
@@ -178,15 +179,25 @@
     });
     var id = parseInt($.url().param('id'));
 
-    var products = DB.getReturnProducts(id);
+    var products = DB.getSellingProduct(id);
     var tbody = $('#tbl-products');
 
     for (var i = 0; i < products.length; i++) {
         var product = products[i];
-        var tr = $('<tr id='+product.id+'></tr>');
-        tr.append('<td>' + product.name + ' ('+product.size+' '+product.unit+')</td>');
-        tr.append('<td>' + product.price + '</td>');
-        tr.append('<td>' + (product.balance - product.returnable) +'</td>');
+        var tr = $('<tr id="'+product.id+'"></tr>');
+        tr.append('<td>' + product.name + ' (' + product.size + ' ' + product.unit + ')</td>');
+
+        if(product.promotion>0){
+            tr.attr('data-content',product.expire);
+            tr.append('<td><span style="text-decoration:line-through">$' + product.price + '</span> $' + Math.round(product.price*(1-product.promotion)*100)/100+ '</td>');
+            tr.append('<td> <strong class="text-danger">' + (product.promotion*100) + ' % OFF</strong></td>');
+        }else{
+            tr.attr('data-content',0);
+            tr.append('<td>$' + product.price + '</td>');
+            tr.append('<td></td>');
+        }
+
+        tr.append('<td class="qty">' + product.qty +'</td>');
         tr.append('<td><input type="number" min=0 class="form-control" value="0"/></td>');
         tr.appendTo(tbody);
     }
@@ -204,24 +215,24 @@
         tbody.find('tr').each(function(index){
             var row = $(this);
             var stockId = row.attr('id');
-            var qty = row.find('input').val();
-            var available = products[index].balance - products[index].returnable;
-            if(qty<= available && qty>0){
+            var qty = parseFloat(row.find('input').val());
+            var available = row.find('.qty').text();
+            var expireId = row.attr('data-content');
+            if(qty<= available && qty>0 && Math.round(qty)===qty){
                 soldQty.push(qty);
                 var record = {
                     stock : stockId,
+                    expire : expireId,
                     amount : -qty
                 };
                 soldProducts.push(record);
-                console.log(record);
             }else{
-                if(qty<0){
-                    row.addClass('danger');
-                    validate = false;
-                }else if(qty>available) {
-                    row.addClass('danger');
+
+                if(qty !==0){
+                    $('#tbl-products tr').eq(index).addClass('danger');
                     validate = false;
                 }
+
             }
         });
         if(validate){
@@ -242,9 +253,9 @@
                 var product = products[i];
                 var row = $('<tr class="item"></tr>');
                 row.append('<td>'+product.name+'</td>');
-                row.append('<td>'+product.price+'</td>');
+                row.append('<td>'+Math.round(product.price*(1-product.promotion)*100)/100+'</td>');
                 row.append('<td>'+qty+'</td>');
-                var subtotal = product.price*qty;
+                var subtotal = product.price*(1-product.promotion)*qty;
                 subtotal = Math.round(subtotal*100)/100;
                 total += subtotal;
                 row.append('<td>'+subtotal+'</td>');

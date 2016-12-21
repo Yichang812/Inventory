@@ -15,9 +15,14 @@
 - [x] retail store calendar
 - [x] marketing page, sales by category, a table contains sales report, add filter too
 - [x] new layout for product info page
-- [ ] edit product low stock threshold
-- [ ] put more reminders in central dashboard
+- [x] edit product low stock threshold
+- [x] remove returned product from the expiration search results
+- [x] allow promoting the expiring product
+- [x] highlight returning product, promoting product
+- [x] enable choose if the sold product is expiring product
+- [ ] allow return products that are sold within 30 days
 - [ ] separate dispatching date and restock order placed date 
+- [ ] update some alert to auto closed alert
 
 
 ### ISSUES

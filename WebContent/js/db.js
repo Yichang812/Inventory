@@ -86,13 +86,13 @@ DB.load = function() {
 
 	//Expire
 	alasql('DROP TABLE IF EXISTS expire;');
-	alasql('CREATE TABLE expire(id INT IDENTITY, stock INT, expiration DATE, qty INT, received BOOL);');
+	alasql('CREATE TABLE expire(id INT IDENTITY, stock INT, expiration DATE, qty INT, received BOOL, promotion FLOAT);');
 	var pexpire = alasql.promise('SELECT MATRIX * FROM CSV("../data/EXPIRE-EXPIRE.csv", {headers: true})').then(
 		function(expires) {
 			for (var i = 0; i < expires.length; i++) {
 				var expire = expires[i];
                 expire[4]= true;
-				alasql('INSERT INTO expire VALUES(?,?,?,?,?);', expire);
+				alasql('INSERT INTO expire VALUES(?,?,?,?,?,?);', expire);
 			}
 		});
     // Restock
@@ -232,38 +232,42 @@ DB.newStore = function(store){
 	}
 };
 
-DB.newTrans = function(trans,target){
-	/*
-	keys: stock, amount, receipt
-	 */
+DB.newTrans = function(trans,target,expire){
 
-    //update expire if the qty of the closet-expired product is 0
     var qty = trans.amount;
     if(qty<0){
-        //if stock out
-        //send out products that will be expired earlier
-        var returning = alasql('SELECT returning FROM item JOIN stock ON stock.item = item.id WHERE stock.id = ?',[parseInt(trans.stock)])[0].returning;
-        var returning_day = moment().add(returning,'d').format('YYYY-MM-DD');
-        var records = alasql('SELECT * FROM expire WHERE stock = ? AND expiration > ? ORDER BY expiration ASC',[parseInt(trans.stock),returning_day]);
-        console.log(returning_day,records);
-        for(var i = 0; i<records.length; i++){
-            var record = records[i];
-            console.log(record,records);
-            qty += record.qty;
-            if(qty<0){
-                alasql('DELETE FROM expire WHERE id = ?',[record.id]);
-                alasql('INSERT INTO expire VALUES (?,?,?,?,?)',[DB.getNextID('expire'), target, record.expiration, record.qty, false]);
-            }else{
-                alasql('UPDATE expire SET qty = ? WHERE id = ?',[qty,record.id]);
-                alasql('INSERT INTO expire VALUES (?,?,?,?,?)',[DB.getNextID('expire'), target, record.expiration, (record.qty-qty), false]);
-                break;
-            }
+		if(parseInt(expire)!==0){
+            console.log(trans,target,expire);
+			var dQty = alasql('SELECT qty FROM expire WHERE id = ?',[parseInt(expire)])[0].qty;
+			if(dQty==qty){
+                console.log('delete');
+				alasql('DELETE FROM expire WHERE id = ?',[parseInt(expire)]);
+			}else{
+				alasql('UPDATE expire SET qty = ? WHERE id = ?',[dQty+qty,parseInt(expire)]);
+			}
+		}else{
+			var returning = alasql('SELECT returning FROM item JOIN stock ON stock.item = item.id WHERE stock.id = ?',[parseInt(trans.stock)])[0].returning;
+			var returning_day = moment().add(returning,'d').format('YYYY-MM-DD');
+			var records = alasql('SELECT * FROM expire WHERE stock = ? AND expiration > ? AND promotion = 0 ORDER BY expiration ASC',[parseInt(trans.stock),returning_day]);
+			for(var i = 0; i<records.length; i++){
+				var record = records[i];
+				qty += record.qty;
+				if(qty<0){
+					alasql('DELETE FROM expire WHERE id = ?',[record.id]);
+					alasql('INSERT INTO expire VALUES (?,?,?,?,?,?)',[DB.getNextID('expire'), target, record.expiration, record.qty, false, 0]);
+				}else{
+					alasql('UPDATE expire SET qty = ? WHERE id = ?',[qty,record.id]);
+					alasql('INSERT INTO expire VALUES (?,?,?,?,?,?)',[DB.getNextID('expire'), target, record.expiration, (record.qty-qty), false, 0]);
+					break;
+				}
 
-        }
-        if(qty<0){
-            alert('OUT-OF-STOCK!');
-            return false;
-        }
+			}
+			if(qty<0){
+				alert('OUT-OF-STOCK!');
+				return false;
+			}
+		}
+
 
     }
     var id = DB.getNextID('trans');
@@ -298,7 +302,7 @@ DB.newStockIn = function(record) {
     //update expire
 	var id = DB.getNextID('expire');
 
-	alasql('INSERT INTO expire VALUES (?,?,?,?,?)',[id,trans.stock,record.expire,record.qty,true]);
+	alasql('INSERT INTO expire VALUES (?,?,?,?,?,?)',[id,trans.stock,record.expire,record.qty,true,0]);
 };
 
 DB.newRestock = function (restocks) {
@@ -351,7 +355,7 @@ DB.newSold = function (soldProducts) {
 	for(var i =0 ;i <soldProducts.length; i++){
 		var product = soldProducts[i];
 		product['receipt'] = receipt;
-		DB.newTrans(product);
+		DB.newTrans(product,null,product.expire);
 	}
 	return {receipt: receipt, date: today};
 };
@@ -594,6 +598,39 @@ DB.getReceiptList = function(retail){
     return alasql(sql,[retail]);
 };
 
+DB.getSellingProduct = function(retail){
+	var sql = 'SELECT stock.id, expire.id as expire, expire.expiration, expire.qty, expire.promotion, item.returning, item.name, item.size, item.unit, item.price '+
+		'FROM stock ' +
+		'JOIN expire ON stock.id = expire.stock ' +
+		'JOIN item ON item.id = stock.item ' +
+		'JOIN kind ON item.kind = kind.id ' +
+		'WHERE expire.received = true ' +
+		'AND retail = ?';
+	var products = alasql(sql,[retail]);
+	var today = new Date();
+	var result = [];
+	var memo = [];
+	for(var i = 0; i<products.length; i++){
+		var product = products[i];
+		var diff = moment(product.expiration,'YYYY-MM-DD').diff(today,'days');
+		if(diff>product.returning){
+			if(product.promotion>0){
+				result.push(product);
+				memo.push(0);
+			}else{
+				var index = memo.indexOf(product.id);
+				if(index!==-1){
+					result[index].qty +=product.qty;
+				}else{
+					result.push(product);
+					memo.push(product.id);
+				}
+			}
+		}
+	}
+	return result;
+};
+
 DB.getReturnProducts = function(retail){
     var sql = 'SELECT stock.id, stock.balance, expire.expiration, expire.qty, item.returning, item.name, item.code, item.detail, item.size, item.unit, item.price, kind.name AS kind ' +
         'FROM stock ' +
@@ -630,7 +667,7 @@ DB.getReturnProducts = function(retail){
 };
 
 DB.getExpiringProducts = function(days,retail){
-	var sql = 'SELECT stock.id, expire.expiration, expire.qty, item.name AS item ' +
+	var sql = 'SELECT expire.id, expire.expiration, expire.qty, expire.promotion, item.name AS item, item.returning ' +
 		'FROM stock ' +
 		'JOIN expire ON stock.id = expire.stock ' +
         'JOIN item ON stock.item = item.id ' +
@@ -642,7 +679,7 @@ DB.getExpiringProducts = function(days,retail){
 	for(var i = 0; i<products.length; i++){
 		var product = products[i];
 		var diff = moment(product.expiration,'YYYY-MM-DD').diff(today,'days');
-		if(diff<days){
+		if(diff<days && diff>product.returning){
 			expiring.push(product);
 		}
 	}
@@ -650,8 +687,19 @@ DB.getExpiringProducts = function(days,retail){
 };
 
 DB.getProductExpiration = function(stock){
-    var sql = 'SELECT * FROM expire WHERE received = true AND stock = '+stock;
-    return alasql(sql);
+    var sql = 'SELECT expire.*, item.returning FROM expire JOIN stock ON stock.id = expire.stock JOIN item ON stock.item = item.id WHERE expire.received = true AND stock.id = '+stock;
+    var products = alasql(sql);
+    var today = new Date();
+    for(var i = 0; i<products.length; i++){
+        var product = products[i];
+        var diff = moment(product.expiration,'YYYY-MM-DD').diff(today,'days');
+        if(diff<product.returning){
+            product.returnable = true;
+        }else{
+            product.returnable = false;
+        }
+    }
+    return products;
 };
 
 DB.getDeadProduct = function(){
@@ -766,6 +814,9 @@ DB.logoutUser = function(){
 	localStorage.removeItem('loginUser');
 };
 
+DB.PromoteProduct = function(id,discount){
+	alasql('UPDATE expire SET promotion = ? WHERE id = ?',[discount/100,parseInt(id)]);
+};
 
 //report
 
