@@ -319,13 +319,15 @@ DB.newRestock = function (restocks) {
             var delivery_id = DB.getNextID('delivery');
             res = alasql('INSERT INTO delivery VALUES (?,?,?,?)',[delivery_id,restock_id,record.id,record.amount]);
         }else{
-            var temp = alasql('COLUMN OF SELECT id, qty FROM delivery WHERE stock = ?',[parseInt(record.id)]);
+            var temp = alasql('SELECT id, qty FROM delivery WHERE stock = ?',[parseInt(record.id)]);
             if(temp.length===0){
                 var delivery_id = DB.getNextID('delivery');
                 var restock_id = alasql('SELECT id FROM restock WHERE ref = ?',[ref])[0].id;
                 alasql('INSERT INTO delivery VALUES (?,?,?,?)',[delivery_id,restock_id,record.id,record.amount]);
             }else{
+				console.log(temp);
                 var q = parseInt(temp[0].qty)+parseInt(record.amount);
+				console.log();
                 alasql('UPDATE delivery SET qty = ? WHERE id = ?',[q,temp[0].id]);
             }
         }
@@ -776,15 +778,14 @@ DB.getDateRange = function(){
 
 DB.getCatReport = function (){
 	var sql = 'SELECT SUM(trans.qty) AS total, pkind.* ' +
-		'FROM trans ' +
-		'JOIN receipt ON trans.receipt = receipt.id ' +
-		'JOIN stock ON trans.stock = stock.id ' +
-		'JOIN item ON item.id = stock.item ' +
-		'JOIN kind ON item.kind = kind.id ' +
-		'JOIN pkind ON kind.parent_id = pkind.id ' +
-		'WHERE stock.retail <>1 ' +
-		'AND receipt.type = "Sold" ' +
-		'GROUP BY kind.parent_id';
+	'FROM trans ' +
+	'JOIN receipt ON trans.receipt = receipt.id ' +
+	'JOIN stock ON trans.stock = stock.id ' +
+	'JOIN item ON item.id = stock.item ' +
+	'JOIN kind ON item.kind = kind.id ' +
+	'JOIN pkind ON kind.parent_id = pkind.id ' +
+	'WHERE receipt.type = "Sold" ' +
+	'GROUP BY kind.parent_id';
 
 	return alasql(sql);
 };
@@ -910,26 +911,18 @@ DB.getRetailReport = function(items,cities,first,last){
 		'AND retail.city IN ('+q2+') ' +
 		'AND stock.retail <> 1';
 	var stocks = alasql(sql);
-	sql = 'SELECT stock.retail, SUM(trans.qty) AS total ' +
+	sql = 'SELECT retail.*, SUM(trans.qty*item.price) AS revenue, SUM(trans.qty) AS total ' +
 		'FROM trans ' +
 		'JOIN stock ON trans.stock = stock.id ' +
 		'JOIN receipt ON trans.receipt = receipt.id ' +
+		'JOIN item ON stock.item = item.id ' +
+		'JOIN retail ON stock.retail = retail.id ' +
 		'WHERE trans.stock IN ('+stocks.toString()+') ' +
 		'AND receipt.date >= ? ' +
 		'AND receipt.date <= ? ' +
 		'AND receipt.type = "Sold" GROUP BY stock.retail';
 
-	var trans = alasql(sql,[first,last]);
-	var result = [];
-	for(i = 0; i<trans.length;i++){
-		var tran = trans[i];
-		record = {
-			retail : alasql('COLUMN OF SELECT name FROM retail WHERE id = ?',[tran.retail])[0],
-			qty : Math.abs(tran.total)
-		};
-		result.push(record);
-	}
-	return result;
+	return alasql(sql,[first,last]);
 };
 
 DB.getRetailSoldDetail = function(retail,items,first,last){

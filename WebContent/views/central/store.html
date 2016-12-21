@@ -98,26 +98,26 @@
                         <h4 class="panel-title" id="store-name"></h4>
                     </div>
                     <div class="panel-body">
-                        <table class="table">
-                            <tbody>
-                            <tr>
-                                <th>Store Name</th>
-                                <td id="name"></td>
-                            </tr>
-                            <tr>
-                                <th>City</th>
-                                <td id="city"></td>
-                            </tr>
-                            <tr>
-                                <th>Address</th>
-                                <td id="addr"></td>
-                            </tr>
-                            <tr>
-                                <th>Telephone</th>
-                                <td id="tel"></td>
-                            </tr>
-                            </tbody>
-                        </table>
+                        <div class="col-md-10 col-md-offset-1">
+                            <h4 class="m-t-20 m-b-30" id="name"></h4>
+                            <table class="table">
+                                <tbody>
+                                <tr>
+                                    <th>City</th>
+                                    <td id="city"></td>
+                                </tr>
+                                <tr>
+                                    <th>Address</th>
+                                    <td id="addr"></td>
+                                </tr>
+                                <tr>
+                                    <th>Telephone</th>
+                                    <td id="tel"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -133,28 +133,30 @@
                         <h4 class="panel-title">Stock of Products</h4>
                     </div>
                     <div class="panel-body">
-                        <div class="row">
-                            <div class="table-responsive">
-                                <table id="" class="table table-hover" width="100%">
-                                    <thead>
-                                    <tr>
-                                        <th>Code</th> <!-- product image -->
-                                        <th>Product</th>
-                                        <th>Safe Stock</th>
-                                        <th>Current Stock</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody id="tbl-restock">
+                        <div class="col-md-10 col-md-offset-1">
+                            <div class="row">
 
-                                    </tbody>
-                                </table>
+                                <div class="table-responsive">
+                                    <table id="" class="table table-hover" width="100%">
+                                        <thead>
+                                        <tr>
+                                            <th></th> <!-- product image -->
+                                            <th>Product</th>
+                                            <th>Safe Stock</th>
+                                            <th>Current Stock</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="tbl-restock">
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <a href="restock.html" class="btn btn-success pull-right">Restock</a>
                             </div>
                         </div>
-                        <div class="row">
-                            <a href="restock.html" class="btn btn-success pull-right">Restock</a>
-                        </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -214,11 +216,16 @@
     for(var i = 0; i<restocks.length; i++) {
         var restock = restocks[i];
         var row = $('<tr id=' + restock.id + '"></tr>');
-        row.append('<td class="retail">' + restock.retail + '</td>');
+        row.append('<td>' + (i+1) + '</td>');
         row.append('<td class="item">' + restock.item + '</td>');
         row.append('<td>' + restock.safe + '</td>');
-        row.append('<td>' + restock.balance + '</td>');
-        row.append('<td>' + (restock.safe - restock.balance) + '</td>');
+
+        if(restock.balance < restock.safe){
+            row.append('<td>' + restock.balance + ' <span class="label label-danger pull-right">Stock Low</span> </td>');
+        }else{
+            row.append('<td>' + restock.balance + ' </td>');
+        }
+
         $('#tbl-restock').append(row);
     }
 

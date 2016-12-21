@@ -239,7 +239,7 @@
                                     <th>#</th>
                                     <th> Product</th>
                                     <th> Total Sold Quantity</th>
-                                    <th> Total Revenue</th>
+                                    <th> Total Revenue ($)</th>
                                 </tr>
                                 </thead>
                                 <tbody id="tbl-top-selling">
@@ -301,8 +301,9 @@
                                 <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th> Product</th>
-                                    <th> Total Sold</th>
+                                    <th> Retail Store</th>
+                                    <th> Total Sold Quantity</th>
+                                    <th> Total Revenue ($)</th>
                                 </tr>
                                 </thead>
                                 <tbody id="tbl-top-shop">
@@ -550,7 +551,7 @@
         var table = $('#tbl-top-shop');
         var data = DB.getRetailReport(FILTER.items,FILTER.cities,FILTER.first,FILTER.last);
         table.empty();
-
+        console.log(data);
         for(var i =0; i<data.length; i++){
             var d = data[i];
             if(!d.retail){
@@ -559,13 +560,15 @@
                 $('#chart-3-container div').html('');
                 return;
             }
+            var revenue = Math.abs(Math.round(d.revenue*100)/100);
             var row = $('<tr onclick="showDetails3(this)"></tr>');
             row.append('<td>' + (i+1) + '</td>');
-            row.append('<td>' + d.retail + '</td>');
-            row.append('<td>' + d.qty + '</td>');
+            row.append('<td>' + d.name + '</td>');
+            row.append('<td>' + Math.abs(d.total) + '</td>');
+            row.append('<td>' + revenue + '</td>');
             table.append(row);
         }
-        chartInit3(data[0].retail);
+        chartInit3(data[0].name);
     }
 
     function toggleArrow(ele) {
