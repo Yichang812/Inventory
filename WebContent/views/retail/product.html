@@ -138,7 +138,7 @@
                                         <div class="col-md-12">
                                             <table class="table">
                                                 <thead>
-                                                <tr><th>Quantity</th><th>Expiration Date</th></tr>
+                                                <tr><th>Quantity</th><th>Expiration Date</th><th></th><th></th></tr>
                                                 </thead>
                                                 <tbody id="store-stock-records">
                                                 </tbody>
@@ -208,7 +208,7 @@
 <script src="../../plugins/bootstrap/js/bootstrap.min.js"></script>
 <script src="../../plugins/slimscroll/jquery.slimscroll.min.js"></script>
 <script src="../../plugins/jquery-cookie/jquery.cookie.js"></script>
-
+<script src="../../plugins/moment/moment.min.js"></script>
 <script src="../../lib/alasql.js"></script>
 <script src="../../lib/purl.js"></script>
 <script src="../../js/db.js"></script>
@@ -256,19 +256,26 @@
 
     $('#image').attr('src', '../../img/1.jpg');
     var stocks = DB.getProductExpiration(id);
-    var temp = {};
+
     for(var i = 0; i<stocks.length; i++){
         var stock = stocks[i];
-       if(temp.hasOwnProperty(stock.expiration)){
-           temp[stock.expiration] += stock.qty;
-       }else{
-           temp[stock.expiration] = stock.qty;
-       }
-    }
-    for(var t in temp){
-        var row = $('<tr><td>'+ temp[t] +'</td><td>'+ t +'</td></tr>');
+        var row = $('<tr></tr>');
+        row.append('<td>'+ stock.qty +'</td>');
+        row.append('<td>'+ stock.expiration +'</td>');
+        if(stock.returnable){
+            row.append('<td><span class="label label-danger">Should be returned</span></td>');
+        }else{
+            row.append('<td></td>');
+        }
+        if(stock.promotion>0){
+            row.append('<td><span class="label label-warning">'+(stock.promotion*100)+'% OFF</span></td>');
+        }else{
+            row.append('<td></td>');
+        }
+
         $('#store-stock-records').append(row);
     }
+
 
     function backHome() {
         window.location = "retail.html?id="+retail;
