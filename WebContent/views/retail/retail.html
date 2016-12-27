@@ -567,7 +567,7 @@
     function updatePromotion(){
         $('#tbl-promote').find('tr').each(function(){
             var promote = $(this).find('.discount').val();
-            if(Math.round(promote)===promote && promote>0){
+            if(Math.round(promote)==promote && promote>0){
                 var id = $(this).attr('data-content');
                 DB.PromoteProduct(id,promote);
                 location.reload();

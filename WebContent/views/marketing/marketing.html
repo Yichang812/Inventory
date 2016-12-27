@@ -79,259 +79,247 @@
     <!-- begin #content -->
     <!-- begin #content -->
     <div id="content" class="content content-full-width">
-        <div class="p-20">
-            <!-- begin row -->
-            <div class="row">
-                <!-- begin col-2 -->
-                <div class="col-md-2">
-                    <div class="hidden-sm hidden-xs">
-                        <h5 class="m-t-20">Sales Reports</h5>
-                        <ul class="nav nav-pills nav-stacked nav-inbox">
-                            <li class="active"><a href="marketing.html#growth" data-toggle="tab"><i class="fa fa-arrow-circle-up fa-fw m-r-5"></i>Sales Summary</a></li>
-                            <li><a href="marketing.html#topproduct" data-toggle="tab"><i class="fa fa-usd fa-fw m-r-5"></i> Top Selling Product</a></li>
-                            <li><a href="marketing.html#topshop" data-toggle="tab"><i class="fa fa-home fa-fw m-r-5"></i> Top Selling Retail Store</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- end col-2 -->
-                <!-- begin col-10 -->
-                <div class="col-md-10">
-                    <div class="tab-content email-content">
+        <div class="email-content">
+            <div class="p-20">
+                <!-- begin row -->
+                <div class="row">
+                    <!-- begin col-10 -->
+                    <div class="col-md-10 col-md-offset-1">
 
-                        <div class="tab-pane fade active in" id="growth">
-                            <div class="row">
-                                <div class="col-md-6" style="border-right: 1px solid #e2e7eb">
-                                    <h4 style="text-align: center">Sales By Categories</h4>
-                                    <div class="col-sm-7">
-                                        <div id="donut-chart"></div>
-                                    </div>
-                                    <div class="col-sm-5 p-t-30">
-                                        <table class="table" id="tbl-cat">
-
-                                        </table>
-                                    </div>
+                        <div class="row">
+                            <div class="col-md-6" style="border-right: 1px solid #e2e7eb">
+                                <h3 style="text-align: center">Sales By Categories</h3>
+                                <div class="col-sm-7">
+                                    <div id="donut-chart"></div>
                                 </div>
-                                <div class="col-md-6">
-                                    <h4 style="text-align: center">Sales Total By Period</h4>
-                                    <div class="col-sm-7">
-                                        <div id="area-chart"></div>
-                                    </div>
-
-                                    <div class="col-sm-5 p-t-30">
-                                        <table class="table">
-                                            <tr><th style="border-bottom: 1px solid #ddd;">Total Sales:</th><td id="total-sale" style="border-bottom: 1px solid #ddd;"></td></tr>
-                                            <tr><th style="border-bottom: 1px solid #ddd;">Average Month total:</th><td id="avg-total" style="border-bottom: 1px solid #ddd;"></td></tr>
-                                        </table>
-                                    </div>
-
+                                <div class="col-sm-5 p-t-30">
+                                    <table class="table" id="tbl-cat">
+                                        <thead><th>Category</th><th>Sold Quantity</th></thead>
+                                    </table>
                                 </div>
                             </div>
-
-
-                        </div>
-
-                        <div class="tab-pane fade" id="topproduct">
-                            <div class="row m-top-30">
-                                <div class="collapse in" id="collapseExample">
-                                    <div style="height:90px;">
-                                        <form class="form-inline m-l-20">
-                                            <!--<div class="form-group col-md-1"></div>-->
-                                            <div class="form-group m-r-10 col-md-3">
-                                                <label for="cat">Categories</label>
-                                                <select class="select" id="cat" multiple="multiple">
-                                                    <optgroup label="Vitamins & Supplements">
-                                                        <option selected="selected">Multivitamins</option>
-                                                        <option selected="selected">Vitamins A-Z</option>
-                                                        <option selected="selected">Fish Oil & Omegas</option>
-                                                        <option selected="selected">Minerals</option>
-                                                        <option selected="selected">Joint Support</option>
-                                                        <option selected="selected">Antioxidants</option>
-                                                        <option selected="selected">Specialty Supplements</option>
-                                                        <option selected="selected">Sexual Health</option>
-                                                    </optgroup>
-                                                    <optgroup label="Protein & Fitness">
-                                                        <option selected="selected">Protein</option>
-                                                        <option selected="selected">Energy & Endurance</option>
-                                                        <option selected="selected">Muscle Builders</option>
-                                                        <option selected="selected">Equipment & Accessories</option>
-                                                        <option selected="selected">Performance Formulas</option>
-
-                                                    </optgroup>
-                                                    <optgroup label="Herb & Natural Remedies">
-
-                                                        <option selected="selected">Herbs A-E</option>
-                                                        <option selected="selected">Herbs T-Z</option>
-                                                        <option selected="selected">Herbs F-N</option>
-                                                        <option selected="selected">Antioxidants</option>
-                                                        <option selected="selected">Herbs O-S</option>
-                                                        <option selected="selected">Natural Remedies</option>
-
-                                                    </optgroup>
-                                                    <optgroup label="Digestion & Super Foods">
-
-                                                        <option selected="selected">Digestive Support</option>
-                                                        <option selected="selected">Cleansing & Detox</option>
-                                                        <option selected="selected">Greens & Superfoods</option>
-                                                        <option selected="selected">Superfruit & Botanicals</option>
-                                                    </optgroup>
-                                                    <optgroup label="Weight Management">
-                                                        <option selected="selected">Fat & Calorie Burners</option>
-                                                        <option selected="selected">Meal Replacements</option>
-                                                        <option selected="selected">Appetite Control & Diet</option>
-
-                                                    </optgroup>
-                                                    <optgroup label="Persona Care">
-                                                        <option selected="selected">Skin & Body Care</option>
-                                                        <option selected="selected">Aromatherapy</option>
-                                                        <option selected="selected">Hair Case, Styling & Treatment</option>
-                                                        <option selected="selected">Natural Home</option>
-                                                        <option selected="selected">Bath & Soaps</option>
-
-                                                    </optgroup>
-                                                    <optgroup label="Food & Drink">
-                                                        <option selected="selected">Protein Bars</option>
-                                                        <option selected="selected">Healthy Food & Snacks</option>
-                                                        <option selected="selected">Drinks</option>
-                                                    </optgroup>
-                                                </select>
-                                            </div>
-                                            <!--<div class="form-group col-md-1"></div>-->
-                                            <div class="form-group m-r-10 col-md-3">
-                                                <label for="store">Stores</label>
-                                                <select class="select" id="store" multiple="multiple">
-                                                    <optgroup label="Los Angeles">
-                                                        <option selected="selected">Heron Building</option>
-                                                        <option selected="selected">Arco Plaza</option>
-                                                        <option selected="selected">The Bloc</option>
-                                                    </optgroup>
-                                                    <optgroup label="San Francisco">
-                                                        <option selected="selected">Safeway Center</option>
-                                                        <option selected="selected">Westfield San Francisco Centre</option>
-                                                    </optgroup>
-                                                    <optgroup label="San Diego">
-                                                        <option selected="selected">Horton Plaza</option>
-                                                    </optgroup>
-                                                </select>
-                                            </div>
-                                            <div class="form-group m-r-10 col-md-3">
-                                                <label for="period2">Time Period</label>
-                                                <input type="text" class="date-picker-input" id="period2" name="datefilter2" value="" />
-                                            </div>
-                                            <div class="col-md-1">
-                                                <a class="btn btn-sm btn-success" style="margin-top:12px;" onclick="applyRule2()">Apply</a>
-                                            </div>
-                                        </form>
-                                    </div>
+                            <div class="col-md-6">
+                                <h3 style="text-align: center">Sales Total By Period</h3>
+                                <div class="col-sm-7">
+                                    <div id="area-chart"></div>
                                 </div>
-                            </div>
-                            <div class="row"  style="border-bottom: solid 1px #ecf0f1">
-                                <div class="col-md-1 pull-right">
-                                    <h5 class="text-success">
-                                        <a data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample" onclick="toggleArrow(this)">Filter
-                                            <i class="fa fa-chevron-up"></i>
-                                        </a>
-                                    </h5>
+
+                                <div class="col-sm-5 p-t-30">
+                                    <table class="table">
+                                        <tr><th style="border-bottom: 1px solid #ddd;">Total Sales:</th><td id="total-sale" style="border-bottom: 1px solid #ddd;"></td></tr>
+                                        <tr><th style="border-bottom: 1px solid #ddd;">Average Month total:</th><td id="avg-total" style="border-bottom: 1px solid #ddd;"></td></tr>
+                                    </table>
                                 </div>
-                            </div>
-                            <table class="table table-email">
-                                <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th> Product</th>
-                                    <th> Total Sold Quantity</th>
-                                    <th> Total Revenue</th>
-                                </tr>
-                                </thead>
-                                <tbody id="tbl-top-selling">
 
-                                </tbody>
-                            </table>
-
-                            <div class="email-footer clearfix">
-                                <div class="col-md-6 col-md-offset-3">
-                                    <div id="chart-2-container">
-                                        <h4 style="text-align: center;" id="top-product-name"></h4>
-                                        <div id="top-product-chart" class="height-sm well"></div>
-                                    </div>
-
-                                </div>
                             </div>
                         </div>
 
-                        <div class="tab-pane fade" id="topshop">
+                        <div class="row m-t-40 p-t-40" style="border-top: 1px solid #e2e7eb">
+                            <div class="row m-t-40 m-b-40">
+                                <h3 class="text-center">Top Selling Products</h3>
+                            </div>
+                            <div class="collapse in" id="collapseExample">
+                                <div style="height:90px;">
+                                    <form class="form-inline m-l-20">
+                                        <!--<div class="form-group col-md-1"></div>-->
+                                        <div class="form-group m-r-10 col-md-3">
+                                            <label for="cat">Categories</label>
+                                            <select class="select" id="cat" multiple="multiple">
+                                                <optgroup label="Vitamins & Supplements">
+                                                    <option selected="selected">Multivitamins</option>
+                                                    <option selected="selected">Vitamins A-Z</option>
+                                                    <option selected="selected">Fish Oil & Omegas</option>
+                                                    <option selected="selected">Minerals</option>
+                                                    <option selected="selected">Joint Support</option>
+                                                    <option selected="selected">Antioxidants</option>
+                                                    <option selected="selected">Specialty Supplements</option>
+                                                    <option selected="selected">Sexual Health</option>
+                                                </optgroup>
+                                                <optgroup label="Protein & Fitness">
+                                                    <option selected="selected">Protein</option>
+                                                    <option selected="selected">Energy & Endurance</option>
+                                                    <option selected="selected">Muscle Builders</option>
+                                                    <option selected="selected">Equipment & Accessories</option>
+                                                    <option selected="selected">Performance Formulas</option>
 
-                            <div class="row m-top-30">
-                                <div class="collapse in" id="filter-shop">
-                                    <div style="height:90px;">
-                                        <form class="form-inline m-l-20">
-                                            <!--<div class="form-group col-md-1"></div>-->
-                                            <div class="form-group m-r-10 col-md-3">
-                                                <label for="city">Cities</label>
-                                                <select class="select" id="city" multiple="multiple">
-                                                    <option selected="selected"></option>
-                                                </select>
-                                            </div>
-                                            <!--<div class="form-group col-md-1"></div>-->
-                                            <div class="form-group m-r-10 col-md-3">
-                                                <label for="item">Products</label>
-                                                <select class="select" id="item" multiple="multiple">
-                                                </select>
-                                            </div>
-                                            <div class="form-group m-r-10 col-md-3">
-                                                <label for="period3">Time Period</label>
-                                                <input type="text" class="date-picker-input" id="period3" name="datefilter3" value="" />
-                                            </div>
-                                            <div class="col-md-1">
-                                                <a class="btn btn-sm btn-success" style="margin-top:12px;" onclick="applyRule3()">Apply</a>
-                                            </div>
-                                        </form>
-                                    </div>
+                                                </optgroup>
+                                                <optgroup label="Herb & Natural Remedies">
+
+                                                    <option selected="selected">Herbs A-E</option>
+                                                    <option selected="selected">Herbs T-Z</option>
+                                                    <option selected="selected">Herbs F-N</option>
+                                                    <option selected="selected">Antioxidants</option>
+                                                    <option selected="selected">Herbs O-S</option>
+                                                    <option selected="selected">Natural Remedies</option>
+
+                                                </optgroup>
+                                                <optgroup label="Digestion & Super Foods">
+
+                                                    <option selected="selected">Digestive Support</option>
+                                                    <option selected="selected">Cleansing & Detox</option>
+                                                    <option selected="selected">Greens & Superfoods</option>
+                                                    <option selected="selected">Superfruit & Botanicals</option>
+                                                </optgroup>
+                                                <optgroup label="Weight Management">
+                                                    <option selected="selected">Fat & Calorie Burners</option>
+                                                    <option selected="selected">Meal Replacements</option>
+                                                    <option selected="selected">Appetite Control & Diet</option>
+
+                                                </optgroup>
+                                                <optgroup label="Persona Care">
+                                                    <option selected="selected">Skin & Body Care</option>
+                                                    <option selected="selected">Aromatherapy</option>
+                                                    <option selected="selected">Hair Case, Styling & Treatment</option>
+                                                    <option selected="selected">Natural Home</option>
+                                                    <option selected="selected">Bath & Soaps</option>
+
+                                                </optgroup>
+                                                <optgroup label="Food & Drink">
+                                                    <option selected="selected">Protein Bars</option>
+                                                    <option selected="selected">Healthy Food & Snacks</option>
+                                                    <option selected="selected">Drinks</option>
+                                                </optgroup>
+                                            </select>
+                                        </div>
+                                        <!--<div class="form-group col-md-1"></div>-->
+                                        <div class="form-group m-r-10 col-md-3">
+                                            <label for="store">Stores</label>
+                                            <select class="select" id="store" multiple="multiple">
+                                                <optgroup label="Los Angeles">
+                                                    <option selected="selected">Heron Building</option>
+                                                    <option selected="selected">Arco Plaza</option>
+                                                    <option selected="selected">The Bloc</option>
+                                                </optgroup>
+                                                <optgroup label="San Francisco">
+                                                    <option selected="selected">Safeway Center</option>
+                                                    <option selected="selected">Westfield San Francisco Centre</option>
+                                                </optgroup>
+                                                <optgroup label="San Diego">
+                                                    <option selected="selected">Horton Plaza</option>
+                                                </optgroup>
+                                            </select>
+                                        </div>
+                                        <div class="form-group m-r-10 col-md-3">
+                                            <label for="period2">Time Period</label>
+                                            <input type="text" class="date-picker-input" id="period2" name="datefilter2" value="" />
+                                        </div>
+                                        <div class="col-md-1">
+                                            <a class="btn btn-sm btn-success" style="margin-top:12px;" onclick="applyRule2()">Apply</a>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
-                            <div class="row"  style="border-bottom: solid 1px #ecf0f1">
-                                <div class="col-md-1 pull-right">
-                                    <h5 class="text-success">
-                                        <a data-toggle="collapse" href="#filter-shop" aria-expanded="false" aria-controls="collapseExample" onclick="toggleArrow(this)">Filter
-                                            <i class="fa fa-chevron-up"></i>
-                                        </a>
-                                    </h5>
-                                </div>
+                        </div>
+                        <div class="row"  style="border-bottom: solid 1px #ecf0f1">
+                            <div class="col-md-1 pull-right">
+                                <h5 class="text-success">
+                                    <a data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample" onclick="toggleArrow(this)">Filter
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                </h5>
                             </div>
-                            <table class="table table-email">
-                                <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th> Product</th>
-                                    <th> Total Sold</th>
-                                </tr>
-                                </thead>
-                                <tbody id="tbl-top-shop">
+                        </div>
+                        <div class="row m-t-30 m-b-30">
+                            <div class="col-md-10 col-md-offset-1">
+                                <table class="table table-email display print" cellspacing="0" width="100%" id="tbl-product">
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th> Product</th>
+                                        <th> Total Sold Quantity</th>
+                                        <th> Total Revenue</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="tbl-top-selling">
 
-                                </tbody>
-                            </table>
-
-
-
-
-                            <div class="email-footer clearfix">
-                                <div class="col-md-6 col-md-offset-3">
-                                    <div id="chart-3-container">
-                                        <h4 style="text-align: center;" id="top-shop-name"></h4>
-                                        <div id="top-shop-chart" class="height-sm"></div>
-                                    </div>
-
-                                </div>
-
+                                    </tbody>
+                                </table>
                             </div>
 
+                        </div>
 
+
+                        <div class="email-footer clearfix">
+                            <div class="col-md-6 col-md-offset-3">
+                                <div id="chart-2-container">
+                                    <h4 style="text-align: center;">Product Revenues</h4>
+                                    <div id="top-product-chart" class="height-md" ></div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row m-t-40 p-t-40" style="border-top: 1px solid #e2e7eb">
+                            <div class="row m-t-40 m-b-40">
+                                <h3 class="text-center">Top Selling Retailers</h3>
+                            </div>
+                            <div class="collapse in" id="filter-shop">
+                                <div style="height:90px;">
+                                    <form class="form-inline m-l-20">
+                                        <!--<div class="form-group col-md-1"></div>-->
+                                        <div class="form-group m-r-10 col-md-3">
+                                            <label for="city">Cities</label>
+                                            <select class="select" id="city" multiple="multiple">
+                                                <option selected="selected"></option>
+                                            </select>
+                                        </div>
+                                        <!--<div class="form-group col-md-1"></div>-->
+                                        <div class="form-group m-r-10 col-md-3">
+                                            <label for="item">Products</label>
+                                            <select class="select" id="item" multiple="multiple">
+                                            </select>
+                                        </div>
+                                        <div class="form-group m-r-10 col-md-3">
+                                            <label for="period3">Time Period</label>
+                                            <input type="text" class="date-picker-input" id="period3" name="datefilter3" value="" />
+                                        </div>
+                                        <div class="col-md-1">
+                                            <a class="btn btn-sm btn-success" style="margin-top:12px;" onclick="applyRule3()">Apply</a>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row"  style="border-bottom: solid 1px #ecf0f1">
+                            <div class="col-md-1 pull-right">
+                                <h5 class="text-success">
+                                    <a data-toggle="collapse" href="#filter-shop" aria-expanded="false" aria-controls="collapseExample" onclick="toggleArrow(this)">Filter
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                </h5>
+                            </div>
+                        </div>
+                        <table class="table table-email">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th> Store</th>
+                                <th> Total Sold</th>
+                            </tr>
+                            </thead>
+                            <tbody id="tbl-top-shop">
+
+                            </tbody>
+                        </table>
+
+
+
+
+                        <div class="email-footer clearfix">
+                            <div class="col-md-6 col-md-offset-3">
+                                <div id="chart-3-container">
+                                    <h4 style="text-align: center;" id="top-shop-name"></h4>
+                                    <div id="top-shop-chart" class="height-md"></div>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
                 </div>
-
+                <!-- end row -->
             </div>
-            <!-- end row -->
         </div>
+
 
 
     </div>
@@ -365,8 +353,6 @@
 <script src="../../plugins/multiple-select/multiple-select.js"></script>
 <script src="../../plugins/datepicker/daterangepicker.js"></script>
 
-<!--<script src="../../plugins/powerange/powerange.min.js"></script>-->
-
 <script src="../../plugins/morris/raphael.min.js"></script>
 <script src="../../plugins/morris/morris.js"></script>
 
@@ -386,9 +372,14 @@
             minimumCountSelected:7
         });
 
+
         applyRule2();
         applyRule3();
         chartInit1();
+        $('#tbl-product').DataTable({
+            "order":[[3,"desc"]]
+        });
+
     });
 
     var COLLAPSED = true;
@@ -427,7 +418,7 @@
         var temp = DB.getCatReport();
 
         for(var i = 0; i<temp.length; i++){
-            var row = $('<tr><th style="border-bottom: 1px solid #ddd;">'+temp[i].name+'</th><td style="border-bottom: 1px solid #ddd;">'+Math.abs(temp[i].total)+'</td></tr>');
+            var row = $('<tr><td style="border-bottom: 1px solid #ddd;">'+temp[i].name+'</td><td style="border-bottom: 1px solid #ddd;">'+Math.abs(temp[i].total)+'</td></tr>');
             $('#tbl-cat').append(row);
         }
 
@@ -475,25 +466,26 @@
 
     }
 
-    function chartInit2(item){
-        $('#top-product-name').text(item);
-        var data = DB.getSoldDetail(item,FILTER.stores,FILTER.first,FILTER.last);
-        var ykeys = alasql('COLUMN OF SELECT id FROM retail WHERE id<>1');
-        var labels = alasql('COLUMN OF SELECT name FROM retail WHERE id<>1');
-        $('#top-product-chart').empty();
+    function chartInit2(){
+        var data = DB.getSoldDetail(FILTER.kinds,FILTER.stores,FILTER.first,FILTER.last);
+        var labels = alasql('COLUMN OF SELECT name FROM retail');
+        var ykeys = alasql('COLUMN OF SELECT id FROM retail');
+        console.log(data);
         CHART2 = Morris.Bar({
             element:"top-product-chart",
             data:data,
-            xkey:"month",
+            xkey:"item",
             ykeys:ykeys,
             labels:labels,
+            gridTextWeight:8,
             behaveLikeLine:true,
             hideHover:"auto",
             barGrap:4,
             barSizeRatio:0.3,
             resize:true,
             stacked:true,
-            barColors:['#b6c832','#6dc5de','#348fe2','#f7b048','#00acac','#f7b048']})
+            barColors:['#b6c832','#6dc5de','#348fe2','#f7b048','#00acac','#f7b048']
+        });
     }
 
     function chartInit3(retail){
@@ -512,7 +504,6 @@
             hideHover:"auto",
             barGrap:4,
             barSizeRatio:0.3,
-            resize:true,
             stacked:true,
             barColors:['#b6c832','#6dc5de','#348fe2','#f7b048','#00acac','#f7b048']})
     }
@@ -525,22 +516,22 @@
         table.empty();
         for(var i =0; i<data.length; i++){
             var d = data[i];
-            if(!d){
-                $('<tr><td colspan="3">No sales data available</td></tr>').appendTo(table);
-                $('#chart-2-container h4').text('');
-                $('#chart-2-container div').html('');
-                return;
-            }
+//            if(!d){
+//                $('<tr><td colspan="3">No sales data available</td></tr>').appendTo(table);
+//                $('#chart-2-container h4').text('');
+//                $('#chart-2-container div').html('');
+//                return;
+//            }
             var row = $('<tr onclick="showDetails2(this)"></tr>');
             var qty = Math.abs(d.total);
-            var revenue = Math.round(qty*d.price*100)/100;
+            d.revenue = Math.round(qty*d.price*100)/100;
             row.append('<td>' + (i+1) + '</td>');
             row.append('<td>' + d.name + '</td>');
             row.append('<td>' + qty + '</td>');
-            row.append('<td> $' + revenue + '</td>');
+            row.append('<td>' + d.revenue + '</td>');
             table.append(row);
         }
-        chartInit2(data[0].name);
+        chartInit2();
     }
 
     function applyRule3(){
@@ -553,12 +544,12 @@
 
         for(var i =0; i<data.length; i++){
             var d = data[i];
-            if(!d.retail){
-                $('<tr><td colspan="3">No sales data available</td></tr>').appendTo(table);
-                $('#chart-3-container h4').text('');
-                $('#chart-3-container div').html('');
-                return;
-            }
+//            if(!d.retail){
+//                $('<tr><td colspan="3">No sales data available</td></tr>').appendTo(table);
+//                $('#chart-3-container h4').text('');
+//                $('#chart-3-container div').html('');
+//                return;
+//            }
             var row = $('<tr onclick="showDetails3(this)"></tr>');
             row.append('<td>' + (i+1) + '</td>');
             row.append('<td>' + d.retail + '</td>');
@@ -580,7 +571,6 @@
 
     function showDetails2(ele){
         var item = $(ele).find('td:eq(1)').text();
-        $('#top-product-name').text(item);
         chartInit2(item);
     }
 
@@ -644,13 +634,6 @@
     date_picker_3.on('cancel.daterangepicker', function(ev, picker) {
         $(this).val('');
     });
-
-    $('ul.nav a').on('shown.bs.tab',function(e){
-        CHART2.redraw();
-        CHART2.width = 658;
-        CHART3.redraw();
-        CHART3.width = 658;
-    })
 
 </script>
 </body>

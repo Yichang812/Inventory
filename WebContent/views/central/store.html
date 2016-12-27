@@ -142,6 +142,7 @@
                                         <th>Product</th>
                                         <th>Safe Stock</th>
                                         <th>Current Stock</th>
+                                        <th>Restock Quantity</th>
                                     </tr>
                                     </thead>
                                     <tbody id="tbl-restock">
@@ -218,7 +219,7 @@
         row.append('<td class="item">' + restock.item + '</td>');
         row.append('<td>' + restock.safe + '</td>');
         row.append('<td>' + restock.balance + '</td>');
-        row.append('<td>' + (restock.safe - restock.balance) + '</td>');
+        row.append('<td>' + (restock.balance - restock.safe) + '</td>');
         $('#tbl-restock').append(row);
     }
 

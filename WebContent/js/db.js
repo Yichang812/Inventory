@@ -236,7 +236,7 @@ DB.newTrans = function(trans,target,expire){
 
     var qty = trans.amount;
     if(qty<0){
-		if(parseInt(expire)!==0){
+		if(expire && parseInt(expire)!==0){
             console.log(trans,target,expire);
 			var dQty = alasql('SELECT qty FROM expire WHERE id = ?',[parseInt(expire)])[0].qty;
 			if(dQty==qty){
@@ -408,16 +408,13 @@ DB.getProductHistory = function(id){
         'JOIN receipt ON trans.receipt = receipt.id ' +
         'WHERE stock.id = '+id + ' ORDER BY receipt.date ASC';
     var trans = alasql(sql);
-    var history = [];
-    var balance = 0;
-	var dates = [];
-    for(var i = 0; i<trans.length; i++){
+    var balance = trans[0].qty;
+	var history = [{date : trans[0].date, stock : balance}];
+    for(var i = 1; i<trans.length; i++){
         var r = trans[i];
-        balance += parseInt(r.qty);
-		var test = dates.indexOf(r.date);
-		if(test==-1){
-
-			dates.push(r.date);
+        balance +=r.qty;
+		var test = trans[i-1].date<r.date; //a new day
+		if(test){
 			var record = {
 				date : r.date,
 				stock : balance
@@ -895,47 +892,58 @@ DB.getProductReport = function(kinds,retails,first,last){
 	return alasql(sql,[first,last]);
 };
 
-DB.getSoldDetail = function(item,retails,first,last){
-	var q1 = '"'+retails[0]+'"';
-	for(i = 1; i<retails.length; i++){
-		q1 += ',"'+retails[i]+'"';
+DB.getSoldDetail = function(kinds,retails,first,last){
+	var i;
+	var q1 = '"'+kinds[0]+'"';
+	for(i = 1; i<kinds.length; i++){
+		q1 += ',"'+kinds[i]+'"';
 	}
 
-	var sql = 'SELECT trans.qty, receipt.date, stock.retail ' +
+	var q2 = '"'+retails[0]+'"';
+	for(i = 1; i<retails.length; i++){
+		q2 += ',"'+retails[i]+'"';
+	}
+
+	var sql = 'SELECT trans.qty, stock.retail, item.name AS item ' +
 		'FROM trans ' +
 		'JOIN stock on trans.stock = stock.id ' +
 		'JOIN receipt ON trans.receipt = receipt.id ' +
 		'JOIN item ON stock.item = item.id ' +
 		'JOIN retail ON stock.retail = retail.id ' +
+		'JOIN kind ON item.kind = kind.id ' +
 		'WHERE receipt.type = "Sold" ' +
-		'AND retail.name IN ('+q1+') ' +
+		'AND retail.name IN ('+q2+') ' +
 		'AND receipt.date >= ? ' +
 		'AND receipt.date <= ? ' +
-		'AND item.name = ?';
-	var trans = alasql(sql,[first,last,item]);
-	var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-	var record = [];
-	var result = [];
-	for(var i = 0; i<trans.length; i++){
-		var r = trans[i];
-		var d = new Date(r.date);
-		var test = months[d.getMonth()]+' '+d.getFullYear();
-		var index = record.indexOf(test);
+		'AND kind.name IN ('+q1+')';
+	var trans = alasql(sql,[first,last]);
+	var itemId = [];
+	var store = [];
+	var total = [];
+	for (i = 0; i<trans.length; i++){
+		var record = trans[i];
+		var index = itemId.indexOf(record.item);
 		if(index === -1){
-			record.push(test);
-			var data = {
-				month : test
-			};
-			data[r.retail] = Math.abs(r.qty);
-			result.push(data);
+			itemId.push(record.item);
+			var temp = {};
+			temp[record.retail] = Math.abs(record.qty);
+			store.push(temp);
+			total.push(Math.abs(record.qty));
+
 		}else{
-			//if the month exists
-			if(result[index][r.retail]){
-				result[index][r.retail] += Math.abs(r.qty);
+			var stores = store[index];
+			if(stores.hasOwnProperty(record.retail)){
+				stores[record.retail] += Math.abs(record.qty);
+
 			}else{
-				result[index][r.retail] = Math.abs(r.qty);
+				stores[record.retail] = Math.abs(record.qty);
 			}
+			total[index] += Math.abs(record.qty);
 		}
+	}
+	var result = [];
+	for(i = 0; i<itemId.length; i++){
+		result.push($.extend({item:itemId[i],total:total[i]},store[i]));
 	}
 	return result;
 };
