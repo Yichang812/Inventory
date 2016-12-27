@@ -56,7 +56,7 @@
                         <li><a href="javascript:;">Edit Profile</a></li>
                         <li><a href="javascript:;">Setting</a></li>
                         <li class="divider"></li>
-                        <li><a href="../index.html">Log Out</a></li>
+                        <li><a href="../../index.html">Log Out</a></li>
                     </ul>
                 </li>
             </ul>
@@ -151,6 +151,7 @@
                                 <th>Reference No.</th>
                                 <th>Retail Store</th>
                                 <th>Products</th>
+                                <th>Quantity</th>
                                 <th>Status</th>
                                 <th>Expected Delivery Date</th>
                             </tr>
@@ -217,12 +218,13 @@
         for(var i = 0; i<records.length; i++){
             var record = records[i];
             var row = $('<tr></tr>');
-            row.append('<td>'+record.ref+'</td>');
-            row.append('<td>'+record.retail+'</td>');
-            row.append('<td>'+record.item+'</td>');
-            row.append('<td>'+ steps[parseInt(record.status)] +'</td>');
+            row.append('<td>' + record.ref + '</td>');
+            row.append('<td>' + record.retail + '</td>');
+            row.append('<td>' + record.item + '</td>');
+            row.append('<td>' + record.qty + '</td>');
+            row.append('<td>' +  steps[parseInt(record.status)] + '</td>');
             if(record.expect){
-                row.append('<td>'+ record.expect +'</td>');
+                row.append('<td>' + record.expect + '</td>');
             }else{
                 row.append('<td> - </td>');
             }

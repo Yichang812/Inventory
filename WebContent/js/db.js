@@ -11,7 +11,7 @@ DB.load = function() {
 	//Users
 	alasql('DROP TABLE IF EXISTS user;');
 	alasql('CREATE TABLE user(id INT IDENTITY, name STRING, password STRING, type INT, login BOOL, retail INT);');
-	var puser = alasql.promise('SELECT MATRIX * FROM CSV("../data/USER-USER.csv", {headers: true})').then(function(users) {
+	var puser = alasql.promise('SELECT MATRIX * FROM CSV("data/USER-USER.csv", {headers: true})').then(function(users) {
 		for (var i = 0; i < users.length; i++) {
 			var user = users[i];
             user[4]= false;
@@ -23,7 +23,7 @@ DB.load = function() {
 	// category
 	alasql('DROP TABLE IF EXISTS kind;');
 	alasql('CREATE TABLE kind(id INT IDENTITY, parent_id INT, name STRING);');
-	var pkind = alasql.promise('SELECT MATRIX * FROM CSV("../data/KIND-KIND.csv", {headers: true})').then(function(kinds) {
+	var pkind = alasql.promise('SELECT MATRIX * FROM CSV("data/KIND-KIND.csv", {headers: true})').then(function(kinds) {
 		for (var i = 0; i < kinds.length; i++) {
 			var kind = kinds[i];
 			alasql('INSERT INTO kind VALUES(?,?,?);', kind);
@@ -33,7 +33,7 @@ DB.load = function() {
 	//Parent Category
 	alasql('DROP TABLE IF EXISTS pkind;');
 	alasql('CREATE TABLE pkind(id INT IDENTITY, name STRING);');
-	var ppkind = alasql.promise('SELECT MATRIX * FROM CSV("../data/PKIND-PKIND.csv", {headers: true})').then(function(pkinds) {
+	var ppkind = alasql.promise('SELECT MATRIX * FROM CSV("data/PKIND-PKIND.csv", {headers: true})').then(function(pkinds) {
 		for (var i = 0; i < pkinds.length; i++) {
 			var pkind = pkinds[i];
 			alasql('INSERT INTO pkind VALUES(?,?);', pkind);
@@ -44,7 +44,7 @@ DB.load = function() {
 	// Items
 	alasql('DROP TABLE IF EXISTS item;');
 	alasql('CREATE TABLE item(id INT IDENTITY, code STRING, kind INT, name STRING, detail STRING, price FLOAT, size INT, unit STRING, returning INT, threshold INT);');
-	var pitem = alasql.promise('SELECT MATRIX * FROM CSV("../data/ITEM-ITEM.csv", {headers: true})').then(function(items) {
+	var pitem = alasql.promise('SELECT MATRIX * FROM CSV("data/ITEM-ITEM.csv", {headers: true})').then(function(items) {
 		for (var i = 0; i < items.length; i++) {
 			var item = items[i];
 			alasql('INSERT INTO item VALUES(?,?,?,?,?,?,?,?,?,?);', item);
@@ -54,7 +54,7 @@ DB.load = function() {
 	// retails
 	alasql('DROP TABLE IF EXISTS retail;');
 	alasql('CREATE TABLE retail(id INT IDENTITY, name STRING, addr STRING, city STRING, tel STRING);');
-	var pretail = alasql.promise('SELECT MATRIX * FROM CSV("../data/RETAIL-RETAIL.csv", {headers: true})').then(
+	var pretail = alasql.promise('SELECT MATRIX * FROM CSV("data/RETAIL-RETAIL.csv", {headers: true})').then(
 			function(retails) {
 				for (var i = 0; i < retails.length; i++) {
 					var retail = retails[i];
@@ -65,7 +65,7 @@ DB.load = function() {
 	// Stock
 	alasql('DROP TABLE IF EXISTS stock;');
 	alasql('CREATE TABLE stock(id INT IDENTITY, item INT, retail INT, balance INT, expire DATE, restock STRING);');
-	var pstock = alasql.promise('SELECT MATRIX * FROM CSV("../data/STOCK-STOCK.csv", {headers: true})').then(
+	var pstock = alasql.promise('SELECT MATRIX * FROM CSV("data/STOCK-STOCK.csv", {headers: true})').then(
 			function(stocks) {
 				for (var i = 0; i < stocks.length; i++) {
 					var stock = stocks[i];
@@ -76,7 +76,7 @@ DB.load = function() {
 	// Transaction
 	alasql('DROP TABLE IF EXISTS trans;');
 	alasql('CREATE TABLE trans(id INT IDENTITY, stock INT, qty INT, receipt INT);');
-	var ptrans = alasql.promise('SELECT MATRIX * FROM CSV("../data/TRANS-TRANS.csv", {headers: true})').then(
+	var ptrans = alasql.promise('SELECT MATRIX * FROM CSV("data/TRANS-TRANS.csv", {headers: true})').then(
 			function(transs) {
 				for (var i = 0; i < transs.length; i++) {
 					var trans = transs[i];
@@ -87,7 +87,7 @@ DB.load = function() {
 	//Expire
 	alasql('DROP TABLE IF EXISTS expire;');
 	alasql('CREATE TABLE expire(id INT IDENTITY, stock INT, expiration DATE, qty INT, received BOOL, promotion FLOAT);');
-	var pexpire = alasql.promise('SELECT MATRIX * FROM CSV("../data/EXPIRE-EXPIRE.csv", {headers: true})').then(
+	var pexpire = alasql.promise('SELECT MATRIX * FROM CSV("data/EXPIRE-EXPIRE.csv", {headers: true})').then(
 		function(expires) {
 			for (var i = 0; i < expires.length; i++) {
 				var expire = expires[i];
@@ -98,7 +98,7 @@ DB.load = function() {
     // Restock
 	alasql('DROP TABLE IF EXISTS restock;');
 	alasql('CREATE TABLE restock(id INT IDENTITY, ref STRING, date DATE, status INT, expect DATE);');
-	var prestock = alasql.promise('SELECT MATRIX * FROM CSV("../data/RESTOCK-RESTOCK.csv", {headers: true})').then(
+	var prestock = alasql.promise('SELECT MATRIX * FROM CSV("data/RESTOCK-RESTOCK.csv", {headers: true})').then(
 		function(restocks) {
 			for (var i = 0; i < restocks.length; i++) {
 				var restock = restocks[i];
@@ -108,7 +108,7 @@ DB.load = function() {
 	//Receipt
 	alasql('DROP TABLE IF EXISTS receipt;');
 	alasql('CREATE TABLE receipt(id INT IDENTITY, type STRING, operator STRING, date DATE);');
-	var preceipt = alasql.promise('SELECT MATRIX * FROM CSV("../data/RECEIPT-RECEIPT.csv", {headers: true})').then(
+	var preceipt = alasql.promise('SELECT MATRIX * FROM CSV("data/RECEIPT-RECEIPT.csv", {headers: true})').then(
 		function(receipts) {
 			for (var i = 0; i < receipts.length; i++) {
 				var receipt = receipts[i];
@@ -119,7 +119,7 @@ DB.load = function() {
 	//Dead Stock
 	alasql('DROP TABLE IF EXISTS dead;');
 	alasql('CREATE TABLE dead(id INT IDENTITY, stock INT, qty INT, handled BOOLEAN);');
-	var pdead = alasql.promise('SELECT MATRIX * FROM CSV("../data/DEADSTOCK-DEADSTOCK.csv", {headers: true})').then(
+	var pdead = alasql.promise('SELECT MATRIX * FROM CSV("data/DEADSTOCK-DEADSTOCK.csv", {headers: true})').then(
 		function(deads) {
 			for (var i = 0; i < deads.length; i++) {
 				var dead = deads[i];
@@ -130,7 +130,7 @@ DB.load = function() {
     //request
     alasql('DROP TABLE IF EXISTS request;');
     alasql('CREATE TABLE request(id INT IDENTITY, stock STRING, item STRING, qty STRING, msg STRING, retail INT, status STRING);');
-    var prequest = alasql.promise('SELECT MATRIX * FROM CSV("../data/REQUEST-REQUEST.csv", {headers: true})').then(
+    var prequest = alasql.promise('SELECT MATRIX * FROM CSV("data/REQUEST-REQUEST.csv", {headers: true})').then(
         function(requests) {
             for (var i = 0; i < requests.length; i++) {
                 var request = requests[i];
@@ -141,7 +141,7 @@ DB.load = function() {
 	//setting
 	alasql('DROP TABLE IF EXISTS setting;');
 	alasql('CREATE TABLE setting(id INT IDENTITY, factor FLOAT, duration INT, start DATE);');
-	var psetting = alasql.promise('SELECT MATRIX * FROM CSV("../data/SETTING-SETTING.csv", {headers: true})').then(
+	var psetting = alasql.promise('SELECT MATRIX * FROM CSV("data/SETTING-SETTING.csv", {headers: true})').then(
 		function(settings) {
 			for (var i = 0; i < settings.length; i++) {
 				var setting = settings[i];
@@ -152,7 +152,7 @@ DB.load = function() {
     //Delivery
     alasql('DROP TABLE IF EXISTS delivery;');
     alasql('CREATE TABLE delivery(id INT IDENTITY, restock INT, stock INT, qty INT);');
-    var pdelivery = alasql.promise('SELECT MATRIX * FROM CSV("../data/DELIVERY-DELIVERY.csv", {headers: true})').then(
+    var pdelivery = alasql.promise('SELECT MATRIX * FROM CSV("data/DELIVERY-DELIVERY.csv", {headers: true})').then(
         function(deliveries) {
             for (var i = 0; i < deliveries.length; i++) {
                 var delivery = deliveries[i];
@@ -236,7 +236,7 @@ DB.newTrans = function(trans,target,expire){
 
     var qty = trans.amount;
     if(qty<0){
-		if(parseInt(expire)!==0){
+		if(expire && parseInt(expire)!==0){
             console.log(trans,target,expire);
 			var dQty = alasql('SELECT qty FROM expire WHERE id = ?',[parseInt(expire)])[0].qty;
 			if(dQty==qty){

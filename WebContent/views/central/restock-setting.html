@@ -58,7 +58,7 @@
                         <li><a href="javascript:;">Edit Profile</a></li>
                         <li><a href="javascript:;">Setting</a></li>
                         <li class="divider"></li>
-                        <li><a href="../index.html">Log Out</a></li>
+                        <li><a href="../../index.html">Log Out</a></li>
                     </ul>
                 </li>
             </ul>
@@ -157,14 +157,14 @@
                             <div class="form-group p-r-15">
                                 <label for="safeInput" class="col-sm-2 control-label">Safe Stock Factor</label>
                                 <div class="input-group col-sm-10" id="safeInput">
-                                    <input type="number" step="0.1", min="0" name="safe" class="form-control" value="1.5" disabled/>
+                                    <input type="number" step="0.1", min="0" name="safe" class="form-control" disabled/>
                                 </div>
 
                             </div>
                             <div class="form-group p-r-15">
                                 <label for="freInput" class="col-sm-2 control-label">Restocking Duration</label>
                                 <div class="input-group" id="freInput">
-                                    <input type="number" min="0" name="frequency" class="form-control" value="30" disabled/>
+                                    <input type="number" min="0" name="frequency" class="form-control" disabled/>
                                     <span class="input-group-addon">Days</span>
                                 </div>
 
@@ -232,12 +232,20 @@
     $(document).ready(function() {
         App.init();
         $('#startInput').datepicker({todayHighlight:true,autoclose:true});
+        fieldInit();
     });
 
     var safeInput = $('input[name="safe"]');
     var freInput = $('input[name="frequency"]');
     var startInput = $('input[name="start"]');
     var applyBtn = $('#btn-apply');
+
+    function fieldInit(){
+        var data = alasql('SELECT * FROM setting')[0];
+        safeInput.val(data.factor);
+        freInput.val(data.duration);
+        startInput.val(data.start);
+    }
 
     function enableEidt() {
 

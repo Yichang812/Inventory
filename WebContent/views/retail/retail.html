@@ -59,14 +59,14 @@
                 <li class="dropdown navbar-user">
                     <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
                         <img src="../../img/user.jpg" alt="" />
-                        <span class="hidden-xs">Bob</span> <b class="caret"></b>
+                        <span class="hidden-xs" id="username">Bob</span> <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
                         <li class="arrow"></li>
                         <li><a href="javascript:;">Edit Profile</a></li>
                         <li><a href="javascript:;">Setting</a></li>
                         <li class="divider"></li>
-                        <li><a href="../index.html">Log Out</a></li>
+                        <li><a href="../../index.html">Log Out</a></li>
                     </ul>
                 </li>
             </ul>
@@ -305,7 +305,8 @@
 
     });
 
-
+    var username = alasql('COLUMN OF SELECT name FROM user WHERE retail = ?',[id])[0];
+    $('#username').text(username);
     var storeName = alasql('COLUMN OF SELECT name FROM retail WHERE id = ?',[id])[0];
     $('#store-name').text(storeName);
 
