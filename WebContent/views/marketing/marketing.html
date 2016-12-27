@@ -532,6 +532,7 @@
     function chartInit3(retail){
         $('#top-shop-name').text(retail);
         var data = DB.getRetailChartData(retail,FILTER.items,FILTER.first,FILTER.last);
+        console.log(data.byDate);
         $('#chart-retail-by-item').empty();
         $('#chart-retail-by-period').empty();
 
@@ -686,13 +687,13 @@
 
     $('ul.nav a').on('shown.bs.tab',function(e){
         CHART21.redraw();
-        // CHART21.width = 658;
+//         CHART21.width = 1000;
         CHART22.redraw();
-        // CHART22.width = 658;
+//         CHART22.width = 1000;
         CHART31.redraw();
-        // CHART31.width = 658;
+//         CHART31.width = 1000;
         CHART32.redraw();
-        // CHART32.width = 658;
+//         CHART32.width = 1000;
     });
 
     function toggleArrow(ele) {

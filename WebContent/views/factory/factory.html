@@ -80,22 +80,21 @@
                             <table class="table table-hover display data-table" cellspacing="0" width="100%">
                                 <thead>
                                 <tr>
+                                    <th><input type="checkbox" id="checkedAll"></th>
                                     <th>Code</th>
                                     <th>Product</th>
                                     <th>Requested Quantity</th>
-                                    <th>Completed Quantity</th>
-                                    <
+                                    <th>Status</th>
+
                                 </tr>
                                 </thead>
-                                <tbody id="tbl-products">
+                                <tbody id="tbl-orders">
 
                                 </tbody>
                             </table>
                         </div>
-                        <div class="row" style="margin-top:20px;">
-                            <div class="col-md-10 col-md-offset-1">
-                                <a class="btn btn-success pull-right hide" id="btn-return" style="margin-left:10px;" onclick="returnProduct()">Return</a>
-                            </div>
+                        <div class="row">
+                            <div class="col-md-11"><a class="btn btn-success pull-right" onclick="completeOrder()">Completed</a> </div>
                         </div>
                     </div>
                 </div>
@@ -140,8 +139,76 @@
 
     $(document).ready(function() {
         App.init();
+        tableInit();
+
+        $("#checkedAll").change(function(){
+            if(this.checked){
+                $(".checkSingle").each(function(){
+                    this.checked=true;
+                })
+            }else{
+                $(".checkSingle").each(function(){
+                    this.checked=false;
+                })
+            }
+        });
+
+        $(".checkSingle").click(function () {
+            if ($(this).is(":checked")){
+                var isAllChecked = 0;
+                $(".checkSingle").each(function(){
+                    if(!this.checked)
+                        isAllChecked = 1;
+                })
+                if(isAllChecked == 0){ $("#checkedAll").prop("checked", true); }
+            }
+            else {
+                $("#checkedAll").prop("checked", false);
+            }
+        });
+
+
     });
 
+    function tableInit(){
+        var orders = DB.getRestockInfo();
+        var i;
+        var data = [];
+        var memo = [];
+        for(i = 0; i<orders.length; i++){
+            var order = orders[i];
+            var qty = order.safe-order.balance;
+            if(qty>0){
+                var index = memo.indexOf(order.code);
+                if(index == -1){
+                    data.push({item:order.item, code:order.code, qty:qty});
+                    memo.push(order.code);
+                }else{
+                    data[index].qty += qty;
+                }
+            }
+        }
+
+        for(i = 0; i<data.length; i++){
+            var record = data[i];
+            var tr = $('<tr><td><input type="checkbox" class="checkSingle" data-content="'+record.code+'"/> </td><td>'+record.code+'</td><td>'+record.item+'</td><td>'+record.qty+'</td><td>' +
+                    '<span class="label label-warning">Producing</span></td></tr>');
+            $('#tbl-orders').append(tr);
+        }
+    }
+
+
+    function completeOrder(ele){
+        $('.checkSingle:checkbox:checked').each(function(){
+            var code = $(this).attr('data-content');
+
+        });
+    }
+/*
+1. factory produce products everyday, and take records (product code, qty, expiration date)of the produced products.
+2. factory ship out the product every fixed days (same as restocking duration)
+3. central warehouse updates the stock of the product when they received the products.
+*/
 </script>
 </body>
 </html>

@@ -488,7 +488,6 @@ DB.getSafeStock = function(retail){
 
 DB.getRestockInfo = function(retail){
 	var safeStocks = DB.getSafeStock(retail);
-	console.log(safeStocks);
     var sql = 'SELECT stock.id, item.code, item.name AS item, retail.name AS retail, stock.balance, delivery.qty as delivering ' +
         'FROM stock ' +
 		'JOIN item ON stock.item = item.id ' +
