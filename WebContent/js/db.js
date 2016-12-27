@@ -896,13 +896,14 @@ DB.getProductReport = function(kinds,retails,first,last){
 	return alasql(sql,[first,last]);
 };
 
-DB.getSoldDetail = function(item,retails,first,last){
+DB.getProductChartData = function(item,retails,first,last){
+	var i;
 	var q1 = '"'+retails[0]+'"';
 	for(i = 1; i<retails.length; i++){
 		q1 += ',"'+retails[i]+'"';
 	}
 
-	var sql = 'SELECT trans.qty, receipt.date, stock.retail ' +
+	var sql = 'SELECT trans.qty, receipt.date, retail.name as retail ' +
 		'FROM trans ' +
 		'JOIN stock on trans.stock = stock.id ' +
 		'JOIN receipt ON trans.receipt = receipt.id ' +
@@ -914,31 +915,30 @@ DB.getSoldDetail = function(item,retails,first,last){
 		'AND receipt.date <= ? ' +
 		'AND item.name = ?';
 	var trans = alasql(sql,[first,last,item]);
-	var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-	var record = [];
-	var result = [];
-	for(var i = 0; i<trans.length; i++){
-		var r = trans[i];
-		var d = new Date(r.date);
-		var test = months[d.getMonth()]+' '+d.getFullYear();
-		var index = record.indexOf(test);
-		if(index === -1){
-			record.push(test);
-			var data = {
-				month : test
-			};
-			data[r.retail] = Math.abs(r.qty);
-			result.push(data);
+	var byRetailer = [];
+	var byPeriod = [];
+	var rMemo = [];
+	var pMemo = [];
+	for(i = 0; i < trans.length; i++){
+		var record = trans[i];
+		record.qty = Math.abs(record.qty);
+		var iR = rMemo.indexOf(record.retail);
+		var iP = pMemo.indexOf(record.date);
+		if(iR == -1){
+			rMemo.push(record.retail);
+			byRetailer.push({label:record.retail,value:record.qty});
 		}else{
-			//if the month exists
-			if(result[index][r.retail]){
-				result[index][r.retail] += Math.abs(r.qty);
-			}else{
-				result[index][r.retail] = Math.abs(r.qty);
-			}
+			byRetailer[iR].value += record.qty;
+		}
+
+		if(iP == -1){
+			pMemo.push(record.date);
+			byPeriod.push({date:record.date, qty:record.qty});
+		}else{
+			byPeriod[iP].qty += record.qty;
 		}
 	}
-	return result;
+	return {byRetail: byRetailer, byDate: byPeriod};
 };
 
 DB.getRetailReport = function(items,cities,first,last){
@@ -976,13 +976,14 @@ DB.getRetailReport = function(items,cities,first,last){
 	return alasql(sql,[first,last]);
 };
 
-DB.getRetailSoldDetail = function(retail,items,first,last){
+DB.getRetailChartData = function(retail,items,first,last){
 	var q1 = '"'+items[0]+'"';
+	var i;
 	for(i = 1; i<items.length; i++){
 		q1 += ',"'+items[i]+'"';
 	}
 
-	var sql = 'SELECT trans.qty, receipt.date, stock.item ' +
+	var sql = 'SELECT trans.qty, receipt.date, item.name AS item ' +
 		'FROM trans ' +
 		'JOIN stock on trans.stock = stock.id ' +
 		'JOIN receipt ON trans.receipt = receipt.id ' +
@@ -995,30 +996,28 @@ DB.getRetailSoldDetail = function(retail,items,first,last){
 		'AND retail.name = ?';
 
 	var trans = alasql(sql,[first,last,retail]);
-	var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-	var record = [];
-	var result = [];
-
-	for(var i = 0; i<trans.length; i++){
-		var r = trans[i];
-		var d = new Date(r.date);
-		var test = months[d.getMonth()]+' '+d.getFullYear();
-		var index = record.indexOf(test);
-		if(index === -1){
-			record.push(test);
-			var data = {
-				month : test
-			};
-			data[r.item] = Math.abs(r.qty);
-			result.push(data);
+	var byItem = [];
+	var byPeriod = [];
+	var iMemo = [];
+	var pMemo = [];
+	for(i = 0 ; i<trans.length; i++){
+		var record = trans[i];
+		record.qty = Math.abs(record.qty);
+		var iI = iMemo.indexOf(record.item);
+		var iP = pMemo.indexOf(record.date);
+		if(iI == -1 ){
+			byItem.push({label:record.item, value:record.qty});
+			iMemo.push(record.item);
 		}else{
-			//if the month exists
-			if(result[index][r.item]){
-				result[index][r.item] += Math.abs(r.qty);
-			}else{
-				result[index][r.item] = Math.abs(r.qty);
-			}
+			byItem[iI].value += record.qty;
+		}
+
+		if(iP == -1){
+			pMemo.push(record.date);
+			byPeriod.push({date:record.date, qty:record.qty});
+		}else{
+			byPeriod[iP].qty += record.qty;
 		}
 	}
-	return result;
+	return {byItem:byItem, byDate:byPeriod};
 };

@@ -6546,3 +6546,7 @@ svg{
 .table-narrow > tbody > tr > td{
   padding:3px 7px;
 }
+
+.pointer:hover{
+  cursor: pointer;
+}

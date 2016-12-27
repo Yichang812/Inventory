@@ -39,48 +39,36 @@
     <!-- end #header -->
 
     <div class="container">
-
         <div class="row m-t-20">
             <div class="col-md-12">
-                <ul class="nav nav-tabs">
-                    <li class="active"><a href="cash-register.html#manual" data-toggle="tab">Manual Update</a></li>
-                    <li><a href="cash-register.html#qr" data-toggle="tab">Scan QR Codes</a></li>
-                    <!--<li><a href="cash-register.html#return" data-toggle="tab">Return Product</a></li>-->
-                </ul>
-                <div class="tab-content">
-                    <div class="tab-pane fade active in" id="manual">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <table class="table table-hover display data-table" cellspacing="0" width="100%">
-                                    <thead>
-                                    <tr>
-                                        <th>Product</th>
-                                        <th>Price</th>
-                                        <th>Discount</th>
-                                        <th>Available Qty</th>
-                                        <th>Qty</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody id="tbl-products">
-
-                                    </tbody>
-                                </table>
-                                <a class="btn btn-success" onclick="updateStock()">Confirm</a>
-                            </div>
+                <div class="panel panel-inverse">
+                    <div class="panel-heading">
+                        <div class="panel-heading-btn">
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-expand"><i class="fa fa-expand"></i></a>
+                            <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
                         </div>
-
+                        <h4 class="panel-title">Cash Register for Demo</h4>
                     </div>
-                    <div class="tab-pane fade" id="qr">
-                        <div class="row">
-                            <a class="btn btn-icon btn-ex-lg">
-                                <span class="fa-stack">
-                                    <i class="fa fa-square-o fa-stack-2x"></i>
-                                    <i class="fa fa-qrcode fa-stack-1x"></i>
-                                </span>
-                            </a>
+                    <div class="panel-body">
+                        <div class="col-md-10 col-md-offset-1">
+                            <table class="table table-hover display data-table" cellspacing="0" width="100%">
+                                <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Discount</th>
+                                    <th>Available Qty</th>
+                                    <th>Qty</th>
+                                </tr>
+                                </thead>
+                                <tbody id="tbl-products">
+
+                                </tbody>
+                            </table>
+                            <a class="btn btn-success" onclick="updateStock()">Confirm</a>
                         </div>
                     </div>
-                </div>
+
             </div>
         </div>
     </div>

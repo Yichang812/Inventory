@@ -224,7 +224,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row"  style="border-bottom: solid 1px #ecf0f1">
+                            <div class="row">
                                 <div class="col-md-1 pull-right">
                                     <h5 class="text-success">
                                         <a data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample" onclick="toggleArrow(this)">Filter
@@ -233,27 +233,40 @@
                                     </h5>
                                 </div>
                             </div>
-                            <table class="table table-email">
-                                <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th> Product</th>
-                                    <th> Total Sold Quantity</th>
-                                    <th> Total Revenue ($)</th>
-                                </tr>
-                                </thead>
-                                <tbody id="tbl-top-selling">
 
-                                </tbody>
-                            </table>
+                            <div class="col-md-12 p-r-20 p-l-20">
+                                <table class="table" id="data-table-top-selling">
+                                    <thead>
+                                    <tr>
+                                        <th> Product</th>
+                                        <th> Total Sold Quantity</th>
+                                        <th> Total Revenue ($)</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="tbl-top-selling">
+
+                                    </tbody>
+                                </table>
+                            </div>
+
 
                             <div class="email-footer clearfix">
-                                <div class="col-md-6 col-md-offset-3">
-                                    <div id="chart-2-container">
-                                        <h4 style="text-align: center;" id="top-product-name"></h4>
-                                        <div id="top-product-chart" class="height-sm well"></div>
+                                <div id="chart-2-container">
+                                    <h3 style="text-align: center;" id="top-product-name"></h3>
+                                    <div class="row">
+                                        <div class="col-md-6" style="border-right: 1px solid #e2e7eb">
+                                            <h4 style="text-align: center">Sales By Retailer</h4>
+                                            <div class="col-sm-7 col-sm-offset-2">
+                                                <div id="chart-top-selling-by-retail"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h4 style="text-align: center">Sales By Date</h4>
+                                            <div class="col-sm-7 col-sm-offset-2">
+                                                <div id="chart-top-selling-by-period"></div>
+                                            </div>
+                                        </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -268,7 +281,6 @@
                                             <div class="form-group m-r-10 col-md-3">
                                                 <label for="city">Cities</label>
                                                 <select class="select" id="city" multiple="multiple">
-                                                    <option selected="selected"></option>
                                                 </select>
                                             </div>
                                             <!--<div class="form-group col-md-1"></div>-->
@@ -297,10 +309,9 @@
                                     </h5>
                                 </div>
                             </div>
-                            <table class="table table-email">
+                            <table class="table" id="data-table-top-shop">
                                 <thead>
                                 <tr>
-                                    <th>#</th>
                                     <th> Retail Store</th>
                                     <th> Total Sold Quantity</th>
                                     <th> Total Revenue ($)</th>
@@ -312,17 +323,24 @@
                             </table>
 
 
-
-
                             <div class="email-footer clearfix">
-                                <div class="col-md-6 col-md-offset-3">
-                                    <div id="chart-3-container">
-                                        <h4 style="text-align: center;" id="top-shop-name"></h4>
-                                        <div id="top-shop-chart" class="height-sm"></div>
+                                <div id="chart-3-container">
+                                    <h4 style="text-align: center;" id="top-shop-name"></h4>
+                                    <div class="row">
+                                        <div class="col-md-6" style="border-right: 1px solid #e2e7eb">
+                                            <h4 style="text-align: center">Sales By Retailer</h4>
+                                            <div class="col-sm-7 col-sm-offset-2">
+                                                <div id="chart-retail-by-item"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h4 style="text-align: center">Sales By Date</h4>
+                                            <div class="col-sm-7 col-sm-offset-2">
+                                                <div id="chart-retail-by-period"></div>
+                                            </div>
+                                        </div>
                                     </div>
-
                                 </div>
-
                             </div>
 
 
@@ -373,288 +391,7 @@
 
 <script src="../../js/apps.min.js"></script>
 <!-- ================== END PAGE LEVEL JS ================== -->
+<script src="marketing.js"></script>
 
-<script>
-    $(document).ready(function() {
-        App.init();
-        selectInit();
-        datePickerInit();
-        $('.select').multipleSelect({
-            width:'100%',
-            multipleWidth:180,
-            multiple: true,
-            filter:true,
-            minimumCountSelected:7
-        });
-
-        applyRule2();
-        applyRule3();
-        chartInit1();
-    });
-
-    var COLLAPSED = true;
-    var FILTER = {
-        kinds : [],
-        stores : [],
-        cities : [],
-        items : [],
-        first:'',
-        last:''
-    };
-    var CHART3;
-    var CHART2;
-
-
-    function selectInit(){
-        FILTER.kinds = alasql('COLUMN OF SELECT name FROM kind');
-        FILTER.stores = alasql('COLUMN OF SELECT name FROM retail WHERE id<>1');
-
-        var cities = alasql('COLUMN OF SELECT DISTINCT city FROM retail WHERE id<>1');
-        FILTER.cities = cities;
-        for(var i = 0; i< cities.length; i++){
-            var op = $('<option selected="selected">'+cities[i]+'</option>');
-            $('#city').append(op);
-        }
-
-        var items = alasql('COLUMN OF SELECT name FROM item');
-        FILTER.items = items;
-        for(var i = 0; i< items.length; i++){
-            var op = $('<option selected="selected">'+items[i]+'</option>');
-            $('#item').append(op);
-        }
-    }
-
-    function chartInit1(){
-        var temp = DB.getCatReport();
-
-        for(var i = 0; i<temp.length; i++){
-            var row = $('<tr><th style="border-bottom: 1px solid #ddd;">'+temp[i].name+'</th><td style="border-bottom: 1px solid #ddd;">'+Math.abs(temp[i].total)+'</td></tr>');
-            $('#tbl-cat').append(row);
-        }
-
-
-
-        var data = [];
-        var total = 0;
-        for(var i = 0; i<temp.length; i++){
-            var t = temp[i];
-            total += t.total;
-            data.push({label:t.name, value:t.total});
-        }
-        Morris.Donut({
-            element:"donut-chart",
-            data:data,
-            formatter:function(e){
-                var percent = Math.round(e/total*10000)/100;
-                return percent+"%"
-            },
-            resize:true,
-            colors:['#b6c832','#008a8a','#348fe2','#c47d15']
-        });
-        var temp_t = DB.getTotalReport();
-        var data_t = [];
-        var total_t = 0;
-        var month_count = 0;
-        for(t in temp_t){
-            total_t += Math.abs(temp_t[t]);
-            month_count ++;
-            data_t.push({month:t, total:Math.abs(temp_t[t]),avg:Math.round(total_t/month_count)});
-        }
-        Morris.Line({
-            element:'area-chart',
-            data: data_t,
-            xkey:'month',
-            ykeys:['total','avg'],
-            labels:['Total','Average'],
-            resize:true,
-            lineColors:['#008a8a','#b6c832']
-        });
-
-        $('#total-sale').text(total_t);
-        $('#avg-total').text(total_t/month_count);
-
-
-    }
-
-    function chartInit2(item){
-        $('#top-product-name').text(item);
-        var data = DB.getSoldDetail(item,FILTER.stores,FILTER.first,FILTER.last);
-        var ykeys = alasql('COLUMN OF SELECT id FROM retail WHERE id<>1');
-        var labels = alasql('COLUMN OF SELECT name FROM retail WHERE id<>1');
-        $('#top-product-chart').empty();
-        CHART2 = Morris.Bar({
-            element:"top-product-chart",
-            data:data,
-            xkey:"month",
-            ykeys:ykeys,
-            labels:labels,
-            behaveLikeLine:true,
-            hideHover:"auto",
-            barGrap:4,
-            barSizeRatio:0.3,
-            resize:true,
-            stacked:true,
-            barColors:['#b6c832','#6dc5de','#348fe2','#f7b048','#00acac','#f7b048']})
-    }
-
-    function chartInit3(retail){
-        $('#top-shop-name').text(retail);
-        var data = DB.getRetailSoldDetail(retail,FILTER.items,FILTER.first,FILTER.last);
-        var ykeys = alasql('COLUMN OF SELECT id FROM item');
-        var labels = alasql('COLUMN OF SELECT name FROM item');
-        $('#top-shop-chart').empty();
-        CHART3 = Morris.Bar({
-            element:"top-shop-chart",
-            data:data,
-            xkey:"month",
-            ykeys:ykeys,
-            labels:labels,
-            behaveLikeLine:true,
-            hideHover:"auto",
-            barGrap:4,
-            barSizeRatio:0.3,
-            resize:true,
-            stacked:true,
-            barColors:['#b6c832','#6dc5de','#348fe2','#f7b048','#00acac','#f7b048']})
-    }
-
-    function applyRule2(){
-        FILTER.kinds = $('#cat').val();
-        FILTER.stores = $('#store').val();
-        var table = $('#tbl-top-selling');
-        var data = DB.getProductReport(FILTER.kinds,FILTER.stores,FILTER.first,FILTER.last);
-        table.empty();
-        for(var i =0; i<data.length; i++){
-            var d = data[i];
-            if(!d){
-                $('<tr><td colspan="3">No sales data available</td></tr>').appendTo(table);
-                $('#chart-2-container h4').text('');
-                $('#chart-2-container div').html('');
-                return;
-            }
-            var row = $('<tr onclick="showDetails2(this)"></tr>');
-            var qty = Math.abs(d.total);
-            var revenue = Math.round(qty*d.price*100)/100;
-            row.append('<td>' + (i+1) + '</td>');
-            row.append('<td>' + d.name + '</td>');
-            row.append('<td>' + qty + '</td>');
-            row.append('<td> $' + revenue + '</td>');
-            table.append(row);
-        }
-        chartInit2(data[0].name);
-    }
-
-    function applyRule3(){
-        FILTER.cities = $('#city').val();
-        FILTER.items = $('#item').val();
-
-        var table = $('#tbl-top-shop');
-        var data = DB.getRetailReport(FILTER.items,FILTER.cities,FILTER.first,FILTER.last);
-        table.empty();
-        console.log(data);
-        for(var i =0; i<data.length; i++){
-            var d = data[i];
-            if(!d.retail){
-                $('<tr><td colspan="3">No sales data available</td></tr>').appendTo(table);
-                $('#chart-3-container h4').text('');
-                $('#chart-3-container div').html('');
-                return;
-            }
-            var revenue = Math.abs(Math.round(d.revenue*100)/100);
-            var row = $('<tr onclick="showDetails3(this)"></tr>');
-            row.append('<td>' + (i+1) + '</td>');
-            row.append('<td>' + d.name + '</td>');
-            row.append('<td>' + Math.abs(d.total) + '</td>');
-            row.append('<td>' + revenue + '</td>');
-            table.append(row);
-        }
-        chartInit3(data[0].name);
-    }
-
-    function toggleArrow(ele) {
-        if(COLLAPSED){
-            $(ele).find('i').removeClass('fa-chevron-up').addClass('fa-chevron-down');
-            COLLAPSED = false;
-        }else{
-            $(ele).find('i').removeClass('fa-chevron-down').addClass('fa-chevron-up');
-            COLLAPSED = true;
-        }
-    }
-
-    function showDetails2(ele){
-        var item = $(ele).find('td:eq(1)').text();
-        $('#top-product-name').text(item);
-        chartInit2(item);
-    }
-
-    function showDetails3(ele){
-        var retail = $(ele).find('td:eq(1)').text();
-        $('#top-shop-name').text(retail);
-        chartInit3(retail);
-    }
-
-    var date_picker_2 = $('input[name="datefilter2"]');
-    var date_picker_3 = $('input[name="datefilter3"]');
-    function datePickerInit(){
-        var dateRage = DB.getDateRange();
-        FILTER.first = moment(dateRage.first,'MM/DD/YYYY').format('YYYY-MM-DD');
-        FILTER.last = moment(dateRage.today,'MM/DD/YYYY').format('YYYY-MM-DD');
-        $('#period2').val(FILTER.first + ' - ' + FILTER.last);
-        $('#period3').val(FILTER.first + ' - ' + FILTER.last);
-
-        date_picker_2.daterangepicker({
-            autoUpdateInput: false,
-            locale: {
-                cancelLabel: 'Clear'
-            },
-            autoApply:true,
-            startDate:dateRage.first,
-            endDate:dateRage.today,
-            minDate: dateRage.first,
-            maxDate: dateRage.today
-        });
-
-        date_picker_3.daterangepicker({
-            autoUpdateInput: false,
-            locale: {
-                cancelLabel: 'Clear'
-            },
-            autoApply:true,
-            startDate:dateRage.first,
-            endDate:dateRage.today,
-            minDate: dateRage.first,
-            maxDate: dateRage.today
-        });
-    }
-
-
-    date_picker_2.on('apply.daterangepicker', function(ev, picker) {
-        $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
-        FILTER.first = picker.startDate.format('YYYY-MM-DD');
-        FILTER.last = picker.endDate.format('YYYY-MM-DD');
-    });
-
-    date_picker_2.on('cancel.daterangepicker', function(ev, picker) {
-        $(this).val('');
-    });
-
-    date_picker_3.on('apply.daterangepicker', function(ev, picker) {
-        $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
-        FILTER.first = picker.startDate.format('YYYY-MM-DD');
-        FILTER.last = picker.endDate.format('YYYY-MM-DD');
-    });
-
-    date_picker_3.on('cancel.daterangepicker', function(ev, picker) {
-        $(this).val('');
-    });
-
-    $('ul.nav a').on('shown.bs.tab',function(e){
-        CHART2.redraw();
-        CHART2.width = 658;
-        CHART3.redraw();
-        CHART3.width = 658;
-    })
-
-</script>
 </body>
 </html>
