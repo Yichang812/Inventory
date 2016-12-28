@@ -256,9 +256,19 @@
 
     $('#image').attr('src', '../../img/1.jpg');
     var stocks = DB.getProductExpiration(id);
-
+    var expirations = [];
+    var memo = [];
     for(var i = 0; i<stocks.length; i++){
-        var stock = stocks[i];
+        var index = memo.indexOf(stocks[i].expiration);
+        if(index == -1){
+            memo.push(stocks[i].expiration);
+            expirations.push(stocks[i]);
+        }else{
+            expirations[index].qty += stocks[i].qty;
+        }
+    }
+    for(var i = 0; i<expirations.length; i++){
+        var stock = expirations[i];
         var row = $('<tr></tr>');
         row.append('<td>'+ stock.qty +'</td>');
         row.append('<td>'+ stock.expiration +'</td>');
