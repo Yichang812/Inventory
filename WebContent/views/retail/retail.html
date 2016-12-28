@@ -564,26 +564,29 @@
         }
     }
 
-
     function updatePromotion(){
+        var error = false;
         $('#tbl-promote').find('tr').each(function(){
             var promote = $(this).find('.discount').val();
-            if(Math.round(promote)==promote && promote>0){
+            if(Math.round(promote) == promote && promote>=0){
                 var id = $(this).attr('data-content');
                 DB.PromoteProduct(id,promote);
-                location.reload();
             }else{
-                swal({
-                    title: "Invalid input",
-                    text: "The discount number must be an integer!",
-                    type: "warning",
-                    showCancelButton: false,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "OK"
-                });
+                error = true;
             }
-
         });
+        if(error === true){
+            swal({
+                title: "Invalid input",
+                text: "The discount number must be an integer!",
+                type: "warning",
+                showCancelButton: false,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK"
+            });
+        }else{
+                location.reload();
+        }
     }
 </script>
 </body>

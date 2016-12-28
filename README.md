@@ -7,3 +7,5 @@
 - [ ] (product.html) inventory placement
 - [ ] (transportation.html) detail information for each delivery
 - [x] (product.html) combine the product stock when their expiration dates are the same
+- [x] (retail.html) promotion alert error
+- [ ] (product.html) bug at inventory history chart
